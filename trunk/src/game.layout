@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Release" />
+	<File name="SceneGame.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1163" topLine="35" />
+	</File>
+	<File name="SceneGame.h" open="0" top="0" tabpos="0">
+		<Cursor position="69" topLine="0" />
+	</File>
+	<File name="SceneMenu.h" open="0" top="0" tabpos="0">
+		<Cursor position="269" topLine="0" />
+	</File>
+	<File name="WCEngine/Application.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="175" topLine="0" />
+	</File>
+	<File name="WCEngine/Application.h" open="0" top="0" tabpos="0">
+		<Cursor position="209" topLine="1" />
+	</File>
+	<File name="WCEngine/EventManager.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="347" topLine="21" />
+	</File>
+	<File name="WCEngine/EventManager.h" open="0" top="0" tabpos="0">
+		<Cursor position="1437" topLine="61" />
+	</File>
+	<File name="WCEngine/Scene.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="222" topLine="0" />
+	</File>
+	<File name="WCEngine/main.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="270" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>
