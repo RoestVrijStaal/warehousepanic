@@ -1,17 +1,30 @@
 # depslib dependency file v1.0
-1265675241 source:/home/u9/Documents/sfml_game/src/main.cpp
+1265675240 source:/home/u9/Documents/sfml_game/src/main.cpp
+	"App.h"
+	<iostream>
 	"App.h"
 	<iostream>
 
 1266106400 
 
-1266070357 /home/u9/Documents/sfml_game/src/App.h
+1266070356 /home/u9/Documents/sfml_game/src/App.h
+	"Scene.h"
+	"Settings.h"
+	<SFML/Graphics.hpp>
+	<string>
 	"Scene.h"
 	"Settings.h"
 	<SFML/Graphics.hpp>
 	<string>
 
-1266071386 source:/home/u9/Documents/sfml_game/src/App.cpp
+1266109970 source:/home/u9/Documents/sfml_game/src/App.cpp
+	"App.h"
+	"EventManager.h"
+	"SceneGame.h"
+	"SceneMenu.h"
+	<ctime>
+	<cstdlib>
+	<sstream>
 	"App.h"
 	"EventManager.h"
 	"SceneGame.h"
@@ -22,22 +35,31 @@
 
 1265762368 /home/u9/Documents/sfml_game/src/Scene.h
 	<SFML/Graphics.hpp>
+	<SFML/Graphics.hpp>
 
 1266066462 hics.hpp>
 
-1265762403 source:/home/u9/Documents/sfml_game/src/Scene.cpp
+1265762402 source:/home/u9/Documents/sfml_game/src/Scene.cpp
+	"Scene.h"
 	"Scene.h"
 
 1265834262 source:/home/u9/Documents/sfml_game/src/EventManager.cpp
 	"EventManager.h"
+	"EventManager.h"
 
 1265830662 ger.h"
 
-1265843607 /home/u9/Documents/sfml_game/src/EventManager.h
+1265843606 /home/u9/Documents/sfml_game/src/EventManager.h
+	<list>
+	<map>
 	<list>
 	<map>
 
-1266092308 /home/u9/Documents/sfml_game/src/SceneGame.h
+1266146069 /home/u9/Documents/sfml_game/src/SceneGame.h
+	"Scene.h"
+	"GameObject.h"
+	"Settings.h"
+	<list>
 	"Scene.h"
 	"GameObject.h"
 	"Settings.h"
@@ -50,8 +72,18 @@
 	"Settings.h"
 	<string>
 	<vector>
+	"Scene.h"
+	"Settings.h"
+	<string>
+	<vector>
 
-1266093878 source:/home/u9/Documents/sfml_game/src/SceneGame.cpp
+1266280667 source:/home/u9/Documents/sfml_game/src/SceneGame.cpp
+	"SceneGame.h"
+	"EventManager.h"
+	<cstdlib>
+	<sstream>
+	<cmath>
+	<iostream>
 	"SceneGame.h"
 	"EventManager.h"
 	<cstdlib>
@@ -59,34 +91,44 @@
 	<cmath>
 	<iostream>
 
-1266065670 source:/home/u9/Documents/sfml_game/src/SceneMenu.cpp
+1266110000 source:/home/u9/Documents/sfml_game/src/SceneMenu.cpp
+	"SceneMenu.h"
+	"EventManager.h"
+	<sstream>
 	"SceneMenu.h"
 	"EventManager.h"
 	<sstream>
 
-1266070063 /home/u9/Documents/sfml_game/src/GameObject.h
+1266070062 /home/u9/Documents/sfml_game/src/GameObject.h
+	<SFML/Graphics.hpp>
 	<SFML/Graphics.hpp>
 
 1266070058 source:/home/u9/Documents/sfml_game/src/GameObject.cpp
 	"GameObject.h"
+	"GameObject.h"
 
 1266083692 t.h"
 
-1266094001 /home/u9/Documents/sfml_game/src/Settings.h
+1266281194 /home/u9/Documents/sfml_game/src/Settings.h
 
-1266061535 source:/home/u9/Documents/sfml_game/src/Settings.cpp
+1266061534 source:/home/u9/Documents/sfml_game/src/Settings.cpp
+	"Settings.h"
 	"Settings.h"
 
 1266087774 source:/home/u9/Documents/sfml_game/src/Player.cpp
 	"Player.h"
+	"Player.h"
 
 1266087568 /home/u9/Documents/sfml_game/src/Player.h
+	"GameObject.h"
 	"GameObject.h"
 
 1266087288 source:/home/u9/Documents/sfml_game/src/Zombie.cpp
 	"Zombie.h"
+	"Zombie.h"
 
 1266087292 /home/u9/Documents/sfml_game/src/Zombie.h
+	"GameObject.h"
 	"GameObject.h"
 
 1266106370 source:g:\sfml_game\src\app.cpp
@@ -168,86 +210,6 @@
 1265671640 source:g:\sfml_game\src\main.cpp
 	"App.h"
 	<iostream>
-
-1265834262 source:/home/u9/Documents/sfml_game/src/EventManager.cpp
-	"EventManager.h"
-
-1265843606 /home/u9/Documents/sfml_game/src/EventManager.h
-	<list>
-	<map>
-
-1266070058 source:/home/u9/Documents/sfml_game/src/GameObject.cpp
-	"GameObject.h"
-
-1266070062 /home/u9/Documents/sfml_game/src/GameObject.h
-	<SFML/Graphics.hpp>
-
-1266087774 source:/home/u9/Documents/sfml_game/src/Player.cpp
-	"Player.h"
-
-1266087568 /home/u9/Documents/sfml_game/src/Player.h
-	"GameObject.h"
-
-1265762402 source:/home/u9/Documents/sfml_game/src/Scene.cpp
-	"Scene.h"
-
-1265762368 /home/u9/Documents/sfml_game/src/Scene.h
-	<SFML/Graphics.hpp>
-
-1266061534 source:/home/u9/Documents/sfml_game/src/Settings.cpp
-	"Settings.h"
-
-1266281194 /home/u9/Documents/sfml_game/src/Settings.h
-
-1266087288 source:/home/u9/Documents/sfml_game/src/Zombie.cpp
-	"Zombie.h"
-
-1266087292 /home/u9/Documents/sfml_game/src/Zombie.h
-	"GameObject.h"
-
-1265675240 source:/home/u9/Documents/sfml_game/src/main.cpp
-	"App.h"
-	<iostream>
-
-1266070356 /home/u9/Documents/sfml_game/src/App.h
-	"Scene.h"
-	"Settings.h"
-	<SFML/Graphics.hpp>
-	<string>
-
-1266109970 source:/home/u9/Documents/sfml_game/src/App.cpp
-	"App.h"
-	"EventManager.h"
-	"SceneGame.h"
-	"SceneMenu.h"
-	<ctime>
-	<cstdlib>
-	<sstream>
-
-1266146069 /home/u9/Documents/sfml_game/src/SceneGame.h
-	"Scene.h"
-	"GameObject.h"
-	"Settings.h"
-	<list>
-
-1266061664 /home/u9/Documents/sfml_game/src/SceneMenu.h
-	"Scene.h"
-	"Settings.h"
-	<string>
-	<vector>
-
-1266280667 source:/home/u9/Documents/sfml_game/src/SceneGame.cpp
-	"SceneGame.h"
-	"EventManager.h"
-	<cstdlib>
-	<sstream>
-	<cmath>
-	<iostream>
-
-1266110000 source:/home/u9/Documents/sfml_game/src/SceneMenu.cpp
-	"SceneMenu.h"
-	"EventManager.h"
-	<sstream>
 
 1265834262 source:/home/u9/Documents/WC_game/src/EventManager.cpp
 	"EventManager.h"
@@ -464,4 +426,89 @@
 1267480779 source:/home/u9/Documents/development/WC_game/src/WCEngine/main.cpp
 	"Application.h"
 	<iostream>
+
+1267546906 source:c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\scenemenu.cpp
+	"SceneMenu.h"
+	"WCEngine/EventManager.h"
+	"WCEngine/ResourceManager.h"
+	<sstream>
+
+1267546906 c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\scenemenu.h
+	"WCEngine/Scene.h"
+	<string>
+	<vector>
+
+1267546905 c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\wcengine\scene.h
+	"Application.h"
+	<SFML/Graphics.hpp>
+	<string>
+
+1267546905 c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\wcengine\application.h
+	<SFML/Graphics.hpp>
+	<string>
+	<map>
+
+1267546905 c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\wcengine\eventmanager.h
+	<string>
+	<list>
+	<map>
+
+1267546905 c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\wcengine\resourcemanager.h
+	<string>
+	<map>
+	<SFML/Graphics.hpp>
+	<SFML/Audio.hpp>
+
+1267546905 source:c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\wcengine\application.cpp
+	"Application.h"
+	"EventManager.h"
+	"Scene.h"
+	<ctime>
+	<cstdlib>
+	<sstream>
+	<iostream>
+
+1267546905 source:c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\wcengine\eventmanager.cpp
+	"EventManager.h"
+
+1267546905 source:c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\wcengine\resourcemanager.cpp
+	"ResourceManager.h"
+
+1267546905 source:c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\wcengine\scene.cpp
+	"Scene.h"
+
+1267546905 source:c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\wcengine\main.cpp
+	"Application.h"
+	<iostream>
+
+1267567757 source:c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\scenegame.cpp
+	"SceneGame.h"
+	"WCEngine/EventManager.h"
+	"WCEngine/ResourceManager.h"
+
+1267565998 c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\scenegame.h
+	"WCEngine/Scene.h"
+	<sstream>
+	<vector>
+	<string>
+	"conveyor.h"
+	"crate.h"
+	"truck.h"
+	"gate.h"
+
+1267408510 c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\conveyor.h
+	<SFML/Graphics.hpp>
+
+1267384199 c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\crate.h
+	<SFML/Graphics.hpp>
+	<string>
+
+1267399779 c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\truck.h
+	<SFML/Graphics.hpp>
+	<vector>
+	<string>
+
+1267384199 c:\documents and settings\chase.kirby\desktop\c++\warehouse panic\src\gate.h
+	<SFML/Graphics.hpp>
+	<string>
 
