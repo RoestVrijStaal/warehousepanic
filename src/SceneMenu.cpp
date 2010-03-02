@@ -31,11 +31,14 @@ void SceneMenu::Initialize()
 	soldier1.SetPosition( 30, 140 );
 	soldier2.SetPosition( 140, 130 );
 	soldier1.FlipX(true);
+
+	ResMgr.GetMusic( "game over" ).Play();
 }
 
 void SceneMenu::Terminate()
 {
 	items.clear();
+	ResMgr.GetMusic( "game over" ).Stop();
 }
 
 void SceneMenu::Step()

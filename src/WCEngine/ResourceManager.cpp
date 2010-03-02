@@ -14,7 +14,7 @@ ResourceManager* ResourceManager::GetInstance()
 
 ResourceManager::ResourceManager()
 {
-	Init();
+	Initialize();
 }
 
 ResourceManager::~ResourceManager()
@@ -26,7 +26,7 @@ ResourceManager::~ResourceManager()
 	}
 }
 
-void ResourceManager::Init()
+void ResourceManager::Initialize()
 {
 	// Empty objects returned when requested object not found
 	images["dummy"] = sf::Image();
@@ -38,6 +38,11 @@ void ResourceManager::Init()
 
 	// Sound buffers
 	//sounds["something"].LoadFromFile( "media/somesoundeffect.wav" );
+
+	// TODO: Free memory again
+	music["game over"] = new sf::Music( 96000 );
+	music["game over"]->OpenFromFile( "media/Sweet RnB Beat-23820-Free-Loops.com.wav" );
+	music["game over"]->SetLoop( true );
 }
 
 sf::Image& ResourceManager::GetImage( std::string name )
@@ -66,3 +71,15 @@ sf::SoundBuffer& ResourceManager::GetSound( std::string name )
 	}
 }
 
+sf::Music& ResourceManager::GetMusic( std::string name )
+{
+	std::map< std::string, sf::Music* >::iterator result = music.find( name );
+	if ( result == music.end() )
+	{
+		return *music["dummy"];
+	}
+	else
+	{
+		return *result->second;
+	}
+}
