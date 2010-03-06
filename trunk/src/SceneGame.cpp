@@ -205,66 +205,11 @@ void SceneGame::Step()
 
 void SceneGame::Draw()
 {
-	sf::Sprite bg( ResMgr.GetImage( "level background" ) );
-	bg.SetColor( sf::Color( 60, 60, 60 ) );
-	window->Draw( bg );
-	//window->Clear( sf::Color(0,0,0) );
+	//sf::Sprite bg( ResMgr.GetImage( "level background" ) );
+	//bg.SetColor( sf::Color( 60, 60, 60 ) );
+	//window->Draw( bg );
+	window->Clear( sf::Color(100,100,100) );
 
-	// Draw all objects
-	for ( std::list<Object*>::iterator it = objects.begin(); it != objects.end(); ++it )
-	{
-		Object& obj = (**it);
-		sf::Vector2f screenPos = TransformMapToScreen( obj.pos );
-		switch ( obj.type )
-		{
-			case Object::CRATE:
-				obj.sprite.SetPosition( screenPos.x, screenPos.y - 5 ); // Draw atop conveyor
-				break;
-
-			// Conveyors are special. They need to draw the correct branching sprite
-			case Object::CONVEYOR:
-				if ( ((Conveyor&)obj).isSwitch )
-				{
-					std::stringstream name;
-					name << "conveyor " << obj.dir;
-					if ( ((Conveyor&)obj).isSwitchLeft )
-						name << " turn left";
-					else
-						name << " turn right";
-					obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
-				}
-				// No break, fall through to set the position of conveyor too
-
-			case Object::GATE:
-			case Object::GATE_BACKGROUND:
-			case Object::INCINERATOR:
-			case Object::TRUCK:
-			default:
-				obj.sprite.SetPosition( screenPos );
-				break;
-		}
-		window->Draw( obj.sprite );
-	}
-
-	stringstream ss;
-	sf::Vector2f mouse( (float)window->GetInput().GetMouseX(), (float)window->GetInput().GetMouseY() );
-	sf::Vector2f screen = TransformScreenToMap( mouse );
-	ss << (int)screen.x << "   " << (int)screen.y;
-	/*ss <<
-		(x-z) * cos(0.46365) << "   " <<
-		((x+z)* sin(0.46365));*/
-	sf::String text( ss.str(), sf::Font::GetDefaultFont(), 20 );
-	text.SetColor( sf::Color(0,0,0) );
-	text.SetPosition( 100, 20 );
-	window->Draw( text );
-
-/*	stringstream score;
-	score << "Score: " << points;
-	str_score.SetText(score.str());
-
-	//Drawing
-	window->Clear(sf::Color(255,255,255));
-	//-------------
 	if (isPaused == true)
 	{
 		window->Draw(str_paused_msg1);
@@ -288,55 +233,50 @@ void SceneGame::Draw()
 		window->Draw(str_paused_msg2);
 		window->Draw(str_paused_msg3);
 	}
-	else if (isPaused == false)
+	else
 	{
-		for (unsigned int i = 0; i < gates.size(); i++)
+		// Draw all objects
+		for ( std::list<Object*>::iterator it = objects.begin(); it != objects.end(); ++it )
 		{
-			sf::Sprite &c = gates[i].sprite;
-			window->Draw(c);
-		}
-		for (unsigned int i = 0; i < conveyors.size(); i++)
-		{
-			conveyor &c = conveyors[i];
-			window->Draw(c.sprite);
-			if (c.change == true)
+			Object& obj = (**it);
+			sf::Vector2f screenPos = TransformMapToScreen( obj.pos );
+			switch ( obj.type )
 			{
-				if (c.dir == 0)
-				{
-					window->Draw(c.arrow_0);
-				}
-				else
-				{
-					window->Draw(c.arrow_1);
-				}
-			}
-		}
-		for (unsigned int i = 0; i < incinerators.size(); i++)
-		{
-			sf::Sprite &c = incinerators[i];
-			window->Draw(c);
-		}
-		for (unsigned int i = 0; i < crates.size(); i++)
-		{
-			sf::Sprite &c = crates[i].sprite;
-			window->Draw(c);
-		}
-		for (unsigned int i = 0; i < trucks.size(); i++)
-		{
-			sf::Sprite &c = trucks[i].sprite;
-			window->Draw(c);
-		}
-		window->Draw(str_score);
-	}
-	//-------------
-	window->Display();
+				case Object::CRATE:
+					obj.sprite.SetPosition( screenPos.x, screenPos.y - 5 ); // Draw atop conveyor
+					break;
 
-	//Update stuff
-	isMouseDown = window->GetInput().IsMouseButtonDown( sf::Mouse::Left );
-	isEnterDown = window->GetInput().IsKeyDown( sf::Key::Return );
-	isUpDown = window->GetInput().IsKeyDown( sf::Key::Down );
-	isDownDown = window->GetInput().IsKeyDown( sf::Key::Down );
-	*/
+				// Conveyors are special. They need to draw the correct branching sprite
+				case Object::CONVEYOR:
+					if ( ((Conveyor&)obj).isSwitch )
+					{
+						std::stringstream name;
+						name << "conveyor " << obj.dir;
+						if ( ((Conveyor&)obj).isSwitchLeft )
+							name << " turn left";
+						else
+							name << " turn right";
+						obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
+					}
+					// No break, fall through to set the position of conveyor too
+
+				case Object::GATE:
+				case Object::GATE_BACKGROUND:
+				case Object::INCINERATOR:
+				case Object::TRUCK:
+				default:
+					obj.sprite.SetPosition( screenPos );
+					break;
+			}
+			window->Draw( obj.sprite );
+		} // End loop through all objects
+
+		stringstream score;
+		score << "Score: " << points;
+		str_score.SetText(score.str());
+		str_score.SetPosition( 10, 200 );
+		window->Draw(str_score);
+	} // Game not paused
 }
 
 
@@ -439,9 +379,16 @@ bool SceneGame::DoCrate( Crate& crate )
 
 				// We landed on gate, so break link between gate and crate
 				case Object::GATE:
+					if ( crate.color == crate.connected->color )
+					{
+						++points;
+					}
+					else
+					{
+						--points;
+					}
 					crate.connected->connected = NULL; // "Gate, I am not on you anymore"
 					crate.connected = NULL;
-					++points;
 					return true; // Delete crate
 					break;
 
