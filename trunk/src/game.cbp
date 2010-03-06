@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="game" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="../WarehousePanic.exe" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="../" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="../WarehousePanic.exe" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="../" />
+				<Option object_output="obj/Release/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Linker>
+			<Add library="sfml-graphics" />
+			<Add library="sfml-audio" />
+			<Add library="sfml-window" />
+			<Add library="sfml-system" />
+		</Linker>
+		<Unit filename="Conveyor.h" />
+		<Unit filename="Crate.h" />
+		<Unit filename="Gate.h" />
+		<Unit filename="Level.h" />
+		<Unit filename="Object.h" />
+		<Unit filename="SceneGame.cpp" />
+		<Unit filename="SceneGame.h" />
+		<Unit filename="SceneMenu.cpp" />
+		<Unit filename="SceneMenu.h" />
+		<Unit filename="Settings.h" />
+		<Unit filename="Truck.h" />
+		<Unit filename="WCEngine/Application.cpp" />
+		<Unit filename="WCEngine/Application.h" />
+		<Unit filename="WCEngine/EventManager.cpp" />
+		<Unit filename="WCEngine/EventManager.h" />
+		<Unit filename="WCEngine/ResourceManager.cpp" />
+		<Unit filename="WCEngine/ResourceManager.h" />
+		<Unit filename="WCEngine/Scene.cpp" />
+		<Unit filename="WCEngine/Scene.h" />
+		<Unit filename="WCEngine/main.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
