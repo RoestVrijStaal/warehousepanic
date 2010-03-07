@@ -258,6 +258,58 @@ void SceneGame::Draw()
 							name << " turn right";
 						obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
 					}
+
+					// Not switch, is it turning or any other "odd" connection?
+					else
+					{
+						std::stringstream name;
+						name << "conveyor ";
+
+						bool connections[4];
+						connections[Dir::RIGHT] = level.GetObjectAt( obj.pos.x + 1, obj.pos.y ) != NULL;
+						connections[Dir::UP] = level.GetObjectAt( obj.pos.x, obj.pos.y - 1 ) != NULL;
+						connections[Dir::LEFT] = level.GetObjectAt( obj.pos.x - 1, obj.pos.y ) != NULL;
+						connections[Dir::DOWN] = level.GetObjectAt( obj.pos.x, obj.pos.y + 1 ) != NULL;
+
+						// Left turn (checking the directions on unit circle, only the one to the left of current dir should be connected)
+						if ( connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and !connections[(obj.dir + 3) % 4] )
+						{
+							name << (obj.dir + 3) % 4 << " turn left";
+							obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
+						}
+						// Right turrn
+						else if ( !connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
+						{
+							name << (obj.dir + 1) % 4 << " turn right";
+							obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
+						}
+
+						// Left sideroad?
+						else if ( connections[(obj.dir + 1) % 4] and connections[(obj.dir + 2) % 4] and !connections[(obj.dir + 3) % 4] )
+						{
+							// TODO
+						}
+
+						// Right sideroad?
+						else if ( !connections[(obj.dir + 1) % 4] and connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
+						{
+							// TODO
+						}
+
+						// T section
+						else if ( connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
+						{
+							// TODO
+						}
+
+						// Intersection. All 3 directions lead to this
+						else if ( connections[(obj.dir + 1) % 4] and connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
+						{
+							// TODO
+						}
+
+
+					}
 					// No break, fall through to set the position of conveyor too
 
 				case Object::GATE:
