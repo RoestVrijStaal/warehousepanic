@@ -38,24 +38,18 @@ class SceneGame : public Scene
 		std::list<Object*> objects;
 		std::list<Object*> toDelete; // List of objects that we are responsible for deleting
 		int points;
-		int csel;
 		bool isPaused;
 		Level level;
 
 		// Other Game Stuff
-		sf::String str_paused_msg1;
-		sf::String str_paused_msg2;
-		sf::String str_paused_msg3;
 		sf::String str_score;
 
-		sf::Shape pbutton1;
-		sf::Shape pbutton2;
+		sf::Sprite pbuttonPause;
+		sf::Sprite pbuttonQuit;
+		sf::Sprite* popup;
 
 		//Keys and such
 		bool isMouseDown;
-		bool isEnterDown;
-		bool isUpDown;
-		bool isDownDown;
 
 		// Helper functions
 		sf::Vector2f TransformScreenToMap( sf::Vector2f& pos );

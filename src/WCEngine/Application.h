@@ -24,11 +24,15 @@ class Application
 public:
 	static Application* GetInstance();
 
-	bool Initialize(); // Open screen
+	bool Initialize( int width, int height, int bpp, std::string title ); // Open screen
 	void SetPhysicsFPS( float fps );
 	void Run(); // Start engine
 
 	void AddScene( Scene* scene );
+
+	int GetWidth();
+	int GetHeight();
+	int GetBPP();
 
 protected:
 	Application();
@@ -44,6 +48,10 @@ protected:
 	bool isRunning;
 	sf::Clock timer;
 	float physicsFps;
+	int width;
+	int height;
+	int bpp;
+	std::string title;
 
 	// Current scene (game, menu, highscore etc.)
 	Scene* curScene;
