@@ -34,6 +34,7 @@ public:
 		colors.push_back( GameColor::BLUE );
 		colors.push_back( GameColor::RED );
 		colors.push_back( GameColor::ORANGE );
+		colors.push_back( GameColor::GREEN );
 
 		// Add some conveyor belts
 		Truck* t = new Truck( 7, 17, Dir::UP );
