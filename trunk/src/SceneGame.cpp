@@ -2,6 +2,7 @@
 
 #include "WCEngine/EventManager.h"
 #include "WCEngine/ResourceManager.h"
+#include "WCEngine/Application.h"
 
 #include <iostream>
 using namespace std;
@@ -39,15 +40,23 @@ void SceneGame::Initialize()
 		}
 	}
 
-	//--------------------------
-	//pbutton1 = sf::Shape::Rectangle(40,100,280,150,sf::Color(0,100,250),2.f,sf::Color(0,0,0));
-	//pbutton2 = sf::Shape::Rectangle(40,170,280,220,sf::Color(0,100,250),2.f,sf::Color(0,0,0));
+	pbuttonPause = sf::Sprite( ResMgr.GetImage( "button pause" ) );
+	pbuttonPause.SetCenter( pbuttonPause.GetImage()->GetWidth() / 2.0f, pbuttonPause.GetImage()->GetHeight() / 2.0f );
+	pbuttonPause.SetPosition(
+		App.GetWidth() - pbuttonPause.GetImage()->GetWidth() / 2.0f - 5,
+		pbuttonPause.GetImage()->GetWidth() / 2.0f + 5 ); // Top right corner
+	pbuttonQuit = sf::Sprite( ResMgr.GetImage( "button quit" ) );
+	pbuttonQuit.SetCenter( pbuttonQuit.GetImage()->GetWidth() / 2.0f, pbuttonQuit.GetImage()->GetHeight() / 2.0f );
+	pbuttonQuit.SetPosition(
+		App.GetWidth() - pbuttonPause.GetImage()->GetWidth() - pbuttonQuit.GetImage()->GetWidth() / 2.0f - 10,
+		pbuttonQuit.GetImage()->GetHeight() / 2.0f + 5 ); // Top right corner next to pause button
+	// We assign a new sprite to popup when we have some popup to display
+	popup = NULL;
 
 	//Other stuff
 	isMouseDown = false;
 	isPaused = false;
 	points = 0;
-	csel = 0;
 }
 
 void SceneGame::Terminate()
@@ -58,6 +67,12 @@ void SceneGame::Terminate()
 	toDelete.clear();
 	objects.clear(); // Level clears its own objects
 	level.Terminate();
+
+	if ( popup )
+	{
+		delete popup;
+		popup = NULL;
+	}
 }
 
 void SceneGame::Step()
@@ -66,26 +81,32 @@ void SceneGame::Step()
 	sf::Vector2f mousepos(window->GetInput().GetMouseX(),window->GetInput().GetMouseY());
 	bool newMouseButton = window->GetInput().IsMouseButtonDown( sf::Mouse::Left );
 
-	if (mousepos.x > pbutton1.GetPointPosition(0).x and mousepos.y > pbutton1.GetPointPosition(0).y and
-		mousepos.x < pbutton1.GetPointPosition(2).x and mousepos.y < pbutton1.GetPointPosition(2).y and
-		isPaused == true)
-	{
-		csel = 1;
-	}
-	else if (mousepos.x > pbutton2.GetPointPosition(0).x and mousepos.y > pbutton2.GetPointPosition(0).y and
-		mousepos.x < pbutton2.GetPointPosition(2).x and mousepos.y < pbutton2.GetPointPosition(2).y and
-		isPaused == true)
-	{
-		csel = 2;
-	}
-	else
-	{
-		csel = 0;
-	}
-
 	// Handle mouse-down event
 	if (newMouseButton and isMouseDown == false)
 	{
+		// If squaared distance to button center is < then size of button squared, then we clicked inside it
+		if ( GetDistanceSQ(mousepos, pbuttonPause.GetPosition()) < pbuttonPause.GetImage()->GetWidth() / 2.0f * pbuttonPause.GetImage()->GetWidth() / 2.0f )
+		{
+			isPaused = !isPaused;
+			if ( isPaused )
+			{
+				pbuttonPause.SetImage( ResMgr.GetImage( "button pause active" ) );
+
+				if ( popup )
+					delete popup;
+				popup = new sf::Sprite( ResMgr.GetImage( "text paused" ) );
+				popup->SetCenter( popup->GetImage()->GetWidth() / 2.0f, popup->GetImage()->GetHeight() / 2.0f );
+				popup->SetPosition( (float)App.GetWidth() / 2.0f, -(float)(popup->GetImage()->GetHeight()) / 2.0f ); // At top of screen (to animate falling down)
+			}
+			else
+			{
+				pbuttonPause.SetImage( ResMgr.GetImage( "button pause" ) );
+
+				delete popup;
+				popup = NULL;
+			}
+		}
+
 		if (isPaused == false)
 		{
 			// Translate screen coordinates to level grid coordinates
@@ -113,26 +134,14 @@ void SceneGame::Step()
 		// Handle mouse-down event game paused
 		else
 		{
-			if (csel == 1)
-			{
-				isPaused = false;
-			}
-			else if (csel == 2)
+			// Clicked inside quit button?
+			if ( GetDistanceSQ(mousepos, pbuttonQuit.GetPosition()) < pbuttonQuit.GetImage()->GetWidth() / 2.0f * pbuttonQuit.GetImage()->GetWidth() / 2.0f )
 			{
 				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "menu" ) );
+				pbuttonQuit.SetImage( ResMgr.GetImage( "button quit active" ) );
 			}
 		}
-	}
-
-	// Pause on space
-	if (window->GetInput().IsKeyDown(sf::Key::Space) and isPaused == false)
-	{
-		if (isPaused == false)
-		{
-			isPaused = true;
-			csel = 0;
-		}
-	}
+	} // end mouse down event
 
 	//Compute
 	if (isPaused == false)
@@ -200,6 +209,13 @@ void SceneGame::Step()
 		} // Loop through game objects
 	} // Game not poused
 
+	// If we have a popup center it
+	if ( popup )
+	{
+		sf::Vector2f pos = popup->GetPosition();
+		popup->SetPosition( pos.x, pos.y + ( App.GetHeight() / 2.0f - pos.y ) / 5.0f );
+	}
+
 	isMouseDown = newMouseButton;
 }
 
@@ -210,125 +226,105 @@ void SceneGame::Draw()
 	//window->Draw( bg );
 	window->Clear( sf::Color(100,100,100) );
 
-	if (isPaused == true)
+	// Draw all objects
+	for ( std::list<Object*>::iterator it = objects.begin(); it != objects.end(); ++it )
 	{
-		window->Draw(str_paused_msg1);
-		if (csel == 1)
+		Object& obj = (**it);
+		sf::Vector2f screenPos = TransformMapToScreen( obj.pos );
+		switch ( obj.type )
 		{
-			pbutton1 = sf::Shape::Rectangle(40,100,280,150,sf::Color(0,100,250),3.f,sf::Color(255,210,0));
-			pbutton2 = sf::Shape::Rectangle(40,170,280,220,sf::Color(0,100,250),2.f,sf::Color(0,0,0));
-		}
-		else if (csel == 2)
-		{
-			pbutton1 = sf::Shape::Rectangle(40,100,280,150,sf::Color(0,100,250),2.f,sf::Color(0,0,0));
-			pbutton2 = sf::Shape::Rectangle(40,170,280,220,sf::Color(0,100,250),3.f,sf::Color(255,210,0));
-		}
-		else
-		{
-			pbutton1 = sf::Shape::Rectangle(40,100,280,150,sf::Color(0,100,250),2.f,sf::Color(0,0,0));
-			pbutton2 = sf::Shape::Rectangle(40,170,280,220,sf::Color(0,100,250),2.f,sf::Color(0,0,0));
-		}
-		window->Draw(pbutton1);
-		window->Draw(pbutton2);
-		window->Draw(str_paused_msg2);
-		window->Draw(str_paused_msg3);
-	}
-	else
-	{
-		// Draw all objects
-		for ( std::list<Object*>::iterator it = objects.begin(); it != objects.end(); ++it )
-		{
-			Object& obj = (**it);
-			sf::Vector2f screenPos = TransformMapToScreen( obj.pos );
-			switch ( obj.type )
-			{
-				case Object::CRATE:
-					obj.sprite.SetPosition( screenPos.x, screenPos.y - 5 ); // Draw atop conveyor
-					break;
+			case Object::CRATE:
+				obj.sprite.SetPosition( screenPos.x, screenPos.y - 5 ); // Draw atop conveyor
+				break;
 
-				// Conveyors are special. They need to draw the correct branching sprite
-				case Object::CONVEYOR:
-					if ( ((Conveyor&)obj).isSwitch )
+			// Conveyors are special. They need to draw the correct branching sprite
+			case Object::CONVEYOR:
+				if ( ((Conveyor&)obj).isSwitch )
+				{
+					std::stringstream name;
+					name << "conveyor " << obj.dir;
+					if ( ((Conveyor&)obj).isSwitchLeft )
+						name << " turn left";
+					else
+						name << " turn right";
+					obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
+				}
+
+				// Not switch, is it turning or any other "odd" connection?
+				else
+				{
+					std::stringstream name;
+					name << "conveyor ";
+
+					bool connections[4];
+					connections[Dir::RIGHT] = level.GetObjectAt( obj.pos.x + 1, obj.pos.y ) != NULL;
+					connections[Dir::UP] = level.GetObjectAt( obj.pos.x, obj.pos.y - 1 ) != NULL;
+					connections[Dir::LEFT] = level.GetObjectAt( obj.pos.x - 1, obj.pos.y ) != NULL;
+					connections[Dir::DOWN] = level.GetObjectAt( obj.pos.x, obj.pos.y + 1 ) != NULL;
+
+					// Left turn (checking the directions on unit circle, only the one to the left of current dir should be connected)
+					if ( connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and !connections[(obj.dir + 3) % 4] )
 					{
-						std::stringstream name;
-						name << "conveyor " << obj.dir;
-						if ( ((Conveyor&)obj).isSwitchLeft )
-							name << " turn left";
-						else
-							name << " turn right";
+						name << (obj.dir + 3) % 4 << " turn left";
+						obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
+					}
+					// Right turrn
+					else if ( !connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
+					{
+						name << (obj.dir + 1) % 4 << " turn right";
 						obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
 					}
 
-					// Not switch, is it turning or any other "odd" connection?
-					else
+					// Left sideroad?
+					else if ( connections[(obj.dir + 1) % 4] and connections[(obj.dir + 2) % 4] and !connections[(obj.dir + 3) % 4] )
 					{
-						std::stringstream name;
-						name << "conveyor ";
-
-						bool connections[4];
-						connections[Dir::RIGHT] = level.GetObjectAt( obj.pos.x + 1, obj.pos.y ) != NULL;
-						connections[Dir::UP] = level.GetObjectAt( obj.pos.x, obj.pos.y - 1 ) != NULL;
-						connections[Dir::LEFT] = level.GetObjectAt( obj.pos.x - 1, obj.pos.y ) != NULL;
-						connections[Dir::DOWN] = level.GetObjectAt( obj.pos.x, obj.pos.y + 1 ) != NULL;
-
-						// Left turn (checking the directions on unit circle, only the one to the left of current dir should be connected)
-						if ( connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and !connections[(obj.dir + 3) % 4] )
-						{
-							name << (obj.dir + 3) % 4 << " turn left";
-							obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
-						}
-						// Right turrn
-						else if ( !connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
-						{
-							name << (obj.dir + 1) % 4 << " turn right";
-							obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
-						}
-
-						// Left sideroad?
-						else if ( connections[(obj.dir + 1) % 4] and connections[(obj.dir + 2) % 4] and !connections[(obj.dir + 3) % 4] )
-						{
-							// TODO
-						}
-
-						// Right sideroad?
-						else if ( !connections[(obj.dir + 1) % 4] and connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
-						{
-							// TODO
-						}
-
-						// T section
-						else if ( connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
-						{
-							// TODO
-						}
-
-						// Intersection. All 3 directions lead to this
-						else if ( connections[(obj.dir + 1) % 4] and connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
-						{
-							// TODO
-						}
-
-
+						// TODO
 					}
-					// No break, fall through to set the position of conveyor too
 
-				case Object::GATE:
-				case Object::GATE_BACKGROUND:
-				case Object::INCINERATOR:
-				case Object::TRUCK:
-				default:
-					obj.sprite.SetPosition( screenPos );
-					break;
-			}
-			window->Draw( obj.sprite );
-		} // End loop through all objects
+					// Right sideroad?
+					else if ( !connections[(obj.dir + 1) % 4] and connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
+					{
+						// TODO
+					}
 
-		stringstream score;
-		score << "Score: " << points;
-		str_score.SetText(score.str());
-		str_score.SetPosition( 10, 200 );
-		window->Draw(str_score);
-	} // Game not paused
+					// T section
+					else if ( connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
+					{
+						// TODO
+					}
+
+					// Intersection. All 3 directions lead to this
+					else if ( connections[(obj.dir + 1) % 4] and connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
+					{
+						// TODO
+					}
+
+
+				}
+				// No break, fall through to set the position of conveyor too
+
+			case Object::GATE:
+			case Object::GATE_BACKGROUND:
+			case Object::INCINERATOR:
+			case Object::TRUCK:
+			default:
+				obj.sprite.SetPosition( screenPos );
+				break;
+		}
+		window->Draw( obj.sprite );
+	} // End loop through all objects
+
+	window->Draw( pbuttonPause );
+	if ( isPaused )
+		window->Draw( pbuttonQuit );
+	if ( popup )
+		window->Draw( *popup );
+
+	stringstream score;
+	score << "Score: " << points;
+	str_score.SetText(score.str());
+	str_score.SetPosition( 10, 200 );
+	window->Draw(str_score);
 }
 
 

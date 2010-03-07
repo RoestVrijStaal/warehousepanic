@@ -39,11 +39,16 @@ void Application::SetPhysicsFPS( float fps )
 	physicsFps = fps;
 }
 
-bool Application::Initialize()
+bool Application::Initialize( int width, int height, int bpp, std::string title )
 {
+	this->width = width;
+	this->height = height;
+	this->bpp = bpp;
+	this->title = title;
+
 	srand( (unsigned)time( 0 ) );
 
-	window.Create( sf::VideoMode( 320, 240, 16 ), "Warehouse Panic", sf::Style::Close );
+	window.Create( sf::VideoMode( width, height, bpp ), title, sf::Style::Close );
 	return window.IsOpened();
 }
 
@@ -175,4 +180,19 @@ void Application::Draw()
 
 	// Flip buffer
 	window.Display();
+}
+
+int Application::GetWidth()
+{
+	return width;
+}
+
+int Application::GetHeight()
+{
+	return height;
+}
+
+int Application::GetBPP()
+{
+	return bpp;
 }
