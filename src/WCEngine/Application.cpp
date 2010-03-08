@@ -196,3 +196,8 @@ int Application::GetBPP()
 {
 	return bpp;
 }
+
+sf::RenderWindow& Application::GetWindow()
+{
+	return window;
+}
