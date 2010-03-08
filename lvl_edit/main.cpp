@@ -22,28 +22,28 @@ sf::Image load_image(string name)
 int main ()
 {
     cout << "Opening level editor...";
-    sf::RenderWindow Editor(sf::VideoMode(476,676,32),"Warehouse Panic Level Editor");
+    sf::RenderWindow Editor(sf::VideoMode(476,676,32),"Warehouse Panic Level Editor", sf::Style::Close);
     sf::Shape levelborder = sf::Shape::Rectangle(10,10,466,466,sf::Color(255,255,255),1.f,sf::Color(0,0,0));
     sf::Font fnt_arial_sml;
     fnt_arial_sml.LoadFromFile("arial.ttf",15);
-    sf::Image img_truck_hor          = load_image("truck-hor.png"      );
-    sf::Image img_truck_vert         = load_image("truck-vert.png"     );
+    sf::Image img_truck_hor          = load_image("truck-hor.PNG"      );
+    sf::Image img_truck_vert         = load_image("truck-vert.PNG"     );
     //-----
-    sf::Image img_gate_red_hor       = load_image("gate-red-hor.png"    );
-    sf::Image img_gate_orange_hor    = load_image("gate-orange-hor.png" );
-    sf::Image img_gate_yellow_hor    = load_image("gate-yellow-hor.png" );
-    sf::Image img_gate_green_hor     = load_image("gate-green-hor.png"  );
-    sf::Image img_gate_blue_hor      = load_image("gate-blue-hor.png"   );
-    sf::Image img_gate_purple_hor    = load_image("gate-purple-hor.png" );
-    sf::Image img_gate_red_vert      = load_image("gate-red-vert.png"   );
-    sf::Image img_gate_orange_vert   = load_image("gate-orange-vert.png");
-    sf::Image img_gate_yellow_vert   = load_image("gate-yellow-vert.png");
-    sf::Image img_gate_green_vert    = load_image("gate-green-vert.png" );
-    sf::Image img_gate_blue_vert     = load_image("gate-blue-vert.png"  );
-    sf::Image img_gate_purple_vert   = load_image("gate-purple-vert.png" );
+    sf::Image img_gate_red_hor       = load_image("gate-red-hor.PNG"    );
+    sf::Image img_gate_orange_hor    = load_image("gate-orange-hor.PNG" );
+    sf::Image img_gate_yellow_hor    = load_image("gate-yellow-hor.PNG" );
+    sf::Image img_gate_green_hor     = load_image("gate-green-hor.PNG"  );
+    sf::Image img_gate_blue_hor      = load_image("gate-blue-hor.PNG"   );
+    sf::Image img_gate_purple_hor    = load_image("gate-purple-hor.PNG" );
+    sf::Image img_gate_red_vert      = load_image("gate-red-vert.PNG"   );
+    sf::Image img_gate_orange_vert   = load_image("gate-orange-vert.PNG");
+    sf::Image img_gate_yellow_vert   = load_image("gate-yellow-vert.PNG");
+    sf::Image img_gate_green_vert    = load_image("gate-green-vert.PNG" );
+    sf::Image img_gate_blue_vert     = load_image("gate-blue-vert.PNG"  );
+    sf::Image img_gate_purple_vert   = load_image("gate-purple-vert.PNG" );
     //-----
-    sf::Image img_conveyor_hor       = load_image("conveyor-hor.png"      );
-    sf::Image img_conveyor_vert      = load_image("conveyor-vert.png"     );
+    sf::Image img_conveyor_hor       = load_image("conveyor-hor.PNG"      );
+    sf::Image img_conveyor_vert      = load_image("conveyor-vert.PNG"     );
     sf::Image img_arrow_vert_up      = load_image("arrow-vert-up.png"     );
     sf::Image img_arrow_vert_down    = load_image("arrow-vert-down.png"   );
     sf::Image img_arrow_hor_left     = load_image("arrow-hor-left.png"    );
@@ -53,9 +53,9 @@ int main ()
     sf::Image img_arrow_hor          = load_image("arrow-hor.png"         );
     sf::Image img_arrow_horr         = load_image("arrow-horr.png"        );
     //-----
-    sf::Image img_incinerator        = load_image("incinerator.png"       );
+    sf::Image img_incinerator        = load_image("incinerator.PNG"       );
     sf::Image img_level_templ        = load_image("warehouse-template.png");
-    sf::Image img_save               = load_image("button-save.png"       );
+    sf::Image img_save               = load_image("button-save.PNG"       );
     //----------
     vector<sf::Sprite> buttons;
     buttons.push_back( sf::Sprite(img_truck_hor       ,sf::Vector2f(10 ,260 + 220)) );
