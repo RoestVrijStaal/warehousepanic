@@ -21,29 +21,27 @@ sf::Image load_image(string name)
 
 int main ()
 {
-    cout << "Opening level editor...";
-    sf::RenderWindow Editor(sf::VideoMode(476,676,32),"Warehouse Panic Level Editor", sf::Style::Close);
     sf::Shape levelborder = sf::Shape::Rectangle(10,10,466,466,sf::Color(255,255,255),1.f,sf::Color(0,0,0));
     sf::Font fnt_arial_sml;
     fnt_arial_sml.LoadFromFile("arial.ttf",15);
-    sf::Image img_truck_hor          = load_image("truck-hor.PNG"      );
-    sf::Image img_truck_vert         = load_image("truck-vert.PNG"     );
+    sf::Image img_truck_hor          = load_image("truck-hor.png"      );
+    sf::Image img_truck_vert         = load_image("truck-vert.png"     );
     //-----
-    sf::Image img_gate_red_hor       = load_image("gate-red-hor.PNG"    );
-    sf::Image img_gate_orange_hor    = load_image("gate-orange-hor.PNG" );
-    sf::Image img_gate_yellow_hor    = load_image("gate-yellow-hor.PNG" );
-    sf::Image img_gate_green_hor     = load_image("gate-green-hor.PNG"  );
-    sf::Image img_gate_blue_hor      = load_image("gate-blue-hor.PNG"   );
-    sf::Image img_gate_purple_hor    = load_image("gate-purple-hor.PNG" );
-    sf::Image img_gate_red_vert      = load_image("gate-red-vert.PNG"   );
-    sf::Image img_gate_orange_vert   = load_image("gate-orange-vert.PNG");
-    sf::Image img_gate_yellow_vert   = load_image("gate-yellow-vert.PNG");
-    sf::Image img_gate_green_vert    = load_image("gate-green-vert.PNG" );
-    sf::Image img_gate_blue_vert     = load_image("gate-blue-vert.PNG"  );
-    sf::Image img_gate_purple_vert   = load_image("gate-purple-vert.PNG" );
+    sf::Image img_gate_red_hor       = load_image("gate-red-hor.png"    );
+    sf::Image img_gate_orange_hor    = load_image("gate-orange-hor.png" );
+    sf::Image img_gate_yellow_hor    = load_image("gate-yellow-hor.png" );
+    sf::Image img_gate_green_hor     = load_image("gate-green-hor.png"  );
+    sf::Image img_gate_blue_hor      = load_image("gate-blue-hor.png"   );
+    sf::Image img_gate_purple_hor    = load_image("gate-purple-hor.png" );
+    sf::Image img_gate_red_vert      = load_image("gate-red-vert.png"   );
+    sf::Image img_gate_orange_vert   = load_image("gate-orange-vert.png");
+    sf::Image img_gate_yellow_vert   = load_image("gate-yellow-vert.png");
+    sf::Image img_gate_green_vert    = load_image("gate-green-vert.png" );
+    sf::Image img_gate_blue_vert     = load_image("gate-blue-vert.png"  );
+    sf::Image img_gate_purple_vert   = load_image("gate-purple-vert.png" );
     //-----
-    sf::Image img_conveyor_hor       = load_image("conveyor-hor.PNG"      );
-    sf::Image img_conveyor_vert      = load_image("conveyor-vert.PNG"     );
+    sf::Image img_conveyor_hor       = load_image("conveyor-hor.png"      );
+    sf::Image img_conveyor_vert      = load_image("conveyor-vert.png"     );
     sf::Image img_arrow_vert_up      = load_image("arrow-vert-up.png"     );
     sf::Image img_arrow_vert_down    = load_image("arrow-vert-down.png"   );
     sf::Image img_arrow_hor_left     = load_image("arrow-hor-left.png"    );
@@ -53,9 +51,199 @@ int main ()
     sf::Image img_arrow_hor          = load_image("arrow-hor.png"         );
     sf::Image img_arrow_horr         = load_image("arrow-horr.png"        );
     //-----
-    sf::Image img_incinerator        = load_image("incinerator.PNG"       );
     sf::Image img_level_templ        = load_image("warehouse-template.png");
-    sf::Image img_save               = load_image("button-save.PNG"       );
+    sf::Image img_save               = load_image("button-save.png"       );
+    random_class level[18][18];
+    cout << "Create or load? ";
+    string choice;
+    getline(cin,choice);
+    if (choice == "load")
+    {
+        cout << "Load what file? ";
+        getline(cin,choice);
+        cout << "Loading file..." << endl;
+        string line;
+        ifstream myfile (choice.c_str());
+        if (myfile.is_open())
+        {
+            int lines = 0;
+            bool start_examine = false;
+            while (! myfile.eof() )
+            {
+                if (lines == 3)
+                {
+                    start_examine = true;
+                }
+                string line;
+                getline (myfile,line);
+                if (start_examine == true)
+                {
+                    line.erase(0,5);
+                    int sofar = 0;
+                    while (line.length() >= 1)
+                    {
+                        if (line.at(0) == 'A')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                        }
+                        else if (line.at(0) == 'B')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_conveyor_hor);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                            level[sofar % 18][(int)(sofar / 18)].change = false;
+                            level[sofar % 18][(int)(sofar / 18)].dir = 1;
+                        }
+                        else if (line.at(0) == 'C')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_conveyor_vert);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                            level[sofar % 18][(int)(sofar / 18)].change = false;
+                            level[sofar % 18][(int)(sofar / 18)].dir = 0;
+                        }
+                        else if (line.at(0) == 'D')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_conveyor_hor);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                            level[sofar % 18][(int)(sofar / 18)].change = false;
+                            level[sofar % 18][(int)(sofar / 18)].dir = 0;
+                        }
+                        else if (line.at(0) == 'E')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_conveyor_vert);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                            level[sofar % 18][(int)(sofar / 18)].change = false;
+                            level[sofar % 18][(int)(sofar / 18)].dir = 1;
+                        }
+                        else if (line.at(0) == 'F')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_conveyor_hor);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                            level[sofar % 18][(int)(sofar / 18)].change = true;
+                            level[sofar % 18][(int)(sofar / 18)].dir = 1;
+                        }
+                        else if (line.at(0) == 'G')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_conveyor_vert);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                            level[sofar % 18][(int)(sofar / 18)].change = true;
+                            level[sofar % 18][(int)(sofar / 18)].dir = 0;
+                        }
+                        else if (line.at(0) == 'H')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_conveyor_hor);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                            level[sofar % 18][(int)(sofar / 18)].change = true;
+                            level[sofar % 18][(int)(sofar / 18)].dir = 0;
+                        }
+                        else if (line.at(0) == 'I')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_conveyor_vert);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                            level[sofar % 18][(int)(sofar / 18)].change = true;
+                            level[sofar % 18][(int)(sofar / 18)].dir = 1;
+                        }
+                        else if (line.at(0) == 'J')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_gate_blue_hor);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'K')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_gate_blue_vert);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'L')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_gate_green_hor);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'M')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_gate_green_vert);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'N')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_gate_orange_hor);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'O')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_gate_orange_vert);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'P')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_gate_purple_hor);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'Q')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_gate_purple_vert);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'R')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_gate_red_hor);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'S')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_gate_red_vert);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'T')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_gate_yellow_hor);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'U')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_gate_yellow_vert);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'V')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_truck_hor);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        else if (line.at(0) == 'W')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetImage(img_truck_vert);
+                            level[sofar % 18][(int)(sofar / 18)].sprite.SetPosition((sofar / 18) * 24 + 10, (int)(sofar % 18) * 24 + 10);
+                        }
+                        line.erase(0,1);
+                        sofar += 1;
+                    }
+                }
+                lines += 1;
+            }
+            myfile.close();
+        }
+    }
+    sf::RenderWindow Editor(sf::VideoMode(476,676,32),"Warehouse Panic Level Editor");
     //----------
     vector<sf::Sprite> buttons;
     buttons.push_back( sf::Sprite(img_truck_hor       ,sf::Vector2f(10 ,260 + 220)) );
@@ -74,7 +262,6 @@ int main ()
     buttons.push_back( sf::Sprite(img_gate_blue_vert   ,sf::Vector2f(266,294 + 220)) );
     buttons.push_back( sf::Sprite(img_gate_purple_vert ,sf::Vector2f(330,294 + 220)) );
     //-----
-    buttons.push_back( sf::Sprite(img_incinerator     ,sf::Vector2f(296,260 + 220)) );
     buttons.push_back( sf::Sprite(img_conveyor_hor    ,sf::Vector2f(296,294 + 220)) );
     buttons.push_back( sf::Sprite(img_conveyor_vert   ,sf::Vector2f(296,328 + 220)) );
     buttons.push_back( sf::Sprite(img_save            ,sf::Vector2f(371,621 + 0  )) );
@@ -86,7 +273,6 @@ int main ()
     string mwhat = "";
     sf::Sprite mdraw;
     sf::Vector2<int> rid(0,0);
-    random_class level[18][18];
     sf::Shape rdraw = sf::Shape::Rectangle(0,0,0,0,sf::Color(255,255,255),1,sf::Color(0,0,0));
     sf::String str1, str2, str3;
     int ras = 0;
@@ -186,11 +372,6 @@ int main ()
                                 mdraw.SetImage(img_gate_purple_vert);
                             }
                             //-----
-                            else if (cbi == &img_incinerator)
-                            {
-                                mwhat = "img_incinerator";
-                                mdraw.SetImage(img_incinerator);
-                            }
                             else if (cbi == &img_conveyor_hor)
                             {
                                 mwhat = "img_conveyor_hor";
@@ -204,10 +385,9 @@ int main ()
                             else if (cbi == &img_save)
                             {
                                 Editor.Close();
-                                cout << "Enter file name: ";
+                                cout << "Enter file name: " << endl << "SAVE WITH A DIFFERENT NAME THAN BEFORE";
                                 string fname;
                                 getline(cin,fname);
-                                fname += ".wpf";
                                 ofstream file;
                                 file.open(fname.c_str());
                                 file << "width=18\n";
@@ -335,6 +515,30 @@ int main ()
                             }
                             mdraw.SetSubRect(sf::IntRect(0,0,mdraw.GetImage()->GetWidth(),mdraw.GetImage()->GetHeight()));
                             mdraw.SetCenter(mdraw.GetSubRect().GetWidth() / 2,mdraw.GetSubRect().GetHeight() / 2);
+                        }
+                    }
+                    for (int i = 0; i < 18; i++)
+                    {
+                        for (int ii = 0; ii < 18; ii++)
+                        {
+                            sf::Sprite &c = level[i][ii].sprite;
+                            if (c.GetPosition().x < Editor.GetInput().GetMouseX() and
+                                c.GetPosition().y < Editor.GetInput().GetMouseY() and
+                                c.GetPosition().x + c.GetSubRect().GetWidth() > Editor.GetInput().GetMouseX() and
+                                c.GetPosition().y + c.GetSubRect().GetHeight() > Editor.GetInput().GetMouseY())
+                            {
+                                if (level[i][ii].sprite.GetImage() == &img_conveyor_hor or level[i][ii].sprite.GetImage() == &img_conveyor_vert)
+                                {
+                                    if (level[i][ii].dir == 0)
+                                    {
+                                        level[i][ii].dir = 1;
+                                    }
+                                    else if (level[i][ii].dir == 1)
+                                    {
+                                        level[i][ii].dir = 0;
+                                    }
+                                }
+                            }
                         }
                     }
                 }
