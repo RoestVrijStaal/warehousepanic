@@ -42,6 +42,8 @@
 		<Unit filename="Conveyor.h" />
 		<Unit filename="Crate.h" />
 		<Unit filename="Gate.h" />
+		<Unit filename="Keyboard.cpp" />
+		<Unit filename="Keyboard.h" />
 		<Unit filename="Level.h" />
 		<Unit filename="Object.h" />
 		<Unit filename="SceneGame.cpp" />
