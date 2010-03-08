@@ -29,6 +29,7 @@ public:
 	void Run(); // Start engine
 
 	void AddScene( Scene* scene );
+	sf::RenderWindow& GetWindow();
 
 	int GetWidth();
 	int GetHeight();
