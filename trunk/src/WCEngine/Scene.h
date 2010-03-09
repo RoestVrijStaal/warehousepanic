@@ -10,7 +10,6 @@ class Scene
 	public:
 		Scene( std::string name );
 		virtual ~Scene();
-		void SetRenderWindow( sf::RenderWindow& window );
 		std::string GetName();
 
 		virtual void Initialize() = 0; // Set up scene, create objects etc.
@@ -19,7 +18,6 @@ class Scene
 		virtual void Draw() = 0;
 
 	protected:
-		sf::RenderWindow* window;
 		std::string name;
 
 	private:

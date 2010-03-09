@@ -6,6 +6,7 @@
 #include <sstream>
 
 
+
 // This is the important part. You need to
 SceneMenu::SceneMenu() : Scene( "menu" )
 {
@@ -18,19 +19,15 @@ SceneMenu::~SceneMenu()
 
 void SceneMenu::Initialize()
 {
-	isKeyDown = true;
-	selected = 0;
-	isLeavingMenu = false;
+	selected = -1;
+	isMouseDown = true;
 	items.push_back( "Play" );
 	items.push_back( "Highscore" );
 	items.push_back( "Credits" );
+	items.push_back( "Help" );
 	items.push_back( "Quit" );
 
-	soldier1.SetImage( ResMgr.GetImage( "green soldier" ) );
-	soldier2.SetImage( ResMgr.GetImage( "red soldier" ) );
-	soldier1.SetPosition( 30, 140 );
-	soldier2.SetPosition( 140, 130 );
-	soldier1.FlipX(true);
+	background.SetImage( ResMgr.GetImage( "loading" ) );
 
 	//ResMgr.GetMusic( "game over" ).Play();
 }
@@ -38,20 +35,73 @@ void SceneMenu::Initialize()
 void SceneMenu::Terminate()
 {
 	items.clear();
-	ResMgr.GetMusic( "game over" ).Stop();
+	//ResMgr.GetMusic( "game over" ).Stop();
 }
 
 void SceneMenu::Step()
 {
-	DoKeyboard();
+	bool curMouseDown = App.GetWindow().GetInput().IsMouseButtonDown( sf::Mouse::Left );
+	sf::Vector2f mousepos( App.GetWindow().GetInput().GetMouseX(), App.GetWindow().GetInput().GetMouseY() );
+
+	// Mouse down event
+	if ( curMouseDown and !isMouseDown )
+	{
+		if ( mousepos.x >= MENU_LEFT and mousepos.y >= MENU_TOP )
+		{
+			selected = (int)(( mousepos.y - MENU_TOP ) / MENU_SPACING);
+			if ( selected >= items.size() )
+				selected = -1;
+		}
+		else
+		{
+			selected = -1;
+		}
+	}
+
+	// Mouse drag event
+	if ( curMouseDown and isMouseDown )
+	{
+		if ( mousepos.x < MENU_LEFT or mousepos.y < MENU_TOP or (int)(( mousepos.y - MENU_TOP ) / MENU_SPACING) != selected )
+		{
+			selected = -1;
+		}
+	}
+
+	// Mouse release event (on button)
+	if ( !curMouseDown and isMouseDown and selected > -1 )
+	{
+		switch ( selected )
+		{
+			case 0:
+				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "game" ) );
+				break;
+
+			case 1:
+				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
+				break;
+
+			case 2:
+				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "credits" ) );
+				break;
+
+			case 3:
+				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "game" ) ); // TODO: Load tutorial level here
+				break;
+
+			case 4:
+				EventMgr.PushEvent( ENGINE, GameEvent::QuitEvent() );
+				break;
+
+			default:
+				break;
+		}
+	}
+	isMouseDown = curMouseDown;
 }
 
 void SceneMenu::Draw()
 {
-	window->Clear( sf::Color::Black );
-
-	window->Draw( soldier1 );
-	window->Draw( soldier2 );
+	App.GetWindow().Draw( background );
 
 	// Title
 	sf::String title( "Warehouse Panic", sf::Font::GetDefaultFont(), TITLE_FONT_SIZE );
@@ -60,80 +110,19 @@ void SceneMenu::Draw()
 	title.SetCenter( (size.Right - size.Left) / 2, (size.Bottom - size.Top) / 2 );
 	title.SetPosition( 160, 30 );
 	title.SetRotation( 6.0f );
-	title.SetColor( sf::Color( 255, 255, 255 ) );
-	window->Draw( title );
+	title.SetColor( sf::Color::Black );
+	App.GetWindow().Draw( title );
 
 	for ( size_t i = 0; i < items.size(); ++i )
 	{
 		sf::String text( items[i], sf::Font::GetDefaultFont(), MENU_FONT_SIZE );
 		text.SetStyle( sf::String::Bold );
 		text.SetPosition( MENU_LEFT, MENU_TOP + MENU_SPACING * i );
-		if ( (int)i == selected )
-			text.SetColor( sf::Color::Yellow );
-		else
-			text.SetColor( sf::Color::White );
-		window->Draw( text );
+		text.SetColor( sf::Color::Black );
+		App.GetWindow().Draw( text );
 	}
 }
 
-void SceneMenu::DoKeyboard()
-{
-	if ( isLeavingMenu )
-		return;
 
-	bool up, down, enter;
-	up = window->GetInput().IsKeyDown( sf::Key::Up );
-	down = window->GetInput().IsKeyDown( sf::Key::Down );
-	enter = window->GetInput().IsKeyDown( sf::Key::Return ) or window->GetInput().IsKeyDown( sf::Key::Space );
-
-	if ( up and not isKeyDown )
-	{
-		isKeyDown = true;
-		--selected;
-		if ( selected < 0 )
-			selected = 0;
-	}
-	else if ( down and not isKeyDown )
-	{
-		isKeyDown = true;
-		++selected;
-		if ( selected >= (int)items.size() )
-			selected = (int)items.size() - 1;
-	}
-	else if ( enter and not isKeyDown )
-	{
-		switch ( selected )
-		{
-			case 0:
-				{
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "game" ) );
-				isLeavingMenu = true;
-				}
-				break;
-
-			case 1:
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
-				isLeavingMenu = true;
-				break;
-
-			case 2:
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "credits" ) );
-				isLeavingMenu = true;
-				break;
-
-			case 3:
-				EventMgr.PushEvent( ENGINE, GameEvent::QuitEvent() );
-				isLeavingMenu = true;
-				break;
-
-			default:
-				break;
-		}
-	}
-	else if ( not up and not down and not enter )
-	{
-		isKeyDown = false;
-	}
-}
 
 SceneMenu* menu = new SceneMenu();

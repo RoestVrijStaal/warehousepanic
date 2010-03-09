@@ -81,8 +81,8 @@ void SceneGame::Terminate()
 void SceneGame::Step()
 {
 	//Events
-	sf::Vector2f mousepos(window->GetInput().GetMouseX(),window->GetInput().GetMouseY());
-	bool newMouseButton = window->GetInput().IsMouseButtonDown( sf::Mouse::Left );
+	sf::Vector2f mousepos( App.GetWindow().GetInput().GetMouseX(), App.GetWindow().GetInput().GetMouseY()) ;
+	bool newMouseButton = App.GetWindow().GetInput().IsMouseButtonDown( sf::Mouse::Left );
 
 	// Handle mouse-down event
 	if (newMouseButton and isMouseDown == false)
@@ -142,7 +142,7 @@ void SceneGame::Step()
 			// Clicked inside quit button?
 			if ( GetDistanceSQ(mousepos, pbuttonQuit.GetPosition()) < pbuttonQuit.GetImage()->GetWidth() / 2.0f * pbuttonQuit.GetImage()->GetWidth() / 2.0f )
 			{
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "menu" ) );
+				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
 				pbuttonQuit.SetImage( ResMgr.GetImage( "button quit active" ) );
 			}
 		}
@@ -234,7 +234,7 @@ void SceneGame::Draw()
 	//sf::Sprite bg( ResMgr.GetImage( "level background" ) );
 	//bg.SetColor( sf::Color( 60, 60, 60 ) );
 	//window->Draw( bg );
-	window->Clear( sf::Color(100,100,100) );
+	App.GetWindow().Clear( sf::Color(100,100,100) );
 
 	// Draw all objects
 	for ( std::list<Object*>::iterator it = objects.begin(); it != objects.end(); ++it )
@@ -321,22 +321,23 @@ void SceneGame::Draw()
 				obj.sprite.SetPosition( screenPos );
 				break;
 		}
-		window->Draw( obj.sprite );
+		App.GetWindow().Draw( obj.sprite );
 	} // End loop through all objects
 
-	window->Draw( pbuttonPause );
+	App.GetWindow().Draw( pbuttonPause );
 	if ( isPaused )
 	{
-		window->Draw( pbuttonQuit );
+		App.GetWindow().Draw( pbuttonQuit );
 	}
 	if ( popup )
-		window->Draw( *popup );
+		App.GetWindow().Draw( *popup );
 
 	stringstream score;
 	score << "Score: " << points;
 	str_score.SetText(score.str());
 	str_score.SetPosition( 10, 200 );
-	window->Draw(str_score);
+	App.GetWindow().Draw(str_score);
+
 	//Move later
 	if ( isPaused and keyboard.GetDone() )
 	{ //I do know about the one above. This is so that it appears on top

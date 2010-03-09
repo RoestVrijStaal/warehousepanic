@@ -55,7 +55,6 @@ bool Application::Initialize( int width, int height, int bpp, std::string title 
 void Application::AddScene( Scene* scene )
 {
 	scenes[ scene->GetName() ] = scene;
-	scene->SetRenderWindow( window );
 }
 
 void Application::Run()
