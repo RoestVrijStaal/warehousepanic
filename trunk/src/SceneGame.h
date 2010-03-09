@@ -10,6 +10,8 @@
 #include "Conveyor.h"
 #include "Truck.h"
 #include "Gate.h"
+//Move later
+#include "Keyboard.h"
 
 #include <sstream>
 #include <list>
@@ -57,6 +59,9 @@ class SceneGame : public Scene
 		float GetDistanceSQ( sf::Vector2f pos1, sf::Vector2f pos2 );
 		bool DoCrate( Crate& crate );
 		bool DoTruck( Truck& truck );
+
+		//Move later
+		Keyboard keyboard;
 
 	private:
 };
