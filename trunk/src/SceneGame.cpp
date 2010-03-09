@@ -21,7 +21,7 @@ SceneGame::~SceneGame()
 
 void SceneGame::Initialize()
 {
-	level = Level( "" ); // TODO: How do we choose level?
+	level = Level( "levels/load-test.wpf" ); // TODO: How do we choose level?
 	for ( std::vector<Object*>::iterator it = level.objects.begin(); it != level.objects.end(); ++it )
 	{
 		if ( *it != NULL )

@@ -6,7 +6,9 @@
 #include "Gate.h"
 #include "Truck.h"
 #include "Settings.h"
+#include "Functions.h"
 
+#include <fstream>
 #include <string>
 #include <vector>
 
@@ -22,7 +24,7 @@ public:
 
 	Level( std::string filename )
 	{
-		// TODO: Load from file
+		/*// TODO: Load from file
 		levelTime = 0;
 		crateSpeed = 0.01f; // Squares every step
 		width = 18;
@@ -91,7 +93,7 @@ public:
 			// Ends into another track
 		objects[ 13 +  9 * width] = new Conveyor( 13,  9, Dir::DOWN );
 		objects[ 13 + 10 * width] = new Conveyor( 13, 10, Dir::RIGHT );
-		objects[ 14 + 10 * width] = new     Gate( 14, 10, Dir::RIGHT, GameColor::RED );
+		objects[ 14 + 10 * width] = new     Gate( 14, 10, Dir::RIGHT, GameColor::RED );*/
 
 
 /*		for (int x = 0; x < 12; ++x )
@@ -104,6 +106,174 @@ public:
 			objects[ (11+x) + (x) * width] = new Conveyor( (11+x), (x), Dir::UP );
 */
 
+        //Testing
+        std::ifstream myfile (filename.c_str());
+        if (myfile.is_open())
+        {
+            int lines = 0;
+            bool start_examine = false;
+            std::vector<GameColor::ColorType> colorlist;
+            std::vector<Truck*> truckpos;
+            while (! myfile.eof() )
+            {
+                std::string line;
+                getline (myfile,line);
+                //----------
+                if (lines == 0)
+                {
+                    line = line.erase(0,6);
+                    StringToInt(line,width);
+                }
+                else if (lines == 1)
+                {
+                    line = line.erase(0,7);
+                    StringToInt(line,height);
+                }
+                else if (lines == 2)
+                {
+                    line = line.erase(0,5);
+                    StringToInt(line,levelTime);
+                }
+                else if (lines == 3)
+                {
+                    start_examine = true;
+                }
+                //----------
+                if (start_examine == true)
+                {
+                    line.erase(0,5);
+                    int sofar = 0;
+                    while (line.length() >= 1)
+                    {
+                        /*if (line.at(0) == 'A')
+                        {
+                            level[sofar % 18][(int)(sofar / 18)] = random_class();
+                        }
+                        else*/ if (line.at(0) == 'B')
+                        {
+                            objects[sofar] = new Conveyor(sofar % 18,sofar / 18,Dir::RIGHT);
+                        }
+                        else if (line.at(0) == 'C')
+                        {
+                            objects[sofar] = new Conveyor(sofar % 18,sofar / 18,Dir::UP);
+                        }
+                        else if (line.at(0) == 'D')
+                        {
+                            objects[sofar] = new Conveyor(sofar % 18,sofar / 18,Dir::LEFT);
+                        }
+                        else if (line.at(0) == 'E')
+                        {
+                            objects[sofar] = new Conveyor(sofar % 18,sofar / 18,Dir::DOWN);
+                        }
+                        else if (line.at(0) == 'F')
+                        {
+                            objects[sofar] = new Conveyor(sofar % 18,sofar / 18,Dir::RIGHT,true);
+                        }
+                        else if (line.at(0) == 'G')
+                        {
+                            objects[sofar] = new Conveyor(sofar % 18,sofar / 18,Dir::UP,true);
+                        }
+                        else if (line.at(0) == 'H')
+                        {
+                            objects[sofar] = new Conveyor(sofar % 18,sofar / 18,Dir::LEFT,true);
+                        }
+                        else if (line.at(0) == 'I')
+                        {
+                            objects[sofar] = new Conveyor(sofar % 18,sofar / 18,Dir::DOWN,true);
+                        }
+                        else if (line.at(0) == 'J')
+                        {
+                            objects[sofar] = new Gate(sofar % 18,sofar / 18,Dir::RIGHT,GameColor::BLUE);
+                            colorlist.push_back(GameColor::BLUE);
+                        }
+                        else if (line.at(0) == 'K')
+                        {
+                            objects[sofar] = new Gate(sofar % 18,sofar / 18,Dir::UP,GameColor::BLUE);
+                            colorlist.push_back(GameColor::BLUE);
+                        }
+                        else if (line.at(0) == 'L')
+                        {
+                            objects[sofar] = new Gate(sofar % 18,sofar / 18,Dir::RIGHT,GameColor::GREEN);
+                            colorlist.push_back(GameColor::GREEN);
+                        }
+                        else if (line.at(0) == 'M')
+                        {
+                            objects[sofar] = new Gate(sofar % 18,sofar / 18,Dir::UP,GameColor::GREEN);
+                            colorlist.push_back(GameColor::GREEN);
+                        }
+                        else if (line.at(0) == 'N')
+                        {
+                            objects[sofar] = new Gate(sofar % 18,sofar / 18,Dir::RIGHT,GameColor::ORANGE);
+                            colorlist.push_back(GameColor::ORANGE);
+                        }
+                        else if (line.at(0) == 'O')
+                        {
+                            objects[sofar] = new Gate(sofar % 18,sofar / 18,Dir::UP,GameColor::ORANGE);
+                            colorlist.push_back(GameColor::ORANGE);
+                        }
+                        else if (line.at(0) == 'P')
+                        {
+                            objects[sofar] = new Gate(sofar % 18,sofar / 18,Dir::RIGHT,GameColor::PURPLE);
+                            colorlist.push_back(GameColor::PURPLE);
+                        }
+                        else if (line.at(0) == 'Q')
+                        {
+                            objects[sofar] = new Gate(sofar % 18,sofar / 18,Dir::UP,GameColor::PURPLE);
+                            colorlist.push_back(GameColor::PURPLE);
+                        }
+                        else if (line.at(0) == 'R')
+                        {
+                            objects[sofar] = new Gate(sofar % 18,sofar / 18,Dir::RIGHT,GameColor::RED);
+                            colorlist.push_back(GameColor::RED);
+                        }
+                        else if (line.at(0) == 'S')
+                        {
+                            objects[sofar] = new Gate(sofar % 18,sofar / 18,Dir::UP,GameColor::RED);
+                            colorlist.push_back(GameColor::RED);
+                        }
+                        else if (line.at(0) == 'T')
+                        {
+                            objects[sofar] = new Gate(sofar % 18,sofar / 18,Dir::RIGHT,GameColor::YELLOW);
+                            colorlist.push_back(GameColor::YELLOW);
+                        }
+                        else if (line.at(0) == 'U')
+                        {
+                            objects[sofar] = new Gate(sofar % 18,sofar / 18,Dir::UP,GameColor::YELLOW);
+                            colorlist.push_back(GameColor::YELLOW);
+                        }
+                        else if (line.at(0) == 'V')
+                        {
+                            Truck* t = new Truck(sofar % 18,sofar / 18, Dir::RIGHT );
+                            objects[sofar] = (Object*)t;
+                            t->intervalmax = 350;
+                            t->interval = 10;
+                            t->delay = 0;
+                            t->active = true;
+                            truckpos.push_back(t);
+                        }
+                        else if (line.at(0) == 'W')
+                        {
+                            Truck* t = new Truck(sofar % 18,sofar / 18, Dir::UP );
+                            objects[sofar] = (Object*)t;
+                            t->intervalmax = 350;
+                            t->interval = 10;
+                            t->delay = 0;
+                            t->active = true;
+                            t->colors = colors;
+                            truckpos.push_back(t);
+                        }
+                        line.erase(0,1);
+                        sofar += 1;
+                    }
+                }
+                lines += 1;
+            }
+            myfile.close();
+            for (int i = 0; i < truckpos.size(); i++)
+            {
+                truckpos[i]->colors = colorlist;
+            }
+        }
 	}
 
 	void Terminate()
