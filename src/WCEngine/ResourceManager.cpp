@@ -96,6 +96,8 @@ void ResourceManager::Initialize()
 	images["text game over"].LoadFromFile( "media/text_game_over.png" );
 	images["text level complete"].LoadFromFile( "media/text_level_complete.png" );
 
+	images["keyboard"].LoadFromFile( "media/keyboard.png" );
+
 /*	images["level background"].LoadFromFile( "media/levelbg.png" );
 	images[""].LoadFromFile( "media/text_.png" );
 	images[""].LoadFromFile( "media/.png" );

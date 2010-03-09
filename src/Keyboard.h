@@ -13,6 +13,7 @@ class Keyboard
 
 		void SetText( std::string newtext );
 		std::string GetText();
+		bool GetDone();
 
 		void Step();
 		void Draw( sf::RenderWindow& window );
@@ -20,6 +21,7 @@ class Keyboard
 	protected:
 		std::string text;
 		bool isMouseDown;
+		bool done;
 
 	private:
 };

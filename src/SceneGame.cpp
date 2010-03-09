@@ -57,6 +57,9 @@ void SceneGame::Initialize()
 	isMouseDown = false;
 	isPaused = false;
 	points = 0;
+
+	//Move later
+	keyboard = Keyboard();
 }
 
 void SceneGame::Terminate()
@@ -105,6 +108,8 @@ void SceneGame::Step()
 				delete popup;
 				popup = NULL;
 			}
+			//Move later
+			keyboard = Keyboard();
 		}
 
 		if (isPaused == false)
@@ -208,6 +213,11 @@ void SceneGame::Step()
 			} while ( true );
 		} // Loop through game objects
 	} // Game not poused
+	//Move later
+	else
+	{
+	    keyboard.Step();
+	}
 
 	// If we have a popup center it
 	if ( popup )
@@ -316,7 +326,9 @@ void SceneGame::Draw()
 
 	window->Draw( pbuttonPause );
 	if ( isPaused )
+	{
 		window->Draw( pbuttonQuit );
+	}
 	if ( popup )
 		window->Draw( *popup );
 
@@ -325,6 +337,11 @@ void SceneGame::Draw()
 	str_score.SetText(score.str());
 	str_score.SetPosition( 10, 200 );
 	window->Draw(str_score);
+	//Move later
+	if ( isPaused and keyboard.GetDone() )
+	{ //I do know about the one above. This is so that it appears on top
+	    keyboard.Draw(App.GetWindow());
+	}
 }
 
 
