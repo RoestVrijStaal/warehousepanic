@@ -41,6 +41,7 @@
 		</Linker>
 		<Unit filename="Conveyor.h" />
 		<Unit filename="Crate.h" />
+		<Unit filename="Functions.h" />
 		<Unit filename="Gate.h" />
 		<Unit filename="Keyboard.cpp" />
 		<Unit filename="Keyboard.h" />

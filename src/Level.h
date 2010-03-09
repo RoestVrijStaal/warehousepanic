@@ -117,7 +117,7 @@ public:
             while (! myfile.eof() )
             {
                 std::string line;
-                getline (myfile,line);
+                getline(myfile,line);
                 //----------
                 if (lines == 0)
                 {
@@ -141,6 +141,7 @@ public:
                 //----------
                 if (start_examine == true)
                 {
+                    objects = std::vector<Object*>( width * height, (Object*)NULL );
                     line.erase(0,5);
                     int sofar = 0;
                     while (line.length() >= 1)
