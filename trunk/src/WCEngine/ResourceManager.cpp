@@ -97,6 +97,14 @@ void ResourceManager::Initialize()
 
 	images["keyboard"].LoadFromFile( "media/keyboard.png" );
 
+	// Font
+	images["A small"].LoadFromFile( "media/font_a_small.png" );
+	images["B small"].LoadFromFile( "media/font_b_small.png" );
+	images["C small"].LoadFromFile( "media/font_c_small.png" );
+	images["D small"].LoadFromFile( "media/font_d_small.png" );
+	images["I small"].LoadFromFile( "media/font_i_small.png" );
+
+
 /*	images["level background"].LoadFromFile( "media/levelbg.png" );
 	images[""].LoadFromFile( "media/text_.png" );
 	images[""].LoadFromFile( "media/.png" );

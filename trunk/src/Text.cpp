@@ -1,7 +1,9 @@
 #include "Text.h"
 
-
+#include "WCEngine/Application.h"
+#include "WCEngine/ResourceManager.h"
 #include "Functions.h"
+
 
 
 Text::Text( std::string newtext, int x, int y, Size newsize ) :
@@ -27,13 +29,31 @@ void Text::SetPosition( sf::Vector2f& newpos )
 
 void Text::Draw()
 {
-/*	sf::RenderWindow& w = App.GetWindow();
+	sf::RenderWindow& window = App.GetWindow();
 
 	sf::Sprite sprite;
+	int charOffset = 0;
+
+	// Prepare string
+	std::string character = "A ";
+	switch ( size )
+	{
+		case SMALL: character.append( "small" ); break;
+		case MEDIUM: character.append( "medium" ); break;
+		case LARGE: character.append( "large" ); break;
+		default: break;
+	}
 
 	for ( std::string::iterator it = text.begin(); it != text.end(); ++it )
 	{
-		std::string character = std::string( *it );
-		sprite.SetImage( ResMgr.GetImage( "" );
-	}*/
+		// Replace first character and get image
+		character[0] = *it;
+		sf::Image& img = ResMgr.GetImage( character );
+
+		sprite.SetImage( img );
+		sprite.SetPosition( pos.x + charOffset, pos.y );
+		window.Draw( sprite );
+
+		charOffset += img.GetWidth();
+	}
 }
