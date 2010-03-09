@@ -9,9 +9,9 @@
 
 
 // Settings
-#define MENU_LEFT (200.0f)
-#define MENU_TOP (100.0f)
-#define MENU_SPACING (24.0f)
+#define MENU_LEFT (185.0f)
+#define MENU_TOP (60.0f)
+#define MENU_SPACING (22.0f)
 #define MENU_FONT_SIZE (16.0f)
 #define TITLE_FONT_SIZE (40.0f)
 
@@ -30,16 +30,10 @@ class SceneMenu : public Scene
 		void Draw();
 
 	protected:
-		void DoKeyboard();
-
 		int selected;
-		bool isKeyDown;
-		bool isLeavingMenu;
+		bool isMouseDown;
 		std::vector<std::string> items;
-
-		// Two characters on the main screen
-		sf::Sprite soldier1;
-		sf::Sprite soldier2;
+		sf::Sprite background;
 
 	private:
 };

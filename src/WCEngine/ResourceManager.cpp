@@ -33,8 +33,7 @@ void ResourceManager::Initialize()
 	sounds["dummy"] = sf::SoundBuffer();
 
 	// Images
-	images["red soldier"].LoadFromFile( "media/red_soldier.png" );
-	images["green soldier"].LoadFromFile( "media/green_soldier.png" );
+	images["loading"].LoadFromFile( "media/loading.png" );
 
 	// Game graphics
 	images["conveyor 0"].LoadFromFile( "media/conveyor_dir1.png" );

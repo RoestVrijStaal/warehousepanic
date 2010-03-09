@@ -8,11 +8,6 @@ Scene::~Scene()
 {
 }
 
-void Scene::SetRenderWindow( sf::RenderWindow& target )
-{
-		window = &target;
-}
-
 std::string Scene::GetName()
 {
 	return name;
