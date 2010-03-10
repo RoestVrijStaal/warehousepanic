@@ -9,7 +9,6 @@
 // Constructors
 SceneHighscore::SceneHighscore() : Scene( "highscore" )
 {
-	App.AddScene( this );
 }
 
 SceneHighscore::~SceneHighscore()

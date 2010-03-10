@@ -12,7 +12,6 @@ using namespace std;
 // This is the important part. You need to give this scene a name. I call this one game
 SceneGame::SceneGame() : Scene( "game" )
 {
-	App.AddScene( this );
 }
 
 SceneGame::~SceneGame()

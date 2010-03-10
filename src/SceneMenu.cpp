@@ -10,7 +10,6 @@
 // This is the important part. You need to
 SceneMenu::SceneMenu() : Scene( "menu" )
 {
-	App.AddScene( this );
 }
 
 SceneMenu::~SceneMenu()
@@ -23,8 +22,7 @@ void SceneMenu::Initialize()
 	isMouseDown = true;
 	items.push_back( "Play" );
 	items.push_back( "Highscore" );
-	items.push_back( "Credits" );
-	items.push_back( "Help" );
+	items.push_back( "Tutorial" );
 	items.push_back( "Quit" );
 
 	background.SetImage( ResMgr.GetImage( "loading" ) );
@@ -81,15 +79,11 @@ void SceneMenu::Step()
 				break;
 
 			case 2:
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "credits" ) );
-				break;
-
-			case 3:
 				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "game" ) ); // TODO: Load tutorial level here
 				break;
 
-			case 4:
-				EventMgr.PushEvent( ENGINE, GameEvent::QuitEvent() );
+			case 3:
+				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "credits" ) );
 				break;
 
 			default:
