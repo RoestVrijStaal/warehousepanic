@@ -27,6 +27,12 @@ void Text::SetPosition( sf::Vector2f& newpos )
 	pos = newpos;
 }
 
+void Text::SetPosition( float x, float y )
+{
+	pos.x = x;
+	pos.y = y;
+}
+
 void Text::Draw()
 {
 	sf::RenderWindow& window = App.GetWindow();
@@ -50,7 +56,7 @@ void Text::Draw()
 		character[0] = *it;
 		sf::Image& img = ResMgr.GetImage( character );
 
-		sprite.SetImage( img );
+		sprite = sf::Sprite( img );
 		sprite.SetPosition( pos.x + charOffset, pos.y );
 		window.Draw( sprite );
 

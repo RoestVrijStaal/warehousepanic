@@ -2,6 +2,8 @@
 #define SCENEHIGHSCORE_H
 
 #include "WCEngine/Scene.h"
+#include "Keyboard.h"
+
 
 
 class SceneHighscore : public Scene
@@ -18,6 +20,7 @@ class SceneHighscore : public Scene
 
 	protected:
 		bool isMouseDown;
+		Keyboard keyboard;
 
 	private:
 };
