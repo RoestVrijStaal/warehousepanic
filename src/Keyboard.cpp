@@ -50,9 +50,9 @@ void Keyboard::Step()
 
 	// Animate keyboard
 	if ( isShown )
-		yPos += ( 0 - yPos ) / 8.0f;
+		yPos += ( 0 - yPos ) / 7.0f;
 	else
-		yPos += ( App.GetHeight() - yPos ) / 8.0f;
+		yPos += ( App.GetHeight() - yPos ) / 10.0f;
 
 	// Don't add key presses if keyboard is not shown
 	if ( !isShown and yPos > 10.0f )
