@@ -22,6 +22,8 @@ SceneHighscore::~SceneHighscore()
 void SceneHighscore::Initialize()
 {
 	isMouseDown = true;
+	keyboard = Keyboard();
+	keyboard.Show();
 }
 
 void SceneHighscore::Terminate()
@@ -30,13 +32,29 @@ void SceneHighscore::Terminate()
 
 void SceneHighscore::Step()
 {
-	bool curMouseDown = App.GetWindow().GetInput().IsMouseButtonDown( sf::Mouse::Left );
-	if ( curMouseDown and !isMouseDown )
+	keyboard.Step();
+
+
+	if ( keyboard.IsShown() )
 	{
-		EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "menu" ) );
+		// User pressed enter?
+		if ( keyboard.IsDone() )
+		{
+			keyboard.Hide();
+			isMouseDown = true;
+		}
 	}
 
-	isMouseDown = curMouseDown;
+	// Ignore everything if keyboard is shown
+	else
+	{
+		bool curMouseDown = App.GetWindow().GetInput().IsMouseButtonDown( sf::Mouse::Left );
+		if ( curMouseDown and !isMouseDown )
+		{
+			EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "menu" ) );
+		}
+		isMouseDown = curMouseDown;
+	}
 }
 
 void SceneHighscore::Draw()
@@ -45,6 +63,8 @@ void SceneHighscore::Draw()
 	sf::String str( "Highscore", sf::Font::GetDefaultFont(), 12 );
 	str.SetPosition( 10, 60 );
 	App.GetWindow().Draw( str );
+
+	keyboard.Draw();
 }
 
 

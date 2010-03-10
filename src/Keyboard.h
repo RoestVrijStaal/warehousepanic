@@ -2,28 +2,37 @@
 #define KEYBOARD_H
 
 #include "WCEngine/Application.h"
+#include "Text.h"
 #include <string>
+
 
 
 class Keyboard
 {
-	public:
-		Keyboard();
-		virtual ~Keyboard();
+public:
+	Keyboard();
+	virtual ~Keyboard();
 
-		void SetText( std::string newtext );
-		std::string GetText();
-		bool GetDone();
+	void SetText( std::string newtext );
+	std::string GetText();
+	bool IsDone();
+	bool IsShown();
 
-		void Step();
-		void Draw( sf::RenderWindow& window );
+	void Show();
+	void Hide();
 
-	protected:
-		std::string text;
-		bool isMouseDown;
-		bool done;
+	void Step();
+	void Draw();
 
-	private:
+protected:
+	std::string text;
+	Text textRender;
+	bool isMouseDown;
+	bool isDone;
+	bool isShown;
+	float yPos;
+
+private:
 };
 
 #endif // KEYBOARD_H
