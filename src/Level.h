@@ -148,6 +148,7 @@ public:
                     {
                         /*if (line.at(0) == 'A')
                         {
+                            //This part is unchanged from level editor code
                             level[sofar % 18][(int)(sofar / 18)] = random_class();
                         }
                         else*/ if (line.at(0) == 'B')
@@ -244,7 +245,7 @@ public:
                         }
                         else if (line.at(0) == 'V')
                         {
-                            Truck* t = new Truck(sofar % 18,sofar / 18, Dir::RIGHT );
+                            Truck* t = new Truck(sofar % 18,sofar / 18, Dir::DOWN );   //Originally RIGHT
                             objects[sofar] = (Object*)t;
                             t->intervalmax = 350;
                             t->interval = 10;
@@ -254,7 +255,7 @@ public:
                         }
                         else if (line.at(0) == 'W')
                         {
-                            Truck* t = new Truck(sofar % 18,sofar / 18, Dir::UP );
+                            Truck* t = new Truck(sofar % 18,sofar / 18, Dir::LEFT );  //Originaly UP
                             objects[sofar] = (Object*)t;
                             t->intervalmax = 350;
                             t->interval = 10;
@@ -295,7 +296,10 @@ public:
 		if ( x >= 0 and x < width and y >= 0 and y < height )
 			return objects[index];
 		else
+		{
 			return NULL;
+			printf("Nothing at %d \n",index);
+		}
 	}
 
 	void Update()
