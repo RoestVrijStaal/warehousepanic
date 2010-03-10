@@ -21,31 +21,59 @@ SceneHighscore::~SceneHighscore()
 void SceneHighscore::Initialize()
 {
 	isMouseDown = true;
-	keyboard = Keyboard();
-	keyboard.Show();
+	keyboard = NULL;
+	newScore = 0;
+	name = "";
+
+	// Any event for highscore scene?
+	while ( EventMgr.HasEvent( HIGHSCORE ) )
+	{
+		GameEvent& event = EventMgr.PeekEvent( HIGHSCORE );
+		switch ( event.type )
+		{
+			case GameEvent::Highscore:
+				newScore = event.Highscore_new_score;
+				// TODO: If we reach highscore then show keyboard
+				if ( newScore )
+				{
+					keyboard = new Keyboard();
+					keyboard->Show();
+				}
+				break;
+
+			default:
+				break;
+		}
+		EventMgr.PopEvent( HIGHSCORE );
+	}
 }
 
 void SceneHighscore::Terminate()
 {
+	if ( keyboard )
+		delete keyboard;
+	keyboard = NULL;
 }
 
 void SceneHighscore::Step()
 {
-	keyboard.Step();
-
-
-	if ( keyboard.IsShown() )
+	if ( keyboard )
 	{
-		// User pressed enter?
-		if ( keyboard.IsDone() )
+		keyboard->Step();
+		if ( keyboard->IsShown() )
 		{
-			keyboard.Hide();
-			isMouseDown = true;
+			// User pressed enter?
+			if ( keyboard->IsDone() )
+			{
+				name = keyboard->GetText();
+				keyboard->Hide();
+				isMouseDown = true;
+			}
 		}
 	}
 
 	// Ignore everything if keyboard is shown
-	else
+	if ( keyboard == NULL or !keyboard->IsShown() )
 	{
 		bool curMouseDown = App.GetWindow().GetInput().IsMouseButtonDown( sf::Mouse::Left );
 		if ( curMouseDown and !isMouseDown )
@@ -59,11 +87,12 @@ void SceneHighscore::Step()
 void SceneHighscore::Draw()
 {
 	App.GetWindow().Clear( sf::Color( 0, 0, 0 ) );
-	sf::String str( "Highscore", sf::Font::GetDefaultFont(), 12 );
+	sf::String str( std::string("Highscore ").append( name ), sf::Font::GetDefaultFont(), 12 );
 	str.SetPosition( 10, 60 );
 	App.GetWindow().Draw( str );
 
-	keyboard.Draw();
+	if ( keyboard )
+		keyboard->Draw();
 }
 
 

@@ -106,7 +106,21 @@ void SceneGame::Step()
 			}
 		}
 
-		if (isPaused == false)
+		// Handle mouse-down event game paused
+		if (isPaused)
+		{
+			// Clicked inside quit button?
+			if ( GetDistanceSQ(mousepos, pbuttonQuit.GetPosition()) < pbuttonQuit.GetImage()->GetWidth() / 2.0f * pbuttonQuit.GetImage()->GetWidth() / 2.0f )
+			{
+				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
+				EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( points ) );
+				pbuttonQuit.SetImage( ResMgr.GetImage( "button quit active" ) );
+			}
+
+		}
+
+		// Mouse down event, running game
+		else
 		{
 			// Translate screen coordinates to level grid coordinates
 			sf::Vector2f screenPos = TransformScreenToMap( mousepos );
@@ -127,17 +141,6 @@ void SceneGame::Step()
 					default:
 						break;
 				}
-			}
-		}
-
-		// Handle mouse-down event game paused
-		else
-		{
-			// Clicked inside quit button?
-			if ( GetDistanceSQ(mousepos, pbuttonQuit.GetPosition()) < pbuttonQuit.GetImage()->GetWidth() / 2.0f * pbuttonQuit.GetImage()->GetWidth() / 2.0f )
-			{
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
-				pbuttonQuit.SetImage( ResMgr.GetImage( "button quit active" ) );
 			}
 		}
 	} // end mouse down event

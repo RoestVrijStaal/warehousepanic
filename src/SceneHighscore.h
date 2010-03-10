@@ -3,6 +3,7 @@
 
 #include "WCEngine/Scene.h"
 #include "Keyboard.h"
+#include <string>
 
 
 
@@ -20,7 +21,9 @@ class SceneHighscore : public Scene
 
 	protected:
 		bool isMouseDown;
-		Keyboard keyboard;
+		Keyboard* keyboard;
+		int newScore;
+		std::string name;
 
 	private:
 };
