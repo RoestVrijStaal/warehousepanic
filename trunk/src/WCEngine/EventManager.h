@@ -11,9 +11,9 @@
 // Add receiver here if you want to listen to some specific events
 enum EVENT_RECEIVER
 {
-	ENGINE,
-	GAME,
-	HIGHSCORE,
+	ENGINE, // Used to change scenes, quit etc.
+	GAME, // Used for changing levels
+	HIGHSCORE, // Used if there was a new highscore and player should enter name
 	count // Not used
 };
 
