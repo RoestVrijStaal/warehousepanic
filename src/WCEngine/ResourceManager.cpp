@@ -118,9 +118,12 @@ void ResourceManager::Initialize()
 	//sounds["something"].LoadFromFile( "media/somesoundeffect.wav" );
 
 	// TODO: Free memory again
-	music["game over"] = new sf::Music( 96000 );
+	music["game over"] = new sf::Music();
 	music["game over"]->OpenFromFile( "media/Sweet RnB Beat-23820-Free-Loops.com.wav" );
 	music["game over"]->SetLoop( true );
+	music["menu"] = new sf::Music();
+	music["menu"]->OpenFromFile( "media/Free Hip Hop 3-9480-Free-Loops.com.wav" );
+	music["menu"]->SetLoop( true );
 }
 
 sf::Image& ResourceManager::GetImage( std::string name )

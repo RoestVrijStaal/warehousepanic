@@ -22,18 +22,19 @@ void SceneMenu::Initialize()
 	isMouseDown = true;
 	items.push_back( "Play" );
 	items.push_back( "Highscore" );
-	items.push_back( "Tutorial" );
 	items.push_back( "Quit" );
 
 	background.SetImage( ResMgr.GetImage( "loading" ) );
 
-	//ResMgr.GetMusic( "game over" ).Play();
+	if ( ResMgr.GetMusic( "menu" ).GetStatus() != sf::Music::Playing )
+	{
+		ResMgr.GetMusic( "menu" ).Play();
+	}
 }
 
 void SceneMenu::Terminate()
 {
 	items.clear();
-	//ResMgr.GetMusic( "game over" ).Stop();
 }
 
 void SceneMenu::Step()
@@ -72,6 +73,7 @@ void SceneMenu::Step()
 		{
 			case 0:
 				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "game" ) );
+				ResMgr.GetMusic( "menu" ).Stop();
 				break;
 
 			case 1:
@@ -79,10 +81,6 @@ void SceneMenu::Step()
 				break;
 
 			case 2:
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "game" ) ); // TODO: Load tutorial level here
-				break;
-
-			case 3:
 				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "credits" ) );
 				break;
 

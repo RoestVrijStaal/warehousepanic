@@ -113,7 +113,8 @@ void SceneGame::Step()
 			if ( GetDistanceSQ(mousepos, pbuttonQuit.GetPosition()) < pbuttonQuit.GetImage()->GetWidth() / 2.0f * pbuttonQuit.GetImage()->GetWidth() / 2.0f )
 			{
 				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
-				EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( points ) );
+				//EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( points ) );
+				EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( 1 ) );
 				pbuttonQuit.SetImage( ResMgr.GetImage( "button quit active" ) );
 			}
 
