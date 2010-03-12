@@ -32,6 +32,8 @@ void SceneHighscore::Initialize()
 		switch ( event.type )
 		{
 			case GameEvent::Highscore:
+				// Reached highscore table from game, so play gameover music
+				ResMgr.GetMusic( "game over" ).Play();
 				newScore = event.Highscore_new_score;
 				// TODO: If we reach highscore then show keyboard
 				if ( newScore )
@@ -53,6 +55,7 @@ void SceneHighscore::Terminate()
 	if ( keyboard )
 		delete keyboard;
 	keyboard = NULL;
+	ResMgr.GetMusic( "game over" ).Stop();
 }
 
 void SceneHighscore::Step()
