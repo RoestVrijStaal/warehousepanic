@@ -36,10 +36,13 @@ class SceneGame : public Scene
 	protected:
 		// Misc.
 		std::list<Object*> objects;
+		std::list<Object*> clickables;
 		std::list<Object*> toDelete; // List of objects that we are responsible for deleting
 		int points;
 		bool isPaused;
+		bool isGameOver;
 		Level level;
+		int timer; // Used for all sorts of stuff, e.g. delay between game being over and scene actually ending
 
 		// Other Game Stuff
 		sf::String str_score;
@@ -48,6 +51,8 @@ class SceneGame : public Scene
 		sf::Sprite pbuttonQuit;
 		sf::Sprite* popup;
 
+		sf::Sound sndSwitch;
+
 		//Keys and such
 		bool isMouseDown;
 
@@ -55,6 +60,7 @@ class SceneGame : public Scene
 		sf::Vector2f TransformScreenToMap( sf::Vector2f& pos );
 		sf::Vector2f TransformMapToScreen( sf::Vector2f& pos );
 		float GetDistanceSQ( sf::Vector2f pos1, sf::Vector2f pos2 );
+		Object* FindClickedObject( sf::Vector2f& mappos );
 		bool DoCrate( Crate& crate );
 		bool DoTruck( Truck& truck );
 

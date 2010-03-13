@@ -92,8 +92,8 @@ void ResourceManager::Initialize()
 	images["button quit active"].LoadFromFile( "media/button_quit_on.png" );
 
 	images["text paused"].LoadFromFile( "media/text_paused.png" );
-	images["text game over"].LoadFromFile( "media/text_game_over.png" );
-	images["text level complete"].LoadFromFile( "media/text_level_complete.png" );
+//	images["text game over"].LoadFromFile( "media/text_game_over.png" );
+//	images["text level complete"].LoadFromFile( "media/text_level_complete.png" );
 
 	images["keyboard"].LoadFromFile( "media/keyboard.png" );
 
@@ -115,14 +115,14 @@ void ResourceManager::Initialize()
 	images[""].LoadFromFile( "media/.png" );*/
 
 	// Sound buffers
-	//sounds["something"].LoadFromFile( "media/somesoundeffect.wav" );
+	sounds["switch"].LoadFromFile( "media/snd_button-25.wav" );
 
 	// TODO: Free memory again
 	music["game over"] = new sf::Music();
-	music["game over"]->OpenFromFile( "media/Sweet RnB Beat-23820-Free-Loops.com.wav" );
+	music["game over"]->OpenFromFile( "media/music_Sweet RnB Beat-23820-Free-Loops.com.wav" );
 	music["game over"]->SetLoop( true );
 	music["menu"] = new sf::Music();
-	music["menu"]->OpenFromFile( "media/Free Hip Hop 3-9480-Free-Loops.com.wav" );
+	music["menu"]->OpenFromFile( "media/music_Free Hip Hop 3-9480-Free-Loops.com.wav" );
 	music["menu"]->SetLoop( true );
 }
 
