@@ -20,6 +20,7 @@ SceneGame::~SceneGame()
 
 void SceneGame::Initialize()
 {
+	// Level stuff
 	level = Level( "levels/load-test.wpf" ); // TODO: How do we choose level?
 	for ( std::vector<Object*>::iterator it = level.objects.begin(); it != level.objects.end(); ++it )
 	{
@@ -36,9 +37,16 @@ void SceneGame::Initialize()
 				toDelete.push_back( new Conveyor( obj.pos.x, obj.pos.y, obj.dir ) );
 				objects.push_back( toDelete.back() );
 			}
+
+			// We keep a list of clickable objects also. Faster to search through when player clicks screen
+			else if ( (**it).type == Object::CONVEYOR )
+			{
+				clickables.push_back( *it );
+			}
 		}
 	}
 
+	// Buttons
 	pbuttonPause = sf::Sprite( ResMgr.GetImage( "button pause" ) );
 	pbuttonPause.SetCenter( pbuttonPause.GetImage()->GetWidth() / 2.0f, pbuttonPause.GetImage()->GetHeight() / 2.0f );
 	pbuttonPause.SetPosition(
@@ -52,9 +60,14 @@ void SceneGame::Initialize()
 	// We assign a new sprite to popup when we have some popup to display
 	popup = NULL;
 
+	// Sounds
+	sndSwitch = sf::Sound( ResMgr.GetSound( "switch" ) );
+
 	//Other stuff
 	isMouseDown = false;
 	isPaused = false;
+	isGameOver = false;
+	timer = 0;
 	points = 0;
 }
 
@@ -65,6 +78,7 @@ void SceneGame::Terminate()
 		delete *it;
 	toDelete.clear();
 	objects.clear(); // Level clears its own objects
+	clickables.clear();
 	level.Terminate();
 
 	if ( popup )
@@ -83,7 +97,7 @@ void SceneGame::Step()
 	// Handle mouse-down event
 	if (newMouseButton and isMouseDown == false)
 	{
-		// If squaared distance to button center is < then size of button squared, then we clicked inside it
+		// If squared distance to button center is < then size of button squared, then we clicked inside it
 		if ( GetDistanceSQ(mousepos, pbuttonPause.GetPosition()) < pbuttonPause.GetImage()->GetWidth() / 2.0f * pbuttonPause.GetImage()->GetWidth() / 2.0f )
 		{
 			isPaused = !isPaused;
@@ -112,9 +126,8 @@ void SceneGame::Step()
 			// Clicked inside quit button?
 			if ( GetDistanceSQ(mousepos, pbuttonQuit.GetPosition()) < pbuttonQuit.GetImage()->GetWidth() / 2.0f * pbuttonQuit.GetImage()->GetWidth() / 2.0f )
 			{
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
-				//EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( points ) );
-				EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( 1 ) );
+				isGameOver = true;
+				timer = 50;
 				pbuttonQuit.SetImage( ResMgr.GetImage( "button quit active" ) );
 			}
 
@@ -123,10 +136,31 @@ void SceneGame::Step()
 		// Mouse down event, running game
 		else
 		{
-			// Translate screen coordinates to level grid coordinates
-			sf::Vector2f screenPos = TransformScreenToMap( mousepos );
+			sf::Vector2f mappos = TransformScreenToMap( mousepos );
+			Object* obj = FindClickedObject( mappos );
+			if ( obj )
+			{
+				switch ( obj->type )
+				{
+					case Object::CONVEYOR:
+						{
+							Conveyor& c = *(Conveyor*)obj;
+							if ( c.isSwitch )
+							{
+								c.Switch();
+								sndSwitch.Play();
+							}
+						}
+						break;
 
-			Object* obj = level.GetObjectAt( (int)screenPos.x, (int)screenPos.y );
+					default:
+						break;
+				}
+			}
+
+			// Translate screen coordinates to level grid coordinates
+/*			sf::Vector2f mappos = TransformScreenToMap( mousepos );
+			Object* obj = level.GetObjectAt( (int)mappos.x, (int)mappos.y );
 			if ( obj )
 			{
 				switch ( obj->type )
@@ -142,7 +176,7 @@ void SceneGame::Step()
 					default:
 						break;
 				}
-			}
+			}*/
 		}
 	} // end mouse down event
 
@@ -211,6 +245,18 @@ void SceneGame::Step()
 			} while ( true );
 		} // Loop through game objects
 	} // Game not poused
+
+	// Timer
+	if ( timer > 0 )
+		--timer;
+
+	// End game?
+	if ( isGameOver and timer <= 0 )
+	{
+		EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
+		//EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( points ) );
+		EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( 1 ) );
+	}
 
 	// If we have a popup center it
 	if ( popup )
@@ -400,6 +446,24 @@ float SceneGame::GetDistanceSQ( sf::Vector2f pos1, sf::Vector2f pos2 )
 {
 	sf::Vector2f diff( pos1.x - pos2.x, pos1.y - pos2.y );
 	return diff.x * diff.x + diff.y * diff.y;
+}
+
+Object* SceneGame::FindClickedObject( sf::Vector2f& mappos )
+{
+	// Offset mouse coordinate by half, as tiles are placed center, while coords start upper left
+	sf::Vector2f pos( mappos.x - .5f, mappos.y - .5f );
+	float bestDistSQ = 1.5f * 1.5f;
+	Object* res = NULL;
+	for (std::list<Object*>::iterator it = clickables.begin(); it != clickables.end(); ++it )
+	{
+		float dist = GetDistanceSQ( pos, (**it).pos );
+		if ( dist < bestDistSQ )
+		{
+			bestDistSQ = dist;
+			res = (*it);
+		}
+	}
+	return res;
 }
 
 // Return true if crate done and should be deleted
