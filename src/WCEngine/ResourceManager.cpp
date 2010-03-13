@@ -116,6 +116,7 @@ void ResourceManager::Initialize()
 
 	// Sound buffers
 	sounds["switch"].LoadFromFile( "media/snd_button-25.wav" );
+	sounds["click"].LoadFromFile( "media/snd_button-30.wav" );
 
 	// TODO: Free memory again
 	music["game over"] = new sf::Music();

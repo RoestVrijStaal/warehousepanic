@@ -52,6 +52,7 @@ class SceneGame : public Scene
 		sf::Sprite* popup;
 
 		sf::Sound sndSwitch;
+		sf::Sound sndClick;
 
 		//Keys and such
 		bool isMouseDown;

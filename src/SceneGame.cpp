@@ -62,6 +62,7 @@ void SceneGame::Initialize()
 
 	// Sounds
 	sndSwitch = sf::Sound( ResMgr.GetSound( "switch" ) );
+	sndClick = sf::Sound( ResMgr.GetSound( "click" ) );
 
 	//Other stuff
 	isMouseDown = false;
@@ -100,6 +101,7 @@ void SceneGame::Step()
 		// If squared distance to button center is < then size of button squared, then we clicked inside it
 		if ( GetDistanceSQ(mousepos, pbuttonPause.GetPosition()) < pbuttonPause.GetImage()->GetWidth() / 2.0f * pbuttonPause.GetImage()->GetWidth() / 2.0f )
 		{
+			sndClick.Play();
 			isPaused = !isPaused;
 			if ( isPaused )
 			{
@@ -126,6 +128,7 @@ void SceneGame::Step()
 			// Clicked inside quit button?
 			if ( GetDistanceSQ(mousepos, pbuttonQuit.GetPosition()) < pbuttonQuit.GetImage()->GetWidth() / 2.0f * pbuttonQuit.GetImage()->GetWidth() / 2.0f )
 			{
+				sndClick.Play();
 				isGameOver = true;
 				timer = 50;
 				pbuttonQuit.SetImage( ResMgr.GetImage( "button quit active" ) );
