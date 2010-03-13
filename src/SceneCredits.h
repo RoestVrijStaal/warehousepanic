@@ -16,8 +16,12 @@ class SceneCredits : public Scene
 		virtual void Step();
 		virtual void Draw();
 
+		//Just makes this easier (for me :P)
+		sf::String makeString(std::string text, int hlevel, float &yToSet);
+
 	protected:
 		bool isMouseDown;
+		float curY;
 
 	private:
 };
