@@ -30,6 +30,7 @@ void SceneMenu::Initialize()
 	{
 		ResMgr.GetMusic( "menu" ).Play();
 	}
+	sndClick = sf::Sound( ResMgr.GetSound( "click" ) );
 }
 
 void SceneMenu::Terminate()
@@ -50,6 +51,8 @@ void SceneMenu::Step()
 			selected = (int)(( mousepos.y - MENU_TOP ) / MENU_SPACING);
 			if ( selected >= items.size() )
 				selected = -1;
+			else
+				sndClick.Play();
 		}
 		else
 		{

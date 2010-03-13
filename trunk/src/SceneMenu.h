@@ -1,6 +1,7 @@
 #ifndef SCENEMENU_H
 #define SCENEMENU_H
 
+#include <SFML/Audio.hpp>
 #include "WCEngine/Scene.h"
 
 #include <string>
@@ -34,6 +35,7 @@ class SceneMenu : public Scene
 		bool isMouseDown;
 		std::vector<std::string> items;
 		sf::Sprite background;
+		sf::Sound sndClick;
 
 	private:
 };
