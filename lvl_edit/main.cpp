@@ -36,7 +36,7 @@ bool FromString( const std::string& s, T& t, std::ios_base& (*f)(std::ios_base&)
 sf::Image load_image(string name)
 {
 	sf::Image timage;
-	timage.LoadFromFile(name);
+	timage.LoadFromFile("lvl_edit/" + name);
 	timage.SetSmooth(false);
 	return timage;
 }
@@ -44,8 +44,6 @@ sf::Image load_image(string name)
 int main ()
 {
 	sf::Shape levelborder = sf::Shape::Rectangle(10,10,466,466,sf::Color(255,255,255),1.f,sf::Color(0,0,0));
-	sf::Font fnt_arial_sml;
-	fnt_arial_sml.LoadFromFile("arial.ttf",15);
 	sf::Image img_truck_hor		  = load_image("truck-hor.PNG"	  );
 	sf::Image img_truck_vert		 = load_image("truck-vert.PNG"	 );
 	//-----
@@ -77,20 +75,20 @@ int main ()
 	sf::Image img_save			   = load_image("button-save.PNG"	   );
 
 	vector<random_class> level( 18 * 18 );
-	cout << "Create or load? ";
-	string choice;
+	cout << "Type the level NAME excluding path and extension to load, or press enter to create new: ";
 	string filename = "";
 	int width = 18;
 	int height = 18;
 	int time = 60;
-	getline(cin,choice);
-	if (choice == "load")
+	float crateSpeed = 0.01f;
+	float crateInterval = 350;
+	float crateSpeedIncrement = 0.0000001f;
+	getline(cin,filename);
+	if (filename != "")
 	{
-		cout << "Load what file? ";
-		getline(cin,filename);
 		cout << "Loading file..." << endl;
 		string line;
-		ifstream myfile (filename.c_str());
+		ifstream myfile(("levels/" + filename + ".lvl").c_str());
 		if (myfile.is_open())
 		{
 			while (! myfile.eof() )
@@ -113,7 +111,19 @@ int main ()
 				{
 					StringToInt(value, time);
 				}
-				else if ( key == "tile" )
+				else if ( key == "cratespeed" )
+				{
+					StringToFloat(value, crateSpeed);
+				}
+				else if ( key == "crateinterval" )
+				{
+					StringToFloat(value, crateInterval);
+				}
+				else if ( key == "cratespeedincrement" )
+				{
+					StringToFloat(value, crateSpeedIncrement);
+				}
+				else if ( key == "tiles" )
 				{
 					// Process each tile
 					size_t idx = 0;
@@ -153,28 +163,28 @@ int main ()
 								break;
 							case 'F':
 								level[idx] = random_class();
-								level[idx].sprite.SetImage(img_conveyor_hor);
+								level[idx].sprite.SetImage(img_conveyor_vert);
 								level[idx].sprite.SetPosition((idx%18) * 24 + 10, (int)(idx/18) * 24 + 10);
 								level[idx].change = true;
 								level[idx].dir = 1;
 								break;
 							case 'G':
 								level[idx] = random_class();
-								level[idx].sprite.SetImage(img_conveyor_vert);
+								level[idx].sprite.SetImage(img_conveyor_hor);
 								level[idx].sprite.SetPosition((idx%18) * 24 + 10, (int)(idx/18) * 24 + 10);
 								level[idx].change = true;
 								level[idx].dir = 0;
 								break;
 							case 'H':
 								level[idx] = random_class();
-								level[idx].sprite.SetImage(img_conveyor_hor);
+								level[idx].sprite.SetImage(img_conveyor_vert);
 								level[idx].sprite.SetPosition((idx%18) * 24 + 10, (int)(idx/18) * 24 + 10);
 								level[idx].change = true;
 								level[idx].dir = 0;
 								break;
 							case 'I':
 								level[idx] = random_class();
-								level[idx].sprite.SetImage(img_conveyor_vert);
+								level[idx].sprite.SetImage(img_conveyor_hor);
 								level[idx].sprite.SetPosition((idx%18) * 24 + 10, (int)(idx/18) * 24 + 10);
 								level[idx].change = true;
 								level[idx].dir = 1;
@@ -411,48 +421,53 @@ int main ()
 									getline(cin,filename);
 								}
 								if ( filename == "" )
-									filename = "default.lvl";
+									filename = "default";
 
 								ofstream file;
-								file.open(filename.c_str());
+								file.open(("levels/" + filename + ".lvl").c_str());
 								file << "width=" << width << endl;
 								file << "height=" << height << endl;
 								file << "time=" << time << endl;
-								file << "tile=";
-								for ( vector<random_class>::iterator it = level.begin(); it != level.end(); ++it )
+								file << "cratespeed=" << crateSpeed << endl;
+								file << "crateinterval=" << crateInterval << endl;
+								file << "cratespeedincrement=" << crateSpeedIncrement << endl;
+								file << "tiles=";
+								int pos = 0;
+								for ( vector<random_class>::iterator it = level.begin(); it != level.end(); ++it, ++pos )
 								{
-									if ((*it).sprite.GetImage() == &img_conveyor_hor)
+									if ((*it).sprite.GetImage() == &img_conveyor_hor or (*it).sprite.GetImage() == &img_conveyor_vert)
 									{
 										if ((*it).change == false)
 										{
-											if ((*it).dir == 0)
+											if ((*it).dir == 0 and (*it).sprite.GetImage() == &img_conveyor_hor)
 												file << "D";
-											else
+											else if ((*it).dir == 1 and (*it).sprite.GetImage() == &img_conveyor_hor)
 												file << "B";
-										}
-										else
-										{
-											if ((*it).dir == 0)
-												file << "H";
-											else
-												file << "F";
-										}
-									}
-									else if ((*it).sprite.GetImage() == &img_conveyor_vert)
-									{
-										if ((*it).change == false)
-										{
-											if ((*it).dir == 0)
+											else if ((*it).dir == 0 and (*it).sprite.GetImage() == &img_conveyor_vert)
 												file << "C";
-											else
+											else if ((*it).dir == 1 and (*it).sprite.GetImage() == &img_conveyor_vert)
 												file << "E";
 										}
+
+										// Switches
 										else
 										{
-											if ((*it).dir == 0)
-												file << "G";
-											else
-												file << "I";
+											// TODO: Handle direction of switch
+											if ((*it).sprite.GetImage() == &img_conveyor_hor or (*it).sprite.GetImage() == &img_conveyor_vert)
+											{
+												int x = pos % width;
+												int y = pos / width;
+												if ( level[x + (y+1) * width].sprite.GetImage() == &img_conveyor_vert && level[x + (y+1) * width].dir == 0 )
+													file << "G";
+												else if ( level[x + (y-1) * width].sprite.GetImage() == &img_conveyor_vert && level[x + (y-1) * width].dir == 1 )
+													file << "I";
+												else if ( level[(x+1) + y * width].sprite.GetImage() == &img_conveyor_hor && level[(x+1) + y * width].dir == 0 )
+													file << "H";
+												else if ( level[(x-1) + y * width].sprite.GetImage() == &img_conveyor_hor && level[(x-1) + y * width].dir == 1 )
+													file << "F";
+												else
+													file << "A";
+											}
 										}
 									}
 									else if ((*it).sprite.GetImage() == &img_gate_blue_hor)
@@ -619,15 +634,15 @@ int main ()
 										rclick = true;
 										rid = sf::Vector2<int>(pos%width, pos/width);
 										ras = 3;
-										str1 = sf::String("Delete",fnt_arial_sml,15);
-										str2 = sf::String("Changable",fnt_arial_sml,15);
+										str1 = sf::String("Delete",sf::Font::GetDefaultFont(),15);
+										str2 = sf::String("Changable",sf::Font::GetDefaultFont(),15);
 										if ((*it).dir == 0)
 										{
-											str3 = sf::String("Face Down",fnt_arial_sml,15);
+											str3 = sf::String("Face Down",sf::Font::GetDefaultFont(),15);
 										}
 										else
 										{
-											str3 = sf::String("Face Up",fnt_arial_sml,15);
+											str3 = sf::String("Face Up",sf::Font::GetDefaultFont(),15);
 										}
 										str1.SetPosition((*it).sprite.GetPosition().x + ((*it).sprite.GetSubRect().GetWidth() / 2 + 5),
 														 (*it).sprite.GetPosition().y + ((*it).sprite.GetSubRect().GetHeight() / 2) + 3 + 0);
@@ -647,15 +662,15 @@ int main ()
 										rclick = true;
 										rid = sf::Vector2<int>(pos%width, pos/width);
 										ras = 3;
-										str1 = sf::String("Delete",fnt_arial_sml,15);
-										str2 = sf::String("Unchangable",fnt_arial_sml,15);
+										str1 = sf::String("Delete",sf::Font::GetDefaultFont(),15);
+										str2 = sf::String("Unchangable",sf::Font::GetDefaultFont(),15);
 										if ((*it).dir == 0)
 										{
-											str3 = sf::String("Start Down",fnt_arial_sml,15);
+											str3 = sf::String("Start Down",sf::Font::GetDefaultFont(),15);
 										}
 										else
 										{
-											str3 = sf::String("Start Up",fnt_arial_sml,15);
+											str3 = sf::String("Start Up",sf::Font::GetDefaultFont(),15);
 										}
 										str1.SetPosition((*it).sprite.GetPosition().x + ((*it).sprite.GetSubRect().GetWidth() / 2 + 5),
 														 (*it).sprite.GetPosition().y + ((*it).sprite.GetSubRect().GetHeight() / 2) + 3 + 0);
@@ -678,15 +693,15 @@ int main ()
 										rclick = true;
 										rid = sf::Vector2<int>(pos%width, pos/width);
 										ras = 3;
-										str1 = sf::String("Delete",fnt_arial_sml,15);
-										str2 = sf::String("Changable",fnt_arial_sml,15);
+										str1 = sf::String("Delete",sf::Font::GetDefaultFont(),15);
+										str2 = sf::String("Changable",sf::Font::GetDefaultFont(),15);
 										if ((*it).dir == 0)
 										{
-											str3 = sf::String("Face Right",fnt_arial_sml,15);
+											str3 = sf::String("Face Right",sf::Font::GetDefaultFont(),15);
 										}
 										else
 										{
-											str3 = sf::String("Face Left",fnt_arial_sml,15);
+											str3 = sf::String("Face Left",sf::Font::GetDefaultFont(),15);
 										}
 										str1.SetPosition((*it).sprite.GetPosition().x + ((*it).sprite.GetSubRect().GetWidth() / 2 + 5),
 														 (*it).sprite.GetPosition().y + ((*it).sprite.GetSubRect().GetHeight() / 2) + 3 + 0);
@@ -706,15 +721,15 @@ int main ()
 										rclick = true;
 										rid = sf::Vector2<int>(pos%width, pos/width);
 										ras = 3;
-										str1 = sf::String("Delete",fnt_arial_sml,15);
-										str2 = sf::String("Unchangable",fnt_arial_sml,15);
+										str1 = sf::String("Delete",sf::Font::GetDefaultFont(),15);
+										str2 = sf::String("Unchangable",sf::Font::GetDefaultFont(),15);
 										if ((*it).dir == 0)
 										{
-											str3 = sf::String("Start Right",fnt_arial_sml,15);
+											str3 = sf::String("Start Right",sf::Font::GetDefaultFont(),15);
 										}
 										else
 										{
-											str3 = sf::String("Start Left",fnt_arial_sml,15);
+											str3 = sf::String("Start Left",sf::Font::GetDefaultFont(),15);
 										}
 										str1.SetPosition((*it).sprite.GetPosition().x + ((*it).sprite.GetSubRect().GetWidth() / 2 + 5),
 														 (*it).sprite.GetPosition().y + ((*it).sprite.GetSubRect().GetHeight() / 2) + 3 + 0);
@@ -735,15 +750,15 @@ int main ()
 									rclick = true;
 									rid = sf::Vector2<int>(pos%width, pos/width);
 									ras = 1;
-									str1 = sf::String("Delete",fnt_arial_sml,15);
-									str2 = sf::String("Changable",fnt_arial_sml,15);
+									str1 = sf::String("Delete",sf::Font::GetDefaultFont(),15);
+									str2 = sf::String("Changable",sf::Font::GetDefaultFont(),15);
 									if ((*it).dir == 0)
 									{
-										str3 = sf::String("Face Down",fnt_arial_sml,15);
+										str3 = sf::String("Face Down",sf::Font::GetDefaultFont(),15);
 									}
 									else
 									{
-										str3 = sf::String("Face Up",fnt_arial_sml,15);
+										str3 = sf::String("Face Up",sf::Font::GetDefaultFont(),15);
 									}
 									str1.SetPosition((*it).sprite.GetPosition().x + ((*it).sprite.GetSubRect().GetWidth() / 2 + 5),
 													 (*it).sprite.GetPosition().y + ((*it).sprite.GetSubRect().GetHeight() / 2) + 3 + 0);
