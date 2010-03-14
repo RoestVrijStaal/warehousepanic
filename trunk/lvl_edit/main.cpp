@@ -72,6 +72,8 @@ int main ()
 	//-----
 	sf::Image img_level_templ		= load_image("warehouse-template.png");
 	sf::Image img_save			   = load_image("button-save.PNG"	   );
+	sf::Font arial;
+	arial.LoadFromFile( "arial.tff", 15 );
 
 	vector<random_class> level( 18 * 18 );
 	cout << "Type the level NAME excluding path and extension to load, or press enter to create new: ";
@@ -633,15 +635,15 @@ int main ()
 										rclick = true;
 										rid = sf::Vector2<int>(pos%width, pos/width);
 										ras = 3;
-										str1 = sf::String("Delete",sf::Font::GetDefaultFont(),15);
-										str2 = sf::String("Changable",sf::Font::GetDefaultFont(),15);
+										str1 = sf::String("Delete",arial,15);
+										str2 = sf::String("Changable",arial,15);
 										if ((*it).dir == 0)
 										{
-											str3 = sf::String("Face Down",sf::Font::GetDefaultFont(),15);
+											str3 = sf::String("Face Down",arial,15);
 										}
 										else
 										{
-											str3 = sf::String("Face Up",sf::Font::GetDefaultFont(),15);
+											str3 = sf::String("Face Up",arial,15);
 										}
 										str1.SetPosition((*it).sprite.GetPosition().x + ((*it).sprite.GetSubRect().GetWidth() / 2 + 5),
 														 (*it).sprite.GetPosition().y + ((*it).sprite.GetSubRect().GetHeight() / 2) + 3 + 0);
@@ -661,15 +663,15 @@ int main ()
 										rclick = true;
 										rid = sf::Vector2<int>(pos%width, pos/width);
 										ras = 3;
-										str1 = sf::String("Delete",sf::Font::GetDefaultFont(),15);
-										str2 = sf::String("Unchangable",sf::Font::GetDefaultFont(),15);
+										str1 = sf::String("Delete",arial,15);
+										str2 = sf::String("Unchangable",arial,15);
 										if ((*it).dir == 0)
 										{
-											str3 = sf::String("Start Down",sf::Font::GetDefaultFont(),15);
+											str3 = sf::String("Start Down",arial,15);
 										}
 										else
 										{
-											str3 = sf::String("Start Up",sf::Font::GetDefaultFont(),15);
+											str3 = sf::String("Start Up",arial,15);
 										}
 										str1.SetPosition((*it).sprite.GetPosition().x + ((*it).sprite.GetSubRect().GetWidth() / 2 + 5),
 														 (*it).sprite.GetPosition().y + ((*it).sprite.GetSubRect().GetHeight() / 2) + 3 + 0);
@@ -692,15 +694,15 @@ int main ()
 										rclick = true;
 										rid = sf::Vector2<int>(pos%width, pos/width);
 										ras = 3;
-										str1 = sf::String("Delete",sf::Font::GetDefaultFont(),15);
-										str2 = sf::String("Changable",sf::Font::GetDefaultFont(),15);
+										str1 = sf::String("Delete",arial,15);
+										str2 = sf::String("Changable",arial,15);
 										if ((*it).dir == 0)
 										{
-											str3 = sf::String("Face Right",sf::Font::GetDefaultFont(),15);
+											str3 = sf::String("Face Right",arial,15);
 										}
 										else
 										{
-											str3 = sf::String("Face Left",sf::Font::GetDefaultFont(),15);
+											str3 = sf::String("Face Left",arial,15);
 										}
 										str1.SetPosition((*it).sprite.GetPosition().x + ((*it).sprite.GetSubRect().GetWidth() / 2 + 5),
 														 (*it).sprite.GetPosition().y + ((*it).sprite.GetSubRect().GetHeight() / 2) + 3 + 0);
@@ -720,15 +722,15 @@ int main ()
 										rclick = true;
 										rid = sf::Vector2<int>(pos%width, pos/width);
 										ras = 3;
-										str1 = sf::String("Delete",sf::Font::GetDefaultFont(),15);
-										str2 = sf::String("Unchangable",sf::Font::GetDefaultFont(),15);
+										str1 = sf::String("Delete",arial,15);
+										str2 = sf::String("Unchangable",arial,15);
 										if ((*it).dir == 0)
 										{
-											str3 = sf::String("Start Right",sf::Font::GetDefaultFont(),15);
+											str3 = sf::String("Start Right",arial,15);
 										}
 										else
 										{
-											str3 = sf::String("Start Left",sf::Font::GetDefaultFont(),15);
+											str3 = sf::String("Start Left",arial,15);
 										}
 										str1.SetPosition((*it).sprite.GetPosition().x + ((*it).sprite.GetSubRect().GetWidth() / 2 + 5),
 														 (*it).sprite.GetPosition().y + ((*it).sprite.GetSubRect().GetHeight() / 2) + 3 + 0);
@@ -749,15 +751,15 @@ int main ()
 									rclick = true;
 									rid = sf::Vector2<int>(pos%width, pos/width);
 									ras = 1;
-									str1 = sf::String("Delete",sf::Font::GetDefaultFont(),15);
-									str2 = sf::String("Changable",sf::Font::GetDefaultFont(),15);
+									str1 = sf::String("Delete",arial,15);
+									str2 = sf::String("Changable",arial,15);
 									if ((*it).dir == 0)
 									{
-										str3 = sf::String("Face Down",sf::Font::GetDefaultFont(),15);
+										str3 = sf::String("Face Down",arial,15);
 									}
 									else
 									{
-										str3 = sf::String("Face Up",sf::Font::GetDefaultFont(),15);
+										str3 = sf::String("Face Up",arial,15);
 									}
 									str1.SetPosition((*it).sprite.GetPosition().x + ((*it).sprite.GetSubRect().GetWidth() / 2 + 5),
 													 (*it).sprite.GetPosition().y + ((*it).sprite.GetSubRect().GetHeight() / 2) + 3 + 0);
