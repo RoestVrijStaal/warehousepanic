@@ -20,7 +20,8 @@ class Level
 public:
 	Level()
 	{
-		width = height = levelTime = curTime = crateSpeed = crateInterval = crateSpeedIncrement = 0;
+		width = height = levelTime = curTime = 0;
+		crateSpeed = crateInterval = crateSpeedIncrement = 0.0f;
 	}
 
 	Level( std::string filename )
