@@ -143,7 +143,7 @@ void SceneHighscore::Step()
 				int sofar = 0;
 				for (it = scores.begin(); it != scores.end(); it++)
 				{
-				    if (it->score > newScore)
+				    if (it->score >= newScore)
 				    {
 				        sofar += 1;
 				        continue;
