@@ -24,7 +24,7 @@ void SceneMenu::Initialize()
 	items.push_back( "Highscore" );
 	items.push_back( "Quit" );
 
-	background.SetImage( ResMgr.GetImage( "loading" ) );
+	background.SetImage( ResMgr.GetImage( "title" ) );
 
 	if ( ResMgr.GetMusic( "menu" ).GetStatus() != sf::Music::Playing )
 	{
@@ -49,7 +49,7 @@ void SceneMenu::Step()
 		if ( mousepos.x >= MENU_LEFT and mousepos.y >= MENU_TOP )
 		{
 			selected = (int)(( mousepos.y - MENU_TOP ) / MENU_SPACING);
-			if ( selected >= items.size() )
+			if ( selected >= (int)items.size() )
 				selected = -1;
 			else
 				sndClick.Play();
@@ -97,25 +97,14 @@ void SceneMenu::Step()
 void SceneMenu::Draw()
 {
 	App.GetWindow().Draw( background );
-
-	// Title
-	sf::String title( "Warehouse Panic", sf::Font::GetDefaultFont(), TITLE_FONT_SIZE );
-	title.SetStyle( sf::String::Bold );
-	sf::FloatRect size = title.GetRect();
-	title.SetCenter( (size.Right - size.Left) / 2, (size.Bottom - size.Top) / 2 );
-	title.SetPosition( 160, 30 );
-	title.SetRotation( 6.0f );
-	title.SetColor( sf::Color::Black );
-	App.GetWindow().Draw( title );
-
-	for ( size_t i = 0; i < items.size(); ++i )
-	{
-		sf::String text( items[i], sf::Font::GetDefaultFont(), MENU_FONT_SIZE );
-		text.SetStyle( sf::String::Bold );
-		text.SetPosition( MENU_LEFT, MENU_TOP + MENU_SPACING * i );
-		text.SetColor( sf::Color::Black );
-		App.GetWindow().Draw( text );
-	}
+	//for ( size_t i = 0; i < items.size(); ++i )
+	//{
+		//sf::String text( items[i], sf::Font::GetDefaultFont(), MENU_FONT_SIZE );
+		//text.SetStyle( sf::String::Bold );
+		//text.SetPosition( MENU_LEFT, MENU_TOP + MENU_SPACING * i );
+		//text.SetColor( sf::Color::Red );
+		//App.GetWindow().Draw( text );
+	//}
 }
 
 

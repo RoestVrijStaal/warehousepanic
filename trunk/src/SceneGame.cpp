@@ -198,8 +198,9 @@ void SceneGame::Step()
 					if ( DoCrate( *(Crate*)(*it) ) )
 					{
 						delete *it; // Free memory
-						objects.erase( it ); // Remove pointer from vector
-						--it; // Go back one step, so we don't skip object after this. See erase() for more detail
+						it = objects.erase( it ); // Remove pointer from vector
+						--it;
+						continue;
 					}
 					break;
 
@@ -207,8 +208,9 @@ void SceneGame::Step()
 					if ( DoTruck( *(Truck*)(*it) ) )
 					{
 						delete *it;
-						objects.erase( it );
+						it = objects.erase( it );
 						--it;
+						continue;
 					}
 					break;
 
@@ -230,6 +232,7 @@ void SceneGame::Step()
 					break;
 
 				// Consider height into equation
+				std::cout << (**tmp1).type << " " << (**tmp2).type << std::endl;
 				float height1 = ObjectHeight[ (**tmp1).type ];
 				float height2 = ObjectHeight[ (**tmp2).type ];
 				if ( GetDistanceSQ( (**tmp2).pos, SORT_POINT ) + height2 * height2 < GetDistanceSQ( (**tmp1).pos, SORT_POINT ) + height1 * height1 )
@@ -311,10 +314,10 @@ void SceneGame::Draw()
 					name << "conveyor ";
 
 					bool connections[4];
-					connections[Dir::RIGHT] = level.GetObjectAt( obj.pos.x + 1, obj.pos.y ) != NULL;
-					connections[Dir::UP] = level.GetObjectAt( obj.pos.x, obj.pos.y - 1 ) != NULL;
-					connections[Dir::LEFT] = level.GetObjectAt( obj.pos.x - 1, obj.pos.y ) != NULL;
-					connections[Dir::DOWN] = level.GetObjectAt( obj.pos.x, obj.pos.y + 1 ) != NULL;
+					connections[Dir::RIGHT] = level.GetObjectAt( (int)obj.pos.x + 1, (int)obj.pos.y ) != NULL;
+					connections[Dir::UP] = level.GetObjectAt( (int)obj.pos.x, (int)obj.pos.y - 1 ) != NULL;
+					connections[Dir::LEFT] = level.GetObjectAt( (int)obj.pos.x - 1, (int)obj.pos.y ) != NULL;
+					connections[Dir::DOWN] = level.GetObjectAt( (int)obj.pos.x, (int)obj.pos.y + 1 ) != NULL;
 
 					// Left turn (checking the directions on unit circle, only the one to the left of current dir should be connected)
 					if ( connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and !connections[(obj.dir + 3) % 4] )

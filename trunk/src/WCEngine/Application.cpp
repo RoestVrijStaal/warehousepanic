@@ -67,7 +67,7 @@ void Application::Run()
 	float nextStepFrame = 0.0f;
 	isRunning = true;
 
-	SetScene( "menu" );
+	SetScene( "splash" );
 
 	while ( isRunning )
 	{

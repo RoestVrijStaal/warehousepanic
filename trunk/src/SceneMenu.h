@@ -10,11 +10,9 @@
 
 
 // Settings
-#define MENU_LEFT (185.0f)
-#define MENU_TOP (70.0f)
-#define MENU_SPACING (22.0f)
-#define MENU_FONT_SIZE (16.0f)
-#define TITLE_FONT_SIZE (40.0f)
+#define MENU_LEFT (230.0f)
+#define MENU_TOP (115.0f)
+#define MENU_SPACING (33.0f)
 
 
 

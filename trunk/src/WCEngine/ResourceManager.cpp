@@ -32,8 +32,9 @@ void ResourceManager::Initialize()
 	images["dummy"] = sf::Image();
 	sounds["dummy"] = sf::SoundBuffer();
 
-	// Images
-	images["loading"].LoadFromFile( "media/loading.png" );
+	// Backgrounds
+	images["splash"].LoadFromFile( "media/bg_splash.png" );
+	images["title"].LoadFromFile( "media/bg_title.png" );
 
 	// Game graphics
 	images["conveyor 0"].LoadFromFile( "media/conveyor_dir1.png" );
