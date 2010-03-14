@@ -3,6 +3,8 @@
 
 #include "WCEngine/Scene.h"
 #include "Keyboard.h"
+#include "Score.h"
+
 #include <string>
 
 
@@ -24,6 +26,8 @@ class SceneHighscore : public Scene
 		Keyboard* keyboard;
 		int newScore;
 		std::string name;
+		bool didChange;
+		std::list< Score > scores;
 
 	private:
 };
