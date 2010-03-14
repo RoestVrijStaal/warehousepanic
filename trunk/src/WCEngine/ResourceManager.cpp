@@ -122,6 +122,9 @@ void ResourceManager::Initialize()
 	sounds["click"].LoadFromFile( "media/snd_button-30.wav" );
 
 	// TODO: Free memory again
+	music["new highscore"] = new sf::Music();
+	music["new highscore"]->OpenFromFile( "media/music_Ring Of Fire Midi-15375-Free-Loops.com.wav" );
+	music["new highscore"]->SetLoop( true );
 	music["game over"] = new sf::Music();
 	music["game over"]->OpenFromFile( "media/music_Sweet RnB Beat-23820-Free-Loops.com.wav" );
 	music["game over"]->SetLoop( true );

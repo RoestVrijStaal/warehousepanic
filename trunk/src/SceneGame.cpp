@@ -21,7 +21,7 @@ SceneGame::~SceneGame()
 void SceneGame::Initialize()
 {
 	// Level stuff
-	level = Level( "levels/test level.lvl" ); // TODO: How do we choose level?
+	level = Level( "levels/1 gate.lvl" ); // TODO: How do we choose level?
 	for ( std::vector<Object*>::iterator it = level.objects.begin(); it != level.objects.end(); ++it )
 	{
 		if ( *it != NULL )
@@ -260,7 +260,7 @@ void SceneGame::Step()
 	{
 		EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
 		// TODO: Removed while testing game
-		//EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( points ) );
+		EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( points ) );
 	}
 
 	// If we have a popup, center it
