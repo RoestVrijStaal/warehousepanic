@@ -86,6 +86,9 @@ void ResourceManager::Initialize()
 	images["gate 1 yellow"].LoadFromFile( "media/gate-yellow-left-fg.png" );
 	images["gate bg 1 yellow"].LoadFromFile( "media/gate-yellow-left-bg.png" );
 
+	images["truck 0"].LoadFromFile( "media/truck_dir0.png" );
+	images["truck 1"].LoadFromFile( "media/truck_dir1.png" );
+
 	images["button pause"].LoadFromFile( "media/button_pause.png" );
 	images["button pause active"].LoadFromFile( "media/button_pause_on.png" );
 	images["button quit"].LoadFromFile( "media/button_quit.png" );
