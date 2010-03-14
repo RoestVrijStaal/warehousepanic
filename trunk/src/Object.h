@@ -98,6 +98,12 @@ public:
 		y = sprite.GetImage()->GetHeight() - 10;
 
 		sprite.SetCenter(	x, y );
+
+		// Right facing truck cannot be determined so we hardcode its offset here as being 2 squares long
+		if ( type == TRUCK and dir == Dir::RIGHT )
+		{
+			sprite.SetCenter( x + 20, y - 10 );
+		}
 	}
 protected:
 private:

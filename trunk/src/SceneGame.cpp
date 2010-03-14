@@ -259,11 +259,11 @@ void SceneGame::Step()
 	if ( isGameOver and timer <= 0 )
 	{
 		EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
+		// TODO: Removed while testing game
 		//EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( points ) );
-		EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( 1 ) );
 	}
 
-	// If we have a popup center it
+	// If we have a popup, center it
 	if ( popup )
 	{
 		sf::Vector2f pos = popup->GetPosition();
@@ -457,7 +457,7 @@ Object* SceneGame::FindClickedObject( sf::Vector2f& mappos )
 {
 	// Offset mouse coordinate by half, as tiles are placed center, while coords start upper left
 	sf::Vector2f pos( mappos.x - .5f, mappos.y - .5f );
-	float bestDistSQ = 1.5f * 1.5f;
+	float bestDistSQ = 3.5f * 3.5f;
 	Object* res = NULL;
 	for (std::list<Object*>::iterator it = clickables.begin(); it != clickables.end(); ++it )
 	{
