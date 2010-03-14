@@ -71,7 +71,6 @@ void SceneHighscore::Initialize()
         scores.insert( scores.begin(),1,Score( 75, "Milestone Marker" ) );
         scores.insert( scores.begin(),1,Score( 100, "Milestone Marker" ) );
         scores.insert( scores.begin(),1,Score( 150, "Milestone Marker" ) );
-        printf("%d",scores.size());
     }
 
 	// Any event for highscore scene?
@@ -146,12 +145,9 @@ void SceneHighscore::Step()
 				{
 				    if (it->score > newScore)
 				    {
-				        std::cout << "K\n";
-				        printf("%d > %d\n", newScore, it->score);
 				        sofar += 1;
 				        continue;
 				    }
-				    std::cout << "S\n";
 				    break;
 				}
 				std::list< Score >::iterator it2 = scores.begin();

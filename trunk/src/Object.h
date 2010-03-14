@@ -61,6 +61,11 @@ public:
 		switch ( type )
 		{
 			case CONVEYOR:
+				if ( dir == Dir::RIGHT or dir == Dir::LEFT )
+					name << " 02";
+				else
+					name << " 13";
+				break;
 			case GATE:
 			case GATE_BACKGROUND:
 			case INCINERATOR:

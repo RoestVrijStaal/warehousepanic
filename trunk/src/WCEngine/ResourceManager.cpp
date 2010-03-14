@@ -37,18 +37,18 @@ void ResourceManager::Initialize()
 	images["title"].LoadFromFile( "media/bg_title.png" );
 
 	// Game graphics
-	images["conveyor 0"].LoadFromFile( "media/conveyor_dir1.png" );
-	images["conveyor 0 turn left"].LoadFromFile( "media/conveyor_dir1_turn_left.png" );
-	images["conveyor 0 turn right"].LoadFromFile( "media/conveyor_dir1_turn_right.png" );
-	images["conveyor 1"].LoadFromFile( "media/conveyor_dir2.png" );
-	images["conveyor 1 turn left"].LoadFromFile( "media/conveyor_dir2_turn_left.png" );
-	images["conveyor 1 turn right"].LoadFromFile( "media/conveyor_dir2_turn_right.png" );
-	images["conveyor 2"].LoadFromFile( "media/conveyor_dir3.png" );
-	images["conveyor 2 turn left"].LoadFromFile( "media/conveyor_dir3_turn_left.png" );
-	images["conveyor 2 turn right"].LoadFromFile( "media/conveyor_dir3_turn_right.png" );
-	images["conveyor 3"].LoadFromFile( "media/conveyor_dir4.png" );
-	images["conveyor 3 turn left"].LoadFromFile( "media/conveyor_dir4_turn_left.png" );
-	images["conveyor 3 turn right"].LoadFromFile( "media/conveyor_dir4_turn_right.png" );
+	images["conveyor 02"].LoadFromFile( "media/conveyor_dir_02.png" );
+	images["conveyor 13"].LoadFromFile( "media/conveyor_dir_13.png" );
+	images["conveyor 02 con 1"].LoadFromFile( "media/conveyor_dir_02_con_1.png" );
+	images["conveyor 02 con 3"].LoadFromFile( "media/conveyor_dir_02_con_3.png" );
+	images["conveyor 13 con 0"].LoadFromFile( "media/conveyor_dir_13_con_0.png" );
+	images["conveyor 13 con 2"].LoadFromFile( "media/conveyor_dir_13_con_2.png" );
+	images["conveyor 02 cross"].LoadFromFile( "media/conveyor_dir_02_cross.png" );
+	images["conveyor 13 cross"].LoadFromFile( "media/conveyor_dir_13_cross.png" );
+	images["conveyor 0 turn"].LoadFromFile( "media/conveyor_dir_0_turn.png" );
+	images["conveyor 1 turn"].LoadFromFile( "media/conveyor_dir_1_turn.png" );
+	images["conveyor 2 turn"].LoadFromFile( "media/conveyor_dir_2_turn.png" );
+	images["conveyor 3 turn"].LoadFromFile( "media/conveyor_dir_3_turn.png" );
 
 	images["crate blue"].LoadFromFile( "media/crate-blue.png" );
 	images["crate green"].LoadFromFile( "media/crate-green.png" );
@@ -107,16 +107,6 @@ void ResourceManager::Initialize()
 	images["C small"].LoadFromFile( "media/font_c_small.png" );
 	images["D small"].LoadFromFile( "media/font_d_small.png" );
 	images["I small"].LoadFromFile( "media/font_i_small.png" );
-
-
-/*	images["level background"].LoadFromFile( "media/levelbg.png" );
-	images[""].LoadFromFile( "media/text_.png" );
-	images[""].LoadFromFile( "media/.png" );
-	images[""].LoadFromFile( "media/.png" );
-	images[""].LoadFromFile( "media/.png" );
-	images[""].LoadFromFile( "media/.png" );
-	images[""].LoadFromFile( "media/.png" );
-	images[""].LoadFromFile( "media/.png" );*/
 
 	// Sound buffers
 	sounds["switch"].LoadFromFile( "media/snd_button-25.wav" );
