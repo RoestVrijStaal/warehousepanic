@@ -21,7 +21,7 @@ SceneGame::~SceneGame()
 void SceneGame::Initialize()
 {
 	// Level stuff
-	level = Level( "levels/load-test.wpf" ); // TODO: How do we choose level?
+	level = Level( "levels/test level.lvl" ); // TODO: How do we choose level?
 	for ( std::vector<Object*>::iterator it = level.objects.begin(); it != level.objects.end(); ++it )
 	{
 		if ( *it != NULL )
@@ -186,6 +186,8 @@ void SceneGame::Step()
 	//Compute
 	if (isPaused == false)
 	{
+		level.Update();
+
 		// Update game
 		for (std::list<Object*>::iterator it = objects.begin(); it != objects.end(); ++it )
 		{
@@ -530,7 +532,10 @@ bool SceneGame::DoCrate( Crate& crate )
 
 			// Is there no conveyor at the end of this one, then just delete crate, level is fubar
 			if ( nextDest == NULL )
+			{
+				crate.connected->connected = NULL;
 				return true;
+			}
 
 			// Only go to next if next one is free
 			if ( nextDest->connected == NULL )
@@ -574,7 +579,7 @@ bool SceneGame::DoTruck( Truck& truck )
 			truck.interval = truck.intervalmax;
 
 			// Get random color
-			objects.push_back( new Crate( truck.pos.x, truck.pos.y, truck.dir, truck.colors[rand() % truck.colors.size()] ) );
+			objects.push_back( new Crate( truck.pos.x, truck.pos.y, truck.dir, level.GetRandomColor() ) );
 			Crate& crate = *((Crate*)objects.back());
 
 			// Assign first destination to get crate moving
