@@ -232,7 +232,6 @@ void SceneGame::Step()
 					break;
 
 				// Consider height into equation
-				//std::cout << (**tmp1).type << " " << (**tmp2).type << std::endl;
 				float height1 = ObjectHeight[ (**tmp1).type ];
 				float height2 = ObjectHeight[ (**tmp2).type ];
 				if ( GetDistanceSQ( (**tmp2).pos, SORT_POINT ) + height2 * height2 < GetDistanceSQ( (**tmp1).pos, SORT_POINT ) + height1 * height1 )
@@ -262,7 +261,6 @@ void SceneGame::Step()
 	if ( isGameOver and timer <= 0 )
 	{
 		EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
-		// TODO: Removed while testing game
 		EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( points ) );
 	}
 
@@ -299,11 +297,7 @@ void SceneGame::Draw()
 				if ( ((Conveyor&)obj).isSwitch )
 				{
 					std::stringstream name;
-					name << "conveyor " << obj.dir;
-					if ( ((Conveyor&)obj).isSwitchLeft )
-						name << " turn left";
-					else
-						name << " turn right";
+					name << "conveyor " << (((Conveyor&)obj).isSwitchLeft ? obj.dir : ((obj.dir + 1) % 4)) << " turn";
 					obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
 				}
 
@@ -322,41 +316,47 @@ void SceneGame::Draw()
 					// Left turn (checking the directions on unit circle, only the one to the left of current dir should be connected)
 					if ( connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and !connections[(obj.dir + 3) % 4] )
 					{
-						name << (obj.dir + 3) % 4 << " turn left";
+						name << (obj.dir + 3) % 4 << " turn";
 						obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
 					}
 					// Right turrn
 					else if ( !connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
 					{
-						name << (obj.dir + 1) % 4 << " turn right";
+						name << (obj.dir + 2) % 4 << " turn";
 						obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
 					}
 
-					// Left sideroad?
-					else if ( connections[(obj.dir + 1) % 4] and connections[(obj.dir + 2) % 4] and !connections[(obj.dir + 3) % 4] )
+					// T junctions
+					else if ( (obj.dir == Dir::RIGHT or obj.dir == Dir::LEFT) and connections[Dir::UP] )
 					{
-						// TODO
+						name << "02 con 1";
+						obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
+					}
+					else if ( (obj.dir == Dir::RIGHT or obj.dir == Dir::LEFT) and connections[Dir::DOWN] )
+					{
+						name << "02 con 3";
+						obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
+					}
+					else if ( (obj.dir == Dir::UP or obj.dir == Dir::DOWN) and connections[Dir::LEFT] )
+					{
+						name << "13 con 2";
+						obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
+					}
+					else if ( (obj.dir == Dir::UP or obj.dir == Dir::DOWN) and connections[Dir::RIGHT] )
+					{
+						name << "13 con 0";
+						obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
 					}
 
-					// Right sideroad?
-					else if ( !connections[(obj.dir + 1) % 4] and connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
+					// Cross junction
+					else if ( connections[Dir::RIGHT] and connections[Dir::UP] and connections[Dir::LEFT] and connections[Dir::DOWN] )
 					{
-						// TODO
+						if ( obj.dir == Dir::RIGHT or obj.dir == Dir::LEFT )
+							name << "02 cross";
+						else
+							name << "13 cross";
+						obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
 					}
-
-					// T section
-					else if ( connections[(obj.dir + 1) % 4] and !connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
-					{
-						// TODO
-					}
-
-					// Intersection. All 3 directions lead to this
-					else if ( connections[(obj.dir + 1) % 4] and connections[(obj.dir + 2) % 4] and connections[(obj.dir + 3) % 4] )
-					{
-						// TODO
-					}
-
-
 				}
 				// No break, fall through to set the position of conveyor too
 
@@ -445,8 +445,8 @@ sf::Vector2f SceneGame::TransformMapToScreen( sf::Vector2f& pos )
 
 	// Translate to center of screen
 	sf::Vector2f screen(
-		scaled.x + 160,
-		scaled.y + 120 );
+		(scaled.x) + 160,
+		(scaled.y) + 120 );
 	return screen;
 }
 
