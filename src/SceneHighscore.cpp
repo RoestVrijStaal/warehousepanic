@@ -7,7 +7,7 @@
 
 #include <fstream>
 #include <sstream>
-#include <map>
+#include <list>
 
 
 // Constructors
@@ -42,7 +42,20 @@ void SceneHighscore::Initialize()
             int thescore;
             StringToInt(line.substr(0,equals),thescore);
             std::string thename = line.substr(equals + 1);
-            scores.insert(std::list< Score >::iterator() = scores.begin());
+            bool stop = false;
+            std::list< Score >::iterator it = scores.begin();
+            while (stop == false)
+            {
+                if (it->score < newScore)
+                {
+                    it++;
+                }
+                else
+                {
+                    stop = true;
+                }
+            }
+            scores.insert( scores.end(), 1, Score(thescore, thename) );
         }
     }
     myfile.close();
@@ -58,7 +71,7 @@ void SceneHighscore::Initialize()
 				newScore = event.Highscore_new_score;
 				for (it = scores.begin(); it != scores.end(); it++)
 				{
-				    if (newScore > it->first)
+				    if (newScore > it->score)
 				    {
 				        tmp = true;
 				    }
@@ -97,10 +110,7 @@ void SceneHighscore::Terminate()
 	{
 	    ResMgr.GetMusic( "game over" ).Stop();
 	}
-	while (!scores.empty())
-	{
-	    scores.erase( scores.begin(),scores.end() );
-	}
+	scores.clear();
 }
 
 void SceneHighscore::Step()
@@ -116,23 +126,35 @@ void SceneHighscore::Step()
 				name = keyboard->GetText();
 				keyboard->Hide();
 				isMouseDown = true;
-				didChange = true;
-				scores.insert( std::pair<int, std::string>(newScore, name) );
-				if (didChange == true)
+				std::list< Score >::reverse_iterator it;
+				int sofar = 0;
+				for (it = scores.rbegin(); it != scores.rend(); it++)
+				{
+				    if (it->score > newScore)
+				    {
+				        break;
+				    }
+				    sofar += 1;
+				}
+				std::list< Score >::iterator it2;
+				while (sofar > 0)
+				{
+				    it2++;
+				    sofar--;
+				}
+				scores.insert( it2, 1, Score(newScore, name) );
+                std::ofstream file("highscores.wph",std::ios::out | std::ios::trunc);
+                int str_sofar = 0;
+                for (std::list< Score >::iterator it = scores.begin(); it != scores.end(); it++)
                 {
-                    std::ofstream file("highscores.wph",std::ios::out | std::ios::trunc);
-                    int str_sofar = 0;
-                    for (std::multimap<int, std::string>::iterator it = scores.begin(); it != scores.end(); it++)
+                    if (str_sofar < 10)
                     {
-                        if (str_sofar < 9)
-                        {
-                            file << it->first << "=" << it->second << std::endl;
-                        }
-                        str_sofar += 1;
+                        file << it->score << "=" << it->name << std::endl;
                     }
-                    file.close();
-                    didChange = false;
+                    str_sofar += 1;
                 }
+                file.close();
+                didChange = false;
 			}
 		}
 	}
@@ -156,15 +178,14 @@ void SceneHighscore::Draw()
 	highscore_title.SetPosition( (320 - highscore_title.GetRect().GetWidth()) / 2, 2 );
 	std::vector<sf::String> highscores;
 	int str_sofar = 0;
-	std::multimap<int, std::string>::reverse_iterator it;
-	for (it = scores.rbegin(); it != scores.rend(); it++)
+	for (std::list< Score >::iterator it = scores.begin(); it != scores.end(); it++)
 	{
 	    if (str_sofar < 10)
 	    {
-            highscores.push_back( sf::String(std::string(it->second), sf::Font::GetDefaultFont(), 15) );
+            highscores.push_back( sf::String(std::string(it->name), sf::Font::GetDefaultFont(), 15) );
             highscores.back().SetPosition( 75, str_sofar * 20 + 35 );
             std::stringstream thescore;
-            thescore << it->first;
+            thescore << it->score;
             highscores.push_back( sf::String(thescore.str(), sf::Font::GetDefaultFont(), 15) );
             highscores.back().SetPosition( 225, str_sofar * 20 + 35 );
 	    }

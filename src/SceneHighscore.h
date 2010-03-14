@@ -6,6 +6,7 @@
 #include "Score.h"
 
 #include <string>
+#include <list>
 
 
 
