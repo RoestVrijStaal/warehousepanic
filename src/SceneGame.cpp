@@ -21,7 +21,7 @@ SceneGame::~SceneGame()
 void SceneGame::Initialize()
 {
 	// Level stuff
-	level = Level( "levels/1 gate.lvl" ); // TODO: How do we choose level?
+	level = Level( "levels/test level.lvl" ); // TODO: How do we choose level?
 	for ( std::vector<Object*>::iterator it = level.objects.begin(); it != level.objects.end(); ++it )
 	{
 		if ( *it != NULL )
@@ -232,7 +232,7 @@ void SceneGame::Step()
 					break;
 
 				// Consider height into equation
-				std::cout << (**tmp1).type << " " << (**tmp2).type << std::endl;
+				//std::cout << (**tmp1).type << " " << (**tmp2).type << std::endl;
 				float height1 = ObjectHeight[ (**tmp1).type ];
 				float height2 = ObjectHeight[ (**tmp2).type ];
 				if ( GetDistanceSQ( (**tmp2).pos, SORT_POINT ) + height2 * height2 < GetDistanceSQ( (**tmp1).pos, SORT_POINT ) + height1 * height1 )

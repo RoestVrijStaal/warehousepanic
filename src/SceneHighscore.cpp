@@ -29,9 +29,9 @@ void SceneHighscore::Initialize()
 	newScore = 0;
 	name = "";
 
-    std::ifstream myfile ("highscores.wph");
 	std::list< Score >::iterator it;
     bool tmp = false;
+    std::ifstream myfile ("highscores.wph");
     if (myfile.is_open())
     {
         while (! myfile.eof() )
@@ -43,22 +43,36 @@ void SceneHighscore::Initialize()
             StringToInt(line.substr(0,equals),thescore);
             std::string thename = line.substr(equals + 1);
             bool stop = false;
-            std::list< Score >::iterator it = scores.begin();
+            std::list< Score >::iterator it = scores.end();
             while (stop == false)
             {
                 if (it->score < newScore)
                 {
-                    it++;
+                    it--;
                 }
                 else
                 {
                     stop = true;
                 }
             }
-            scores.insert( scores.end(), 1, Score(thescore, thename) );
+            scores.insert( it, 1, Score(thescore, thename) );
         }
+        myfile.close();
     }
-    myfile.close();
+    else
+    {
+        scores.insert( scores.begin(),1,Score( 3, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 5, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 10, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 25, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 30, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 40, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 50, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 75, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 100, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 150, "Milestone Marker" ) );
+        printf("%d",scores.size());
+    }
 
 	// Any event for highscore scene?
 	while ( EventMgr.HasEvent( HIGHSCORE ) )
@@ -126,17 +140,21 @@ void SceneHighscore::Step()
 				name = keyboard->GetText();
 				keyboard->Hide();
 				isMouseDown = true;
-				std::list< Score >::reverse_iterator it;
+				std::list< Score >::iterator it;
 				int sofar = 0;
-				for (it = scores.rbegin(); it != scores.rend(); it++)
+				for (it = scores.begin(); it != scores.end(); it++)
 				{
 				    if (it->score > newScore)
 				    {
-				        break;
+				        std::cout << "K\n";
+				        printf("%d > %d\n", newScore, it->score);
+				        sofar += 1;
+				        continue;
 				    }
-				    sofar += 1;
+				    std::cout << "S\n";
+				    break;
 				}
-				std::list< Score >::iterator it2;
+				std::list< Score >::iterator it2 = scores.begin();
 				while (sofar > 0)
 				{
 				    it2++;
