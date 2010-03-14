@@ -2,6 +2,7 @@
 
 struct Score
 {
-    std::string name;
+    Score( int newscore, std::string newname) : score(newscore), name(newname) {};
     int score;
+    std::string name;
 };
