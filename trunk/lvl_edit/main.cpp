@@ -73,7 +73,7 @@ int main ()
 	sf::Image img_level_templ		= load_image("warehouse-template.png");
 	sf::Image img_save			   = load_image("button-save.PNG"	   );
 	sf::Font arial;
-	arial.LoadFromFile( "arial.tff", 15 );
+	arial.LoadFromFile( "lvl_edit/arial.ttf", 15 );
 
 	vector<random_class> level( 18 * 18 );
 	cout << "Type the level NAME excluding path and extension to load, or press enter to create new: ";
