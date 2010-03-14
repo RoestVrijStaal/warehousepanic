@@ -9,7 +9,6 @@
 #include "random_class.h"
 
 using namespace std;
-using namespace sf;
 
 
 
