@@ -24,6 +24,7 @@ SceneHighscore::~SceneHighscore()
 // Methods
 void SceneHighscore::Initialize()
 {
+	sndClick = sf::Sound( ResMgr.GetSound( "click" ) );
 	isMouseDown = true;
 	keyboard = NULL;
 	newScore = 0;
@@ -179,6 +180,7 @@ void SceneHighscore::Step()
 		bool curMouseDown = App.GetWindow().GetInput().IsMouseButtonDown( sf::Mouse::Left );
 		if ( curMouseDown and !isMouseDown )
 		{
+			sndClick.Play();
 			EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "menu" ) );
 		}
 		isMouseDown = curMouseDown;
@@ -206,7 +208,7 @@ void SceneHighscore::Draw()
 	    str_sofar += 1;
 	}
 	App.GetWindow().Draw( highscore_title );
-	for (int i = 0; i < highscores.size(); i++)
+	for (int i = 0; i < (int)highscores.size(); i++)
 	{
 	    App.GetWindow().Draw( highscores[i] );
 	}

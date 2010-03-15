@@ -5,6 +5,7 @@
 #include "Keyboard.h"
 #include "Score.h"
 
+#include <SFML/Audio.hpp>
 #include <string>
 #include <list>
 
@@ -29,6 +30,7 @@ class SceneHighscore : public Scene
 		std::string name;
 		bool didChange;
 		std::list< Score > scores;
+		sf::Sound sndClick;
 
 	private:
 };
