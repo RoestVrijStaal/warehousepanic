@@ -61,16 +61,16 @@ void SceneHighscore::Initialize()
     }
     else
     {
-        scores.insert( scores.begin(),1,Score( 3, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 5, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 10, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 25, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 30, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 40, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 50, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 75, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 100, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 150, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 3 * 25, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 5 * 25, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 10 * 25, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 25 * 25, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 30 * 25, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 40 * 25, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 50 * 25, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 75 * 25, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 100 * 25, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 150 * 25, "Milestone Marker" ) );
     }
 
 	// Any event for highscore scene?

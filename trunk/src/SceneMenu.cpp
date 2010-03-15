@@ -21,6 +21,7 @@ void SceneMenu::Initialize()
 	selected = -1;
 	isMouseDown = true;
 	items.push_back( "Play" );
+	items.push_back( "How to Play" );
 	items.push_back( "Highscore" );
 	items.push_back( "Quit" );
 
@@ -80,10 +81,15 @@ void SceneMenu::Step()
 				break;
 
 			case 1:
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
+				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "howToPlay" ) );
+				ResMgr.GetMusic( "menu" ).Stop();
 				break;
 
 			case 2:
+				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
+				break;
+
+            case 3:
 				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "credits" ) );
 				break;
 

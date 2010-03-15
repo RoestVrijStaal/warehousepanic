@@ -582,7 +582,7 @@ bool SceneGame::DoTruck( Truck& truck )
 			truck.interval = truck.intervalmax;
 
 			// Get random color
-			objects.push_back( new Crate( truck.pos.x, truck.pos.y, truck.dir, level.GetRandomColor() ) );
+			objects.push_back( new Crate( truck.pos.x, truck.pos.y, truck.dir, level.GetRandomColor(), 0 ) );
 			Crate& crate = *((Crate*)objects.back());
 
 			// Assign first destination to get crate moving
