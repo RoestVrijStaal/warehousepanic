@@ -35,6 +35,10 @@ void ResourceManager::Initialize()
 	// Backgrounds
 	images["splash"].LoadFromFile( "media/bg_splash.png" );
 	images["title"].LoadFromFile( "media/bg_title.png" );
+	images["tutorial 1"].LoadFromFile( "media/bg_tutorial_1.png" );
+	images["tutorial 2"].LoadFromFile( "media/bg_tutorial_2.png" );
+	images["tutorial 3"].LoadFromFile( "media/bg_tutorial_3.png" );
+	images["tutorial 4"].LoadFromFile( "media/bg_tutorial_4.png" );
 
 	// Game graphics
 	images["conveyor 02"].LoadFromFile( "media/conveyor_dir_02.png" );

@@ -81,15 +81,14 @@ void SceneMenu::Step()
 				break;
 
 			case 1:
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "howToPlay" ) );
-				ResMgr.GetMusic( "menu" ).Stop();
+				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "howtoplay" ) );
 				break;
 
 			case 2:
 				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
 				break;
 
-            case 3:
+			case 3:
 				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "credits" ) );
 				break;
 
