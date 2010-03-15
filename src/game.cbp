@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="..\WarehousePanic.exe" prefix_auto="1" extension_auto="0" />
+				<Option output="WarehousePanic.exe" prefix_auto="1" extension_auto="0" />
 				<Option working_dir="..\" />
 				<Option object_output="obj\Debug\" />
 				<Option type="1" />
@@ -53,6 +53,7 @@
 		<Unit filename="SceneGame.h" />
 		<Unit filename="SceneHighscore.cpp" />
 		<Unit filename="SceneHighscore.h" />
+		<Unit filename="SceneHowToPlay.h" />
 		<Unit filename="SceneMenu.cpp" />
 		<Unit filename="SceneMenu.h" />
 		<Unit filename="Scenesplash.cpp" />

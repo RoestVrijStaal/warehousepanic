@@ -10,7 +10,7 @@
 class Crate : public Object
 {
 public:
-	Crate( float x, float y, int direction, GameColor::ColorType thecolor )
+	Crate( float x, float y, int direction, GameColor::ColorType thecolor, unsigned int thevalue )
 	{
 		// Set type of this object (used in game)
 		type = Object::CRATE;
@@ -21,9 +21,11 @@ public:
 		dir = direction;
 		connected = NULL;
 		color = thecolor;
+		value = thevalue;
 
 		SetSprite();
 	}
+	unsigned int value;
 
 protected:
 private:
