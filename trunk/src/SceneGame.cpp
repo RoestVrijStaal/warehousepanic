@@ -477,7 +477,7 @@ Object* SceneGame::FindClickedObject( sf::Vector2f& mappos )
 // Return true if crate done and should be deleted
 bool SceneGame::DoCrate( Crate& crate )
 {
-	// If crate.dest is ever NULL, then the level is fucked up so just delete crate
+	// If crate.dest is ever NULL, then the level is messed up so just delete crate
 	if ( crate.connected == NULL )
 		return true;
 
@@ -506,11 +506,11 @@ bool SceneGame::DoCrate( Crate& crate )
 				case Object::GATE:
 					if ( crate.color == crate.connected->color )
 					{
-						++points;
+						points += crate.value;
 					}
 					else
 					{
-						--points;
+						points -= crate.value;
 					}
 					crate.connected->connected = NULL; // "Gate, I am not on you anymore"
 					crate.connected = NULL;
@@ -547,6 +547,10 @@ bool SceneGame::DoCrate( Crate& crate )
 				nextDest->connected = &crate; // Take the next one
 				crate.connected = nextDest;
 				distLeft -= curDist;
+				if ( crate.connected->type == Object::CONVEYOR and ((Conveyor*)(crate.connected))->isSwitch == true )
+                {
+                    crate.value += 25;
+                }
 			}
 
 			// Else next square occupied, so stop moving

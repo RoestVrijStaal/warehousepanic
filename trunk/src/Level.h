@@ -158,7 +158,7 @@ public:
 									else
 										t = new Truck(idx % 18, idx / 18, Dir::UP);
 
-									t->intervalmax = crateInterval;
+									t->intervalmax = (int)crateInterval;
 									t->interval = rand() % (int)crateInterval;
 									t->delay = 0;
 									t->active = true;
