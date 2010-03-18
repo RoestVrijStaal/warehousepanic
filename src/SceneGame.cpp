@@ -599,7 +599,7 @@ bool SceneGame::DoTruck( Truck& truck )
 			else if ( truck.dir == Dir::DOWN )
 				crate.connected = level.GetObjectAt( (int)truck.targetpos.x, (int)truck.targetpos.y + 1 );
             truck.crates -= 1;
-            printf( "Crates left: %i/%i\n", truck.crates, truck.craterevert );
+            //printf( "Crates left: %i/%i\n", truck.crates, truck.craterevert );
 		}
 		truck.interval -= 1;
 	}
@@ -622,7 +622,7 @@ bool SceneGame::DoTruck( Truck& truck )
                 truck.pos.y = truck.targetpos.y;
             }
             // Play backing up sound
-            cout << "Parking...\n";
+            //cout << "Parking...\n";
 	    }
 	    else if ( truck.delay <= 0 )
 	    {
@@ -647,21 +647,20 @@ bool SceneGame::DoTruck( Truck& truck )
                 }
             }
             // Play driving away sound
-            cout << "Leaving...\n";
+            //cout << "Leaving...\n";
 	    }
 	    else
 	    {
 	        truck.delay -= 1;
-            printf( "Until new truck: %i/%i\n", truck.delay, truck.delayrevert );
+            //printf( "Until new truck: %i/%i\n", truck.delay, truck.delayrevert );
             if ( truck.delay <= 0 )
             {
                 truck.crates = truck.craterevert;
                 truck.active = false;
-                cout << "New truck incoming!\n";
+                //cout << "New truck incoming!\n";
             }
 	    }
 	}
-	// TODO: implement truck done and driving away method
 	return false;
 }
 
