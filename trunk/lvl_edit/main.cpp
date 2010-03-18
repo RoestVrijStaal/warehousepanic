@@ -84,6 +84,8 @@ int main ()
 	float crateSpeed = 0.01f;
 	float crateInterval = 350;
 	float crateSpeedIncrement = 0.0000001f;
+	int cratesPerTruck = 10;
+	int truckDelay = 5 * 100; // Five second in game.
 	getline(cin,filename);
 	if (filename != "")
 	{
@@ -123,6 +125,14 @@ int main ()
 				else if ( key == "cratespeedincrement" )
 				{
 					StringToFloat(value, crateSpeedIncrement);
+				}
+				else if ( key == "cratespertruck" )
+				{
+					StringToInt(value, cratesPerTruck);
+				}
+				else if ( key == "truckdelay" )
+				{
+					StringToInt(value, truckDelay);
 				}
 				else if ( key == "tiles" )
 				{
@@ -432,6 +442,8 @@ int main ()
 								file << "cratespeed=" << crateSpeed << endl;
 								file << "crateinterval=" << crateInterval << endl;
 								file << "cratespeedincrement=" << crateSpeedIncrement << endl;
+								file << "cratespertruck=" << cratesPerTruck << endl;
+								file << "truckdelay=" << truckDelay << endl;
 								file << "tiles=";
 								int pos = 0;
 								for ( vector<random_class>::iterator it = level.begin(); it != level.end(); ++it, ++pos )

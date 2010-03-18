@@ -22,6 +22,8 @@ public:
 	{
 		width = height = levelTime = curTime = 0;
 		crateSpeed = crateInterval = crateSpeedIncrement = 0.0f;
+		cratesPerTruck = 10;
+		truckDelay = 5 * 100;   // Five seconds
 	}
 
 	Level( std::string filename )
@@ -60,6 +62,14 @@ public:
 				else if ( key == "cratespeedincrement" )
 				{
 					StringToFloat(value, crateSpeedIncrement);
+				}
+				else if ( key == "cratespertruck" )
+				{
+				    StringToInt(value, cratesPerTruck);
+				}
+				else if ( key == "truckdelay" )
+				{
+				    StringToInt(value, truckDelay);
 				}
 				else if ( key == "tiles" )
 				{
@@ -161,7 +171,9 @@ public:
 									t->intervalmax = (int)crateInterval;
 									t->interval = rand() % (int)crateInterval;
 									t->delay = 0;
-									t->active = true;
+									t->delayrevert = 5 * 100;
+									t->crates = t->craterevert = 3;
+									t->active = false;
 									objects[idx] = t;
 								}
 								break;
@@ -236,6 +248,8 @@ public:
 	int curTime;
 	std::vector<Object*> objects;
 	std::vector<GameColor::ColorType> colors;
+	int cratesPerTruck;
+	int truckDelay;
 protected:
 private:
 };
