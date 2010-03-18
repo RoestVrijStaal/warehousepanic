@@ -17,11 +17,25 @@ public:
 		type = Object::TRUCK;
 
 		// Inheriited from Object
-		pos.x = x;
-		pos.y = y;
+		targetpos.x = x;
+		targetpos.y = y;
 		dir = direction;
 		connected = NULL;
-
+		if ( dir == Dir::RIGHT )
+		{
+		    pos.x = targetpos.x - 5;
+		    pos.y = targetpos.y;
+		    cdir = 0.02;
+		}
+		else
+		{
+		    pos.x = targetpos.x;
+		    pos.y = targetpos.y + 5;
+		    cdir = -0.02;
+		}
+        active = false;
+        crates = 10;
+        craterevert = 10;
 		SetSprite();
 	}
 
@@ -31,6 +45,11 @@ public:
 	int delay;
 	bool active;
 	std::vector<GameColor::ColorType> colors;
+	sf::Vector2f targetpos;    // This is for truck animation.
+	float cdir;
+	int crates;
+	int craterevert;
+	int delayrevert;
 
 protected:
 private:

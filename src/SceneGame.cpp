@@ -579,36 +579,88 @@ bool SceneGame::DoCrate( Crate& crate )
 
 bool SceneGame::DoTruck( Truck& truck )
 {
-	if ( truck.active )
+	if ( truck.active and truck.crates > 0 )
 	{
-		if ( truck.interval <= 0 )
+		if ( truck.interval <= 0 and truck.targetpos.x == truck.pos.x and truck.targetpos.y == truck.pos.y )
 		{
 			truck.interval = truck.intervalmax;
 
 			// Get random color
-			objects.push_back( new Crate( truck.pos.x, truck.pos.y, truck.dir, level.GetRandomColor(), 0 ) );
+			objects.push_back( new Crate( truck.targetpos.x, truck.targetpos.y, truck.dir, level.GetRandomColor(), 0 ) );
 			Crate& crate = *((Crate*)objects.back());
 
 			// Assign first destination to get crate moving
 			if ( truck.dir == Dir::RIGHT )
-				crate.connected = level.GetObjectAt( (int)truck.pos.x + 1, (int)truck.pos.y );
+				crate.connected = level.GetObjectAt( (int)truck.targetpos.x + 1, (int)truck.targetpos.y );
 			else if ( truck.dir == Dir::UP )
-				crate.connected = level.GetObjectAt( (int)truck.pos.x, (int)truck.pos.y - 1 );
+				crate.connected = level.GetObjectAt( (int)truck.targetpos.x, (int)truck.targetpos.y - 1 );
 			else if ( truck.dir == Dir::LEFT )
-				crate.connected = level.GetObjectAt( (int)truck.pos.x - 1, (int)truck.pos.y );
+				crate.connected = level.GetObjectAt( (int)truck.targetpos.x - 1, (int)truck.targetpos.y );
 			else if ( truck.dir == Dir::DOWN )
-				crate.connected = level.GetObjectAt( (int)truck.pos.x, (int)truck.pos.y + 1 );
+				crate.connected = level.GetObjectAt( (int)truck.targetpos.x, (int)truck.targetpos.y + 1 );
+            truck.crates -= 1;
+            printf( "Crates left: %i/%i\n", truck.crates, truck.craterevert );
 		}
-		else if ( truck.delay <= 0 )
-		{
-			truck.interval -= 1;
-		}
-		else
-		{
-			truck.delay -= 1;
-		}
+		truck.interval -= 1;
 	}
-
+	else
+	{
+	    if ( truck.crates > 0 and truck.delay <= 0 )
+	    {
+            if ( truck.dir == Dir::RIGHT )
+            {
+                truck.pos.x += truck.cdir;
+            }
+            else
+            {
+                truck.pos.y += truck.cdir;
+            }
+            if ( truck.pos.x >= truck.targetpos.x and truck.pos.y <= truck.targetpos.y )
+            {
+                truck.active = true;
+                truck.pos.x = truck.targetpos.x;
+                truck.pos.y = truck.targetpos.y;
+            }
+            // Play backing up sound
+            cout << "Parking...\n";
+	    }
+	    else if ( truck.delay <= 0 )
+	    {
+	        if ( truck.dir == Dir::RIGHT )
+            {
+                truck.pos.x -= truck.cdir;
+                if ( truck.pos.x <= truck.targetpos.x - 5 and truck.pos.y == truck.targetpos.y )
+                {
+                    truck.delay = truck.delayrevert;
+                    truck.pos.x = truck.targetpos.x - 5;
+                    truck.pos.y = truck.targetpos.y;
+                }
+            }
+            else
+            {
+                truck.pos.y -= truck.cdir;
+                if ( truck.pos.x == truck.targetpos.x and truck.pos.y >= truck.targetpos.y + 5 )
+                {
+                    truck.delay = truck.delayrevert;
+                    truck.pos.x = truck.targetpos.x;
+                    truck.pos.y = truck.targetpos.y + 5;
+                }
+            }
+            // Play driving away sound
+            cout << "Leaving...\n";
+	    }
+	    else
+	    {
+	        truck.delay -= 1;
+            printf( "Until new truck: %i/%i\n", truck.delay, truck.delayrevert );
+            if ( truck.delay <= 0 )
+            {
+                truck.crates = truck.craterevert;
+                truck.active = false;
+                cout << "New truck incoming!\n";
+            }
+	    }
+	}
 	// TODO: implement truck done and driving away method
 	return false;
 }
