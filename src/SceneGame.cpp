@@ -272,6 +272,19 @@ void SceneGame::Step()
 	}
 
 	isMouseDown = newMouseButton;
+	if ( level.levelTime >= 1 )
+	{
+	    level.levelTime -= 1;
+    }
+	// Out of time?
+    if ( level.levelTime <= 0 )
+    {
+        isGameOver = true;
+    }
+    if ( level.levelTime == 100 * 10 )  // If there are only ten seconds left.
+    {
+        //Play running out of time sound.
+    }
 }
 
 void SceneGame::Draw()
@@ -384,6 +397,12 @@ void SceneGame::Draw()
 	str_score.SetText(score.str());
 	str_score.SetPosition( 10, 200 );
 	App.GetWindow().Draw(str_score);
+	stringstream time;
+	time << "Time: " << (double)(level.levelTime / 100);
+	str_time.SetText( time.str() );
+	sf::FloatRect time_rect = str_time.GetRect();
+	str_time.SetPosition( 320 - time_rect.GetWidth() - 10, 240 - time_rect.GetHeight() - 10 );
+	App.GetWindow().Draw( str_time );
 }
 
 

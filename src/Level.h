@@ -47,9 +47,9 @@ public:
 				{
 					StringToInt(value, height);
 				}
-				else if ( key == "time" )
+				else if ( key == "leveltime" )
 				{
-					StringToInt(value, levelTime);
+					StringToLong(value, levelTime);
 				}
 				else if ( key == "cratespeed" )
 				{
@@ -244,7 +244,7 @@ public:
 	float crateSpeed;
 	float crateInterval;
 	float crateSpeedIncrement;
-	int levelTime;
+	long levelTime;
 	int curTime;
 	std::vector<Object*> objects;
 	std::vector<GameColor::ColorType> colors;
