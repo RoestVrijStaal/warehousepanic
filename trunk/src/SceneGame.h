@@ -46,6 +46,7 @@ class SceneGame : public Scene
 
 		// Other Game Stuff
 		sf::String str_score;
+		sf::String str_time;
 
 		sf::Sprite pbuttonPause;
 		sf::Sprite pbuttonQuit;

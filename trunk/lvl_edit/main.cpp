@@ -24,6 +24,7 @@ bool FromString( const std::string& s, T& t, std::ios_base& (*f)(std::ios_base&)
 	return !(iss >> f >> t).fail();
 }
 #define StringToInt( str, num ) FromString<int>( str, num )
+#define StringToLong( str, num ) FromString<long>( str, num )
 #define StringToFloat( str, num ) FromString<float>( str, num )
 
 
@@ -80,12 +81,12 @@ int main ()
 	string filename = "";
 	int width = 18;
 	int height = 18;
-	int time = 60;
 	float crateSpeed = 0.01f;
 	float crateInterval = 350;
 	float crateSpeedIncrement = 0.0000001f;
 	int cratesPerTruck = 10;
-	int truckDelay = 5 * 100; // Five second in game.
+	int truckDelay = 100 * 5; // Five seconds in game.
+	long levelTime = 100 * 180; // Three minutes in game.
 	getline(cin,filename);
 	if (filename != "")
 	{
@@ -110,9 +111,9 @@ int main ()
 				{
 					StringToInt(value, height);
 				}
-				else if ( key == "time" )
+				else if ( key == "leveltime" )
 				{
-					StringToInt(value, time);
+					StringToLong(value, levelTime);
 				}
 				else if ( key == "cratespeed" )
 				{
@@ -438,7 +439,7 @@ int main ()
 								file.open(("levels/" + filename + ".lvl").c_str());
 								file << "width=" << width << endl;
 								file << "height=" << height << endl;
-								file << "time=" << time << endl;
+								file << "leveltime=" << levelTime << endl;
 								file << "cratespeed=" << crateSpeed << endl;
 								file << "crateinterval=" << crateInterval << endl;
 								file << "cratespeedincrement=" << crateSpeedIncrement << endl;

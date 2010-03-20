@@ -14,6 +14,7 @@ bool FromString( const std::string& s, T& t, std::ios_base& (*f)(std::ios_base&)
 }
 
 #define StringToInt( str, num ) FromString<int>( str, num )
+#define StringToLong( str, num ) FromString<long>( str, num )
 #define StringToFloat( str, num ) FromString<float>( str, num )
 
 #endif // FUNCTIONS_H
