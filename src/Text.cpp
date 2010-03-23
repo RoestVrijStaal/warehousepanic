@@ -68,6 +68,13 @@ void Text::Draw()
 		sprite.SetPosition( pos.x + charOffset, pos.y );
 		window.Draw( sprite );
 
-		charOffset += img.GetWidth();
+		switch ( size )
+		{
+			case SMALL: charOffset += img.GetWidth() - 1; break;
+			case MEDIUM: charOffset += img.GetWidth() - 2; break;
+			case LARGE: charOffset += img.GetWidth() - 3; break;
+			default: break;
+
+		}
 	}
 }
