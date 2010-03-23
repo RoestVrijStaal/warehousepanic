@@ -33,6 +33,14 @@ void Text::SetPosition( float x, float y )
 	pos.y = y;
 }
 
+void Text::SetSize( Size newsize )
+{
+    if ( newsize == SMALL or newsize == MEDIUM or newsize == LARGE )
+    {
+        size = newsize;
+    }
+}
+
 void Text::Draw()
 {
 	sf::RenderWindow& window = App.GetWindow();
