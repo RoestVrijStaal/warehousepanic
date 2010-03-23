@@ -17,6 +17,7 @@ class Text
 		void SetText( std::string newtext );
 		void SetPosition( sf::Vector2f& newpos );
 		void SetPosition( float x, float y );
+		void SetSize( Size newsize );
 
 		void Draw();
 
