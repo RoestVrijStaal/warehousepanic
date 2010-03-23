@@ -132,7 +132,7 @@ void ResourceManager::Initialize()
 	images["X small"].LoadFromFile( "media/font_X_small.png" );
 	images["Y small"].LoadFromFile( "media/font_Y_small.png" );
 	images["Z small"].LoadFromFile( "media/font_Z_small.png" );
-	images["  small"].LoadFromFile( "media/font_space_small.png" );
+	images["  small"].LoadFromFile( "media/font_ _small.png" );
 	// Font - medium
 	images["A medium"].LoadFromFile( "media/font_A_medium.png" );
 	images["B medium"].LoadFromFile( "media/font_B_medium.png" );
@@ -160,7 +160,7 @@ void ResourceManager::Initialize()
 	images["X medium"].LoadFromFile( "media/font_X_medium.png" );
 	images["Y medium"].LoadFromFile( "media/font_Y_medium.png" );
 	images["Z medium"].LoadFromFile( "media/font_Z_medium.png" );
-	images["  medium"].LoadFromFile( "media/font_space_medium.png" );
+	images["  medium"].LoadFromFile( "media/font_ _medium.png" );
 	// Font - large
 	images["A large"].LoadFromFile( "media/font_A_large.png" );
 	images["B large"].LoadFromFile( "media/font_B_large.png" );
@@ -188,7 +188,7 @@ void ResourceManager::Initialize()
 	images["X large"].LoadFromFile( "media/font_X_large.png" );
 	images["Y large"].LoadFromFile( "media/font_Y_large.png" );
 	images["Z large"].LoadFromFile( "media/font_Z_large.png" );
-	images["  large"].LoadFromFile( "media/font_space_large.png" );
+	images["  large"].LoadFromFile( "media/font_ _large.png" );
 
 	// Sound buffers
 	sounds["switch"].LoadFromFile( "media/snd_button-25.wav" );
