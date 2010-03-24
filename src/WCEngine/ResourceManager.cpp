@@ -106,6 +106,16 @@ void ResourceManager::Initialize()
 	images["keyboard"].LoadFromFile( "media/keyboard.png" );
 
 	// Font - small
+	images["0 small"].LoadFromFile( "media/font_0_small.png" );
+	images["1 small"].LoadFromFile( "media/font_1_small.png" );
+	images["2 small"].LoadFromFile( "media/font_2_small.png" );
+	images["3 small"].LoadFromFile( "media/font_3_small.png" );
+	images["4 small"].LoadFromFile( "media/font_4_small.png" );
+	images["5 small"].LoadFromFile( "media/font_5_small.png" );
+	images["6 small"].LoadFromFile( "media/font_6_small.png" );
+	images["7 small"].LoadFromFile( "media/font_7_small.png" );
+	images["8 small"].LoadFromFile( "media/font_8_small.png" );
+	images["9 small"].LoadFromFile( "media/font_9_small.png" );
 	images["A small"].LoadFromFile( "media/font_A_small.png" );
 	images["B small"].LoadFromFile( "media/font_B_small.png" );
 	images["C small"].LoadFromFile( "media/font_C_small.png" );
@@ -134,6 +144,16 @@ void ResourceManager::Initialize()
 	images["Z small"].LoadFromFile( "media/font_Z_small.png" );
 	images["  small"].LoadFromFile( "media/font_ _small.png" );
 	// Font - medium
+	images["0 medium"].LoadFromFile( "media/font_0_medium.png" );
+	images["1 medium"].LoadFromFile( "media/font_1_medium.png" );
+	images["2 medium"].LoadFromFile( "media/font_2_medium.png" );
+	images["3 medium"].LoadFromFile( "media/font_3_medium.png" );
+	images["4 medium"].LoadFromFile( "media/font_4_medium.png" );
+	images["5 medium"].LoadFromFile( "media/font_5_medium.png" );
+	images["6 medium"].LoadFromFile( "media/font_6_medium.png" );
+	images["7 medium"].LoadFromFile( "media/font_7_medium.png" );
+	images["8 medium"].LoadFromFile( "media/font_8_medium.png" );
+	images["9 medium"].LoadFromFile( "media/font_9_medium.png" );
 	images["A medium"].LoadFromFile( "media/font_A_medium.png" );
 	images["B medium"].LoadFromFile( "media/font_B_medium.png" );
 	images["C medium"].LoadFromFile( "media/font_C_medium.png" );
@@ -162,6 +182,16 @@ void ResourceManager::Initialize()
 	images["Z medium"].LoadFromFile( "media/font_Z_medium.png" );
 	images["  medium"].LoadFromFile( "media/font_ _medium.png" );
 	// Font - large
+	images["0 large"].LoadFromFile( "media/font_0_large.png" );
+	images["1 large"].LoadFromFile( "media/font_1_large.png" );
+	images["2 large"].LoadFromFile( "media/font_2_large.png" );
+	images["3 large"].LoadFromFile( "media/font_3_large.png" );
+	images["4 large"].LoadFromFile( "media/font_4_large.png" );
+	images["5 large"].LoadFromFile( "media/font_5_large.png" );
+	images["6 large"].LoadFromFile( "media/font_6_large.png" );
+	images["7 large"].LoadFromFile( "media/font_7_large.png" );
+	images["8 large"].LoadFromFile( "media/font_8_large.png" );
+	images["9 large"].LoadFromFile( "media/font_9_large.png" );
 	images["A large"].LoadFromFile( "media/font_A_large.png" );
 	images["B large"].LoadFromFile( "media/font_B_large.png" );
 	images["C large"].LoadFromFile( "media/font_C_large.png" );

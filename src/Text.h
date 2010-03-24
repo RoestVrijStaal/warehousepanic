@@ -11,13 +11,14 @@ class Text
 	public:
 		enum Size { SMALL = 0, MEDIUM, LARGE, count };
 
-		Text( std::string newtext = "", int x = 0, int y = 0, Size newsize = SMALL );
+		Text( std::string newtext = " ", float x = 0, float y = 0, Size newsize = SMALL );
 		virtual ~Text();
 
 		void SetText( std::string newtext );
 		void SetPosition( sf::Vector2f& newpos );
 		void SetPosition( float x, float y );
 		void SetSize( Size newsize );
+		sf::Rect<float> GetRect();
 
 		void Draw();
 

@@ -3,6 +3,7 @@
 
 #include "WCEngine/Scene.h"
 
+#include "Text.h"
 
 
 class SceneCredits : public Scene
@@ -17,7 +18,7 @@ class SceneCredits : public Scene
 		virtual void Draw();
 
 		//Just makes this easier (for me :P)
-		sf::String makeString(std::string text, int hlevel, float &yToSet);
+		Text makeString(std::string text, float hlevel, float &yToSet);
 
 	protected:
 		bool isMouseDown;

@@ -39,68 +39,65 @@ void SceneCredits::Draw()
 	App.GetWindow().Clear( sf::Color( 0, 0, 0 ) );
 	float theY = curY;
 
-    std::vector<sf::String> credits_text;
+    std::vector<Text> credits_text;
 
-	credits_text.push_back(makeString("Credits"  , 3, theY));
-    credits_text.push_back(makeString("Section 1", 2, theY));
+	credits_text.push_back( Text() );   // Wouldn't draw CREDITS otherwise.
+	credits_text.push_back(makeString("CREDITS"  , 3, theY));
+    credits_text.push_back(makeString("SECTION 1", 2, theY));
     float tmp = theY;
-    credits_text.push_back(makeString("Person 1" , 1, theY));
+    credits_text.push_back(makeString("PERSON 1" , 1, theY));
     float tmp2 = theY;
-    credits_text.push_back(makeString("Person 2" , 1, theY));
-    credits_text.push_back(makeString("Person 3" , 1, theY));
-    credits_text.push_back(makeString("Person 4" , 0, tmp));
-    credits_text.push_back(makeString("Person 5" , 0, tmp2));
+    credits_text.push_back(makeString("PERSON 2" , 1, theY));
+    credits_text.push_back(makeString("PERSON 3" , 1, theY));
+    credits_text.push_back(makeString("PERSON 4" , 0, tmp ));
+    credits_text.push_back(makeString("PERSON 5" , 0, tmp2));
     tmp = theY;
 
 
 
 
     theY += 10;
-    credits_text.push_back(makeString("Section 2", 2, theY));
+    credits_text.push_back(makeString("SECTION 2", 2, theY));
     tmp = theY;
-    credits_text.push_back(makeString("Person 6" , 1, theY));
-    credits_text.push_back(makeString("Person 7" , 1, theY));
-    credits_text.push_back(makeString("Person 8" , 0, tmp));
+    credits_text.push_back(makeString("PERSON 6" , 1, theY));
+    credits_text.push_back(makeString("PERSON 7" , 1, theY));
+    credits_text.push_back(makeString("PERSON 8" , 0, tmp ));
     theY += 100;
-    credits_text.push_back(makeString("Goodbye!" , 3, theY));
+    credits_text.push_back(makeString("GOODBYE"  , 3, theY));
 
-	for (unsigned int i = 0; i < credits_text.size(); i++)
+	for (int i = 1; i < credits_text.size(); i++)
 	{
-	    App.GetWindow().Draw(credits_text[i]);
+	    credits_text[i].Draw();
 	}
 }
 
-sf::String SceneCredits::makeString(std::string text, int hlevel, float &yToSet)
+Text SceneCredits::makeString(std::string text, float hlevel, float &yToSet)
 {
     if (hlevel == 3)
     {
-        sf::String thestring( text, sf::Font::GetDefaultFont(),30 );
-        thestring.SetPosition( (320 - thestring.GetRect().GetWidth()) / 2, yToSet );
-        yToSet += thestring.GetRect().GetHeight() + 10;
+        Text thestring( text, (320 - thestring.GetRect().GetWidth()) / 3.5, yToSet, Text::LARGE );
+        yToSet += thestring.GetRect().GetHeight() + 8;
         return thestring;
     }
     else if (hlevel == 2)
     {
-        sf::String thestring( text, sf::Font::GetDefaultFont(),17 );
-        thestring.SetPosition( (320 - thestring.GetRect().GetWidth()) / 4, yToSet );
+        Text thestring( text, (320 - thestring.GetRect().GetWidth()) / 4.5, yToSet, Text::MEDIUM );
         yToSet += thestring.GetRect().GetHeight() + 5;
         return thestring;
     }
     else if (hlevel == 1)
     {
-        sf::String thestring( text, sf::Font::GetDefaultFont(),12 );
-        thestring.SetPosition( (320 - thestring.GetRect().GetWidth()) / 3, yToSet );
+        Text thestring( text, (320 - thestring.GetRect().GetWidth()) / 3.5, yToSet, Text::SMALL );
         yToSet += thestring.GetRect().GetHeight() + 2;
         return thestring;
     }
     else if (hlevel == 0)
     {
-        sf::String thestring( text, sf::Font::GetDefaultFont(),12 );
-        thestring.SetPosition( (320 - thestring.GetRect().GetWidth()) / 3 * 2, yToSet );
+        Text thestring( text, (int)(320 - thestring.GetRect().GetWidth()) / 3.5 * 2, (int)yToSet, Text::SMALL );
         yToSet += thestring.GetRect().GetHeight() + 2;
         return thestring;
     }
-    return sf::String();
+    return Text();
 }
 
 // This makes sure the scene is added to the engine!
