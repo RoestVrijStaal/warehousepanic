@@ -6,7 +6,7 @@
 
 
 
-Text::Text( std::string newtext, int x, int y, Size newsize ) :
+Text::Text( std::string newtext, float x, float y, Size newsize ) :
 	text( newtext ),
 	pos( x, y ),
 	size( newsize )
@@ -39,6 +39,38 @@ void Text::SetSize( Size newsize )
     {
         size = newsize;
     }
+}
+
+sf::Rect<float> Text::GetRect()
+{
+    int charOffset = 0;
+    sf::Image img;
+    if ( size == SMALL )
+    {
+        img = ( ResMgr.GetImage( "A small" ) );
+    }
+    if ( size == MEDIUM )
+    {
+        img = ( ResMgr.GetImage( "A medium" ) );
+    }
+    if ( size == LARGE )
+    {
+        img = ( ResMgr.GetImage( "A large" ) );
+    }
+    charOffset += ( img.GetWidth() * text.length() );
+	if ( size == SMALL )
+	{
+        return sf::Rect<float>( pos.x, pos.y, pos.x + charOffset, pos.y + ResMgr.GetImage( "A small" ).GetHeight() );
+	}
+	if ( size == MEDIUM )
+	{
+        return sf::Rect<float>( pos.x, pos.y, pos.x + charOffset, pos.y + ResMgr.GetImage( "A medium" ).GetHeight() );
+	}
+	if ( size == LARGE )
+	{
+        return sf::Rect<float>( pos.x, pos.y, pos.x + charOffset, pos.y + ResMgr.GetImage( "A large" ).GetHeight() );
+	}
+	return sf::Rect<float>( pos.x, pos.y, pos.x + charOffset, pos.y + ResMgr.GetImage( "A medium" ).GetHeight() );
 }
 
 void Text::Draw()
