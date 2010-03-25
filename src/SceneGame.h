@@ -10,6 +10,7 @@
 #include "Conveyor.h"
 #include "Truck.h"
 #include "Gate.h"
+#include "Text.h"
 
 #include <sstream>
 #include <list>
@@ -45,8 +46,8 @@ class SceneGame : public Scene
 		int timer; // Used for all sorts of stuff, e.g. delay between game being over and scene actually ending
 
 		// Other Game Stuff
-		sf::String str_score;
-		sf::String str_time;
+		Text str_score;
+		Text str_time;
 
 		sf::Sprite pbuttonPause;
 		sf::Sprite pbuttonQuit;

@@ -62,16 +62,16 @@ void SceneHighscore::Initialize()
     }
     else
     {
-        scores.insert( scores.begin(),1,Score( 3 * 25, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 5 * 25, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 10 * 25, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 25 * 25, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 30 * 25, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 40 * 25, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 50 * 25, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 75 * 25, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 100 * 25, "Milestone Marker" ) );
-        scores.insert( scores.begin(),1,Score( 150 * 25, "Milestone Marker" ) );
+        scores.insert( scores.begin(),1,Score( 3 * 25, "MILESTOE MARKER" ) );
+        scores.insert( scores.begin(),1,Score( 5 * 25, "MILESTOE MARKER" ) );
+        scores.insert( scores.begin(),1,Score( 10 * 25, "MILESTOE MARKER" ) );
+        scores.insert( scores.begin(),1,Score( 25 * 25, "MILESTOE MARKER" ) );
+        scores.insert( scores.begin(),1,Score( 30 * 25, "MILESTOE MARKER" ) );
+        scores.insert( scores.begin(),1,Score( 40 * 25, "MILESTOE MARKER" ) );
+        scores.insert( scores.begin(),1,Score( 50 * 25, "MILESTOE MARKER" ) );
+        scores.insert( scores.begin(),1,Score( 75 * 25, "MILESTOE MARKER" ) );
+        scores.insert( scores.begin(),1,Score( 100 * 25, "MILESTOE MARKER" ) );
+        scores.insert( scores.begin(),1,Score( 150 * 25, "MILESTOE MARKER" ) );
     }
 
 	// Any event for highscore scene?
@@ -108,7 +108,22 @@ void SceneHighscore::Initialize()
 		}
 		EventMgr.PopEvent( HIGHSCORE );
 	}
-
+    highscore_title = Text( std::string( "HIGHSCORES" ), 0, 0, Text::LARGE );
+    highscore_title.SetPosition( 320 - highscore_title.GetRect().GetWidth(), 2 );
+    int str_sofar = 0;
+	for (std::list< Score >::iterator it = scores.begin(); it != scores.end(); it++)
+	{
+	    if (str_sofar < 10)
+	    {
+            highscores.push_back( Text(std::string(it->name), 40, str_sofar * 20 + 35, Text::MEDIUM) );
+            highscores.back().SetPosition( 40, str_sofar * 20 + 35 );
+            std::stringstream thescore;
+            thescore << it->score;
+            highscores.push_back( Text(thescore.str(), 225, str_sofar * 20 + 35, Text::MEDIUM) );
+            highscores.back().SetPosition( 225, str_sofar * 20 + 35 );
+	    }
+	    str_sofar += 1;
+	}
 }
 
 void SceneHighscore::Terminate()
@@ -190,27 +205,11 @@ void SceneHighscore::Step()
 void SceneHighscore::Draw()
 {
 	App.GetWindow().Clear( sf::Color( 0, 0, 0 ) );
-	sf::String highscore_title( std::string("Highscores"), sf::Font::GetDefaultFont(), 30 );
-	highscore_title.SetPosition( (320 - highscore_title.GetRect().GetWidth()) / 2, 2 );
-	std::vector<sf::String> highscores;
-	int str_sofar = 0;
-	for (std::list< Score >::iterator it = scores.begin(); it != scores.end(); it++)
-	{
-	    if (str_sofar < 10)
-	    {
-            highscores.push_back( sf::String(std::string(it->name), sf::Font::GetDefaultFont(), 15) );
-            highscores.back().SetPosition( 75, str_sofar * 20 + 35 );
-            std::stringstream thescore;
-            thescore << it->score;
-            highscores.push_back( sf::String(thescore.str(), sf::Font::GetDefaultFont(), 15) );
-            highscores.back().SetPosition( 225, str_sofar * 20 + 35 );
-	    }
-	    str_sofar += 1;
-	}
-	App.GetWindow().Draw( highscore_title );
+
+	highscore_title.Draw();
 	for (int i = 0; i < (int)highscores.size(); i++)
 	{
-	    App.GetWindow().Draw( highscores[i] );
+	    highscores[i].Draw();
 	}
 
 	if ( keyboard )
