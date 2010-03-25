@@ -4,6 +4,7 @@
 #include "WCEngine/Scene.h"
 #include "Keyboard.h"
 #include "Score.h"
+#include "Text.h"
 
 #include <SFML/Audio.hpp>
 #include <string>
@@ -31,6 +32,8 @@ class SceneHighscore : public Scene
 		bool didChange;
 		std::list< Score > scores;
 		sf::Sound sndClick;
+		Text highscore_title;
+		std::vector<Text> highscores;
 
 	private:
 };

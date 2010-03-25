@@ -70,6 +70,9 @@ void SceneGame::Initialize()
 	isGameOver = false;
 	timer = 0;
 	points = 0;
+
+	str_score.SetSize( Text::MEDIUM );
+	str_time.SetSize( Text::MEDIUM );
 }
 
 void SceneGame::Terminate()
@@ -392,17 +395,17 @@ void SceneGame::Draw()
 	if ( popup )
 		App.GetWindow().Draw( *popup );
 
-	stringstream score;
-	score << "Score: " << points;
-	str_score.SetText(score.str());
-	str_score.SetPosition( 10, 200 );
-	App.GetWindow().Draw(str_score);
-	stringstream time;
-	time << "Time: " << (double)(level.levelTime / 100);
+    stringstream time;
+	time << "TIME   " << (level.levelTime / 100);
 	str_time.SetText( time.str() );
 	sf::FloatRect time_rect = str_time.GetRect();
-	str_time.SetPosition( 320 - time_rect.GetWidth() - 10, 240 - time_rect.GetHeight() - 10 );
-	App.GetWindow().Draw( str_time );
+	str_time.SetPosition( 5, 197 );
+	str_time.Draw();
+	stringstream score;
+	score << "SCORE   " << points;
+	str_score.SetText( score.str() );
+	str_score.SetPosition( 5, 217 );
+	str_score.Draw();
 }
 
 
