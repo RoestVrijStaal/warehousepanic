@@ -86,7 +86,7 @@ int main ()
 	float crateSpeedIncrement = 0.0000001f;
 	int cratesPerTruck = 10;
 	int truckDelay = 100 * 5; // Five seconds in game.
-	long levelTime = 100 * 180; // Three minutes in game.
+	//long levelTime = 100 * 180; // Three minutes in game.
 	int amountOfTrucks = 5;
 	getline(cin,filename);
 	if (filename != "")
@@ -112,10 +112,10 @@ int main ()
 				{
 					StringToInt(value, height);
 				}
-				else if ( key == "leveltime" )
+				/*else if ( key == "leveltime" )
 				{
 					StringToLong(value, levelTime);
-				}
+				}*/
 				else if ( key == "cratespeed" )
 				{
 					StringToFloat(value, crateSpeed);
@@ -444,7 +444,7 @@ int main ()
 								file.open(("levels/" + filename + ".lvl").c_str());
 								file << "width=" << width << endl;
 								file << "height=" << height << endl;
-								file << "leveltime=" << levelTime << endl;
+								//file << "leveltime=" << levelTime << endl;
 								file << "cratespeed=" << crateSpeed << endl;
 								file << "crateinterval=" << crateInterval << endl;
 								file << "cratespeedincrement=" << crateSpeedIncrement << endl;

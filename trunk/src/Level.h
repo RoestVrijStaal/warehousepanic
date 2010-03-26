@@ -20,7 +20,7 @@ class Level
 public:
 	Level()
 	{
-		width = height = levelTime = curTime = 0;
+		width = height = /*levelTime =*/ curTime = 0;
 		crateSpeed = crateInterval = crateSpeedIncrement = 0.0f;
 		cratesPerTruck = 10;
 		truckDelay = 5 * 100;   // Five seconds
@@ -48,10 +48,10 @@ public:
 				{
 					StringToInt(value, height);
 				}
-				else if ( key == "leveltime" )
+				/*else if ( key == "leveltime" )
 				{
 					StringToLong(value, levelTime);
-				}
+				}*/
 				else if ( key == "cratespeed" )
 				{
 					StringToFloat(value, crateSpeed);
@@ -229,10 +229,10 @@ public:
 		++curTime;
 	}
 
-	bool GetTimeDone()
+	/*bool GetTimeDone()
 	{
 		return levelTime < curTime;
-	}
+	}*/
 
 	float GetCrateSpeed()
 	{
@@ -249,7 +249,7 @@ public:
 	float crateSpeed;
 	float crateInterval;
 	float crateSpeedIncrement;
-	long levelTime;
+	//long levelTime;
 	int curTime;
 	std::vector<Object*> objects;
 	std::vector<GameColor::ColorType> colors;

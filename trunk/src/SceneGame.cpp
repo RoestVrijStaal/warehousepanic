@@ -134,7 +134,7 @@ void SceneGame::Initialize()
 	cratesLost = 0;
 
 	str_score.SetSize( Text::MEDIUM );
-	str_time.SetSize( Text::MEDIUM );
+	//str_time.SetSize( Text::MEDIUM );
 
 	ResMgr.GetMusic( "game" ).Play();
 }
@@ -163,7 +163,7 @@ void SceneGame::Step()
     if ( cratesLost >= 5 and !isGameOver )
     {
         isGameOver = true;
-        level.levelTime = 0;
+        //level.levelTime = 0;
         didQuit = false;
         didWin = false;
         timer = (int)(App.GetFPS() * 3);
@@ -321,7 +321,7 @@ void SceneGame::Step()
 	}
 
 	// End game?
-	if ( isGameOver and timer <= 0 and level.levelTime <= 0 and !justStopped and !didQuit )
+	if ( isGameOver and timer <= 0 and /*level.levelTime <= 0 and*/ !justStopped and !didQuit )
 	{
 	    if ( didWin )
 	    {
@@ -334,7 +334,7 @@ void SceneGame::Step()
             EventMgr.PushEvent( gdn::HIGHSCORE, gdn::GameEvent::HighscoreEvent( points ) );
 	    }
 	}
-	else if ( isGameOver and justStopped and level.levelTime <= 0 and !didQuit)
+	else if ( isGameOver and justStopped and /*level.levelTime <= 0 and*/ !didQuit)
 	{
 	    if ( didWin )
 	    {
@@ -354,12 +354,12 @@ void SceneGame::Step()
 	    }
 	    justStopped = false;
 	}
-	else if ( level.levelTime <= 0 and !isGameOver and !didQuit )
+	/*else if ( level.levelTime <= 0 and !isGameOver and !didQuit )
 	{
 	    isGameOver = true;
 	    didWin = false;
         timer = (int)(App.GetFPS() * 3);
-	}
+	}*/
 	else if ( timer <= 0 and didQuit )
 	{
         EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "highscore" ) );
@@ -374,7 +374,7 @@ void SceneGame::Step()
 	}
 
 	isMouseDown = newMouseButton;
-	if ( level.levelTime >= 1 and !isPaused )
+	/*if ( level.levelTime >= 1 and !isPaused )
 	{
 	    level.levelTime -= 1;
     }
@@ -384,8 +384,8 @@ void SceneGame::Step()
         isGameOver = true;
         didWin = false;
         timer = (int)(App.GetFPS() * 3);
-    }
-    if ( level.amountOfTrucks <= 0 and level.levelTime > 0 )
+    }*/
+    if ( level.amountOfTrucks <= 0 /*and level.levelTime > 0*/ )
     {
         bool crateLeft = false;
         for ( std::list<Object*>::iterator it = objects.begin(); it != objects.end(); ++it )
@@ -411,15 +411,15 @@ void SceneGame::Step()
         {
             isGameOver = true;
             justStopped = true;
-            level.levelTime = 0;
+            //level.levelTime = 0;
             didQuit = false;
             timer = (int)(App.GetFPS() * 3);
         }
     }
-    if ( level.levelTime == 100 * 10 )  // If there are only ten seconds left.
+    /*if ( level.levelTime == 100 * 10 )  // If there are only ten seconds left.
     {
         //Play running out of time sound.
-    }
+    }*/
 
     // Move the stars
     for ( unsigned int i = 0; i < stars.size(); i++ )
@@ -553,11 +553,11 @@ void SceneGame::Draw()
 	if ( popup )
 		App.GetWindow().Draw( *popup );
 
-	stringstream time;
+	/*stringstream time;
 	time << "TIME   " << (level.levelTime / App.GetFPS());
 	str_time.SetText( time.str() );
 	str_time.SetPosition( 5, 197 );
-	str_time.Draw();
+	str_time.Draw();*/
 	stringstream score;
 	score << "SCORE   " << points;
 	str_score.SetText( score.str() );

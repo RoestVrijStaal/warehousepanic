@@ -55,7 +55,7 @@ class SceneGame : public gdn::Scene
 
 		// Other Game Stuff
 		Text str_score;
-		Text str_time;
+		//Text str_time;
 
 		gdn::Sprite pbuttonPause;
 		gdn::Sprite pbuttonQuit;
