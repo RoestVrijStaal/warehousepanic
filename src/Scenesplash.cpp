@@ -13,22 +13,22 @@ SceneSplash::~SceneSplash()
 void SceneSplash::Initialize()
 {
 	time = 0;
-	background = sf::Sprite( ResMgr.GetImage( "splash" ) );
+	background = gdn::Sprite( ResMgr.GetImage( "splash" ) );
 }
 
 void SceneSplash::Terminate()
 {
-	background = sf::Sprite();
+	background = gdn::Sprite();
 }
 
 void SceneSplash::Step()
 {
 	++time;
 
-	bool isMouseDown = App.GetWindow().GetInput().IsMouseButtonDown( sf::Mouse::Left );
+	bool isMouseDown = App.GetWindow().IsMouseButtonDown();
 	if ( isMouseDown and time > MIN_SPLASH_TIME )
 	{
-		EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "menu" ) );
+		EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "menu" ) );
 	}
 }
 

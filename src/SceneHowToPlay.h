@@ -1,19 +1,14 @@
 #ifndef SCENEHOWTOPLAY_H
 #define SCENEHOWTOPLAY_H
 
-#include "WCEngine/Scene.h"
+#include "WCEngine/GDN.h"
 #include <SFML/Audio.hpp>
 
 //Includes
 #include <vector>
 
 
-
-// Define some settings here
-
-
-
-class SceneHowToPlay : public Scene
+class SceneHowToPlay : public gdn::Scene
 {
 	public:
 		SceneHowToPlay();
@@ -27,8 +22,8 @@ class SceneHowToPlay : public Scene
 
 	protected:
 		// Misc.
-		std::vector<sf::Sprite> screens;
-		std::vector<sf::Sprite>::iterator cur; // Currently shown screen
+		std::vector<gdn::Sprite> screens;
+		std::vector<gdn::Sprite>::iterator cur; // Currently shown screen
 		sf::Sound sndClick;
 		bool isMouseDown;
 		int timer;

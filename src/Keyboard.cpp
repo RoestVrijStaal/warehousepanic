@@ -1,14 +1,14 @@
-//Couldn't get it to work without this line :/
-#include "WCEngine/ResourceManager.h"
-
 #include "Keyboard.h"
+
+#include "WCEngine/GDN.h"
 
 Keyboard::Keyboard()
 {
 	isDone = false;
 	isShown = false;
 	yPos = App.GetHeight();
-	sndClick = sf::Sound( ResMgr.GetSound( "click" ) );
+	// TODO: Get sound back in
+	//sndClick = sf::Sound( ResMgr.GetSound( "click" ) );
 }
 
 Keyboard::~Keyboard()
@@ -47,7 +47,7 @@ void Keyboard::Hide()
 
 void Keyboard::Step()
 {
-	bool curMouseDown = App.GetWindow().GetInput().IsMouseButtonDown(sf::Mouse::Left);
+	bool curMouseDown = App.GetWindow().IsMouseButtonDown();
 
 	// Animate keyboard
 	if ( isShown )
@@ -61,136 +61,136 @@ void Keyboard::Step()
 
 	if (curMouseDown and !isMouseDown)
 	{
-		sf::Vector2f mouse(App.GetWindow().GetInput().GetMouseX(), App.GetWindow().GetInput().GetMouseY());
+		gdn::Vector2f mouse(App.GetWindow().GetMouseX(), App.GetWindow().GetMouseY());
 		if (mouse.x > 12 and mouse.x < 38 and mouse.y > 120 and mouse.y < 146)
 		{
 			SetText(GetText().append("Q"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 42 and mouse.x < 68 and mouse.y > 120 and mouse.y < 146)
 		{
 			SetText(GetText().append("W"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 72 and mouse.x < 98 and mouse.y > 120 and mouse.y < 146)
 		{
 			SetText(GetText().append("E"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 102 and mouse.x < 128 and mouse.y > 120 and mouse.y < 146)
 		{
 			SetText(GetText().append("R"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 132 and mouse.x < 158 and mouse.y > 120 and mouse.y < 146)
 		{
 			SetText(GetText().append("T"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 162 and mouse.x < 188 and mouse.y > 120 and mouse.y < 146)
 		{
 			SetText(GetText().append("Y"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 192 and mouse.x < 218 and mouse.y > 120 and mouse.y < 146)
 		{
 			SetText(GetText().append("U"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 222 and mouse.x < 248 and mouse.y > 120 and mouse.y < 146)
 		{
 			SetText(GetText().append("I"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 252 and mouse.x < 278 and mouse.y > 120 and mouse.y < 146)
 		{
 			SetText(GetText().append("O"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 282 and mouse.x < 308 and mouse.y > 120 and mouse.y < 146)
 		{
 			SetText(GetText().append("P"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 27 and mouse.x < 53 and mouse.y > 150 and mouse.y < 176)
 		{
 			SetText(GetText().append("A"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 57 and mouse.x < 83 and mouse.y > 150 and mouse.y < 176)
 		{
 			SetText(GetText().append("S"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 87 and mouse.x < 113 and mouse.y > 150 and mouse.y < 176)
 		{
 			SetText(GetText().append("D"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 117 and mouse.x < 143 and mouse.y > 150 and mouse.y < 176)
 		{
 			SetText(GetText().append("F"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 147 and mouse.x < 173 and mouse.y > 150 and mouse.y < 176)
 		{
 			SetText(GetText().append("G"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 177 and mouse.x < 203 and mouse.y > 150 and mouse.y < 176)
 		{
 			SetText(GetText().append("H"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 207 and mouse.x < 233 and mouse.y > 150 and mouse.y < 176)
 		{
 			SetText(GetText().append("J"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 237 and mouse.x < 263 and mouse.y > 150 and mouse.y < 176)
 		{
 			SetText(GetText().append("K"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 267 and mouse.x < 293 and mouse.y > 150 and mouse.y < 176)
 		{
 			SetText(GetText().append("L"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 42 and mouse.x < 68 and mouse.y > 180 and mouse.y < 206)
 		{
 			SetText(GetText().append("Z"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 72 and mouse.x < 98 and mouse.y > 180 and mouse.y < 206)
 		{
 			SetText(GetText().append("X"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 102 and mouse.x < 128 and mouse.y > 180 and mouse.y < 206)
 		{
 			SetText(GetText().append("C"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 132 and mouse.x < 158 and mouse.y > 180 and mouse.y < 206)
 		{
 			SetText(GetText().append("V"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 162 and mouse.x < 188 and mouse.y > 180 and mouse.y < 206)
 		{
 			SetText(GetText().append("B"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 192 and mouse.x < 218 and mouse.y > 180 and mouse.y < 206)
 		{
 			SetText(GetText().append("N"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 222 and mouse.x < 248 and mouse.y > 180 and mouse.y < 206)
 		{
 			SetText(GetText().append("M"));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 252 and mouse.x < 300 and mouse.y > 180 and mouse.y < 206
 				 and GetText().length() > 0)
@@ -198,17 +198,17 @@ void Keyboard::Step()
 			std::string tmp = GetText();
 			tmp.erase(tmp.end() - 1);
 			SetText(tmp);
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 57 and mouse.x < 233 and mouse.y > 210 and mouse.y < 236)
 		{
 			SetText(GetText().append(" "));
-			sndClick.Play();
+			//sndClick.Play();
 		}
 		else if (mouse.x > 237 and mouse.x < 308 and mouse.y > 210 and mouse.y < 236)
 		{
 			isDone = true;
-			sndClick.Play();
+			//sndClick.Play();
 		}
 	}
 	isMouseDown = curMouseDown;
@@ -219,12 +219,12 @@ void Keyboard::Draw()
 	// Only draw if visible
 	if ( yPos < App.GetHeight() )
 	{
-		sf::Sprite theKeyboard(ResMgr.GetImage( "keyboard" ));
+		gdn::Sprite theKeyboard( ResMgr.GetImage( "keyboard" ) );
 		theKeyboard.SetPosition( 0, yPos );
 		textRender.SetText( text );
 		textRender.SetPosition( 20, 90 + yPos );
 		textRender.SetSize( Text::MEDIUM );
-		App.GetWindow().Draw(theKeyboard);
+		App.GetWindow().Draw( theKeyboard );
 		textRender.Draw();
 	}
 }

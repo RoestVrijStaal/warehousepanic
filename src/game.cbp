@@ -7,9 +7,9 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="..\WarehousePanic.exe" prefix_auto="1" extension_auto="0" />
-				<Option working_dir="..\" />
-				<Option object_output="obj\Debug\" />
+				<Option output="../WarehousePanic.exe" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="../" />
+				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -17,9 +17,9 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="..\WarehousePanic.exe" prefix_auto="1" extension_auto="0" />
-				<Option working_dir="..\" />
-				<Option object_output="obj\Release\" />
+				<Option output="../WarehousePanic.exe" prefix_auto="1" extension_auto="0" />
+				<Option working_dir="../" />
+				<Option object_output="obj/Release/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -38,6 +38,10 @@
 			<Add library="sfml-audio" />
 			<Add library="sfml-window" />
 			<Add library="sfml-system" />
+			<Add library="mingw" />
+			<Add library="SDLmain" />
+			<Add library="SDL" />
+			<Add library="SDL_image" />
 		</Linker>
 		<Unit filename="Conveyor.h" />
 		<Unit filename="Crate.h" />
@@ -64,15 +68,26 @@
 		<Unit filename="Text.cpp" />
 		<Unit filename="Text.h" />
 		<Unit filename="Truck.h" />
-		<Unit filename="WCEngine\Application.cpp" />
-		<Unit filename="WCEngine\Application.h" />
-		<Unit filename="WCEngine\EventManager.cpp" />
-		<Unit filename="WCEngine\EventManager.h" />
-		<Unit filename="WCEngine\ResourceManager.cpp" />
-		<Unit filename="WCEngine\ResourceManager.h" />
-		<Unit filename="WCEngine\Scene.cpp" />
-		<Unit filename="WCEngine\Scene.h" />
-		<Unit filename="WCEngine\main.cpp" />
+		<Unit filename="WCEngine/Application.cpp" />
+		<Unit filename="WCEngine/Application.h" />
+		<Unit filename="WCEngine/EventManager.cpp" />
+		<Unit filename="WCEngine/EventManager.h" />
+		<Unit filename="WCEngine/GDN.h" />
+		<Unit filename="WCEngine/Image.cpp" />
+		<Unit filename="WCEngine/Image.h" />
+		<Unit filename="WCEngine/RenderWindow.cpp" />
+		<Unit filename="WCEngine/RenderWindow.h" />
+		<Unit filename="WCEngine/ResourceManager.cpp" />
+		<Unit filename="WCEngine/ResourceManager.h" />
+		<Unit filename="WCEngine/Scene.cpp" />
+		<Unit filename="WCEngine/Scene.h" />
+		<Unit filename="WCEngine/Sprite.cpp" />
+		<Unit filename="WCEngine/Sprite.h" />
+		<Unit filename="WCEngine/Timer.cpp" />
+		<Unit filename="WCEngine/Timer.h" />
+		<Unit filename="WCEngine/Vector2f.cpp" />
+		<Unit filename="WCEngine/Vector2f.h" />
+		<Unit filename="WCEngine/main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

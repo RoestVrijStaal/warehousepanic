@@ -1,12 +1,13 @@
 #ifndef SCENECREDITS_H
 #define SCENECREDITS_H
 
-#include "WCEngine/Scene.h"
+#include "WCEngine/GDN.h"
 
 #include "Text.h"
+#include <vector>
+#include <string>
 
-
-class SceneCredits : public Scene
+class SceneCredits : public gdn::Scene
 {
 	public:
 		SceneCredits();
@@ -17,12 +18,11 @@ class SceneCredits : public Scene
 		virtual void Step();
 		virtual void Draw();
 
-		//Just makes this easier (for me :P)
-		Text makeString(std::string text, float hlevel, float &yToSet);
-
 	protected:
+		void AddText( std::string text, Text::Size size );
+		std::vector< Text* > credits;
 		bool isMouseDown;
-		float curY;
+		float curOffset;
 
 	private:
 };

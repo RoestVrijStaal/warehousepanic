@@ -1,10 +1,6 @@
 #include "Text.h"
 
-#include "WCEngine/Application.h"
-#include "WCEngine/ResourceManager.h"
 #include "Functions.h"
-
-
 
 Text::Text( std::string newtext, float x, float y, Size newsize ) :
 	text( newtext ),
@@ -22,7 +18,7 @@ void Text::SetText( std::string newtext )
 	text = newtext;
 }
 
-void Text::SetPosition( sf::Vector2f& newpos )
+void Text::SetPosition( gdn::Vector2f& newpos )
 {
 	pos = newpos;
 }
@@ -33,6 +29,11 @@ void Text::SetPosition( float x, float y )
 	pos.y = y;
 }
 
+const gdn::Vector2f& Text::GetPosition()
+{
+	return pos;
+}
+
 void Text::SetSize( Size newsize )
 {
     if ( newsize == SMALL or newsize == MEDIUM or newsize == LARGE )
@@ -41,43 +42,42 @@ void Text::SetSize( Size newsize )
     }
 }
 
-sf::Rect<float> Text::GetRect()
+int Text::GetWidth()
 {
-    int charOffset = 0;
-    sf::Image img;
-    if ( size == SMALL )
-    {
-        img = ( ResMgr.GetImage( "A small" ) );
-    }
-    if ( size == MEDIUM )
-    {
-        img = ( ResMgr.GetImage( "A medium" ) );
-    }
-    if ( size == LARGE )
-    {
-        img = ( ResMgr.GetImage( "A large" ) );
-    }
-    charOffset += ( img.GetWidth() * text.length() );
-	if ( size == SMALL )
+	int width = 0;
+
+	// Prepare string
+	std::string character = "A ";
+	switch ( size )
 	{
-        return sf::Rect<float>( pos.x, pos.y, pos.x + charOffset, pos.y + ResMgr.GetImage( "A small" ).GetHeight() );
+		case SMALL: character.append( "small" ); break;
+		case MEDIUM: character.append( "medium" ); break;
+		case LARGE: character.append( "large" ); break;
+		default: break;
 	}
-	if ( size == MEDIUM )
+
+	for ( std::string::iterator it = text.begin(); it != text.end(); ++it )
 	{
-        return sf::Rect<float>( pos.x, pos.y, pos.x + charOffset, pos.y + ResMgr.GetImage( "A medium" ).GetHeight() );
+		// Replace first character and get image
+		character[0] = *it;
+		gdn::Image& img = ResMgr.GetImage( character );
+
+		switch ( size )
+		{
+			case SMALL: width += img.GetWidth() - 1; break;
+			case MEDIUM: width += img.GetWidth() - 2; break;
+			case LARGE: width += img.GetWidth() - 3; break;
+			default: break;
+		}
 	}
-	if ( size == LARGE )
-	{
-        return sf::Rect<float>( pos.x, pos.y, pos.x + charOffset, pos.y + ResMgr.GetImage( "A large" ).GetHeight() );
-	}
-	return sf::Rect<float>( pos.x, pos.y, pos.x + charOffset, pos.y + ResMgr.GetImage( "A medium" ).GetHeight() );
+	return width;
 }
 
 void Text::Draw()
 {
-	sf::RenderWindow& window = App.GetWindow();
+	gdn::RenderWindow& window = App.GetWindow();
 
-	sf::Sprite sprite;
+	gdn::Sprite sprite;
 	int charOffset = 0;
 
 	// Prepare string
@@ -94,9 +94,13 @@ void Text::Draw()
 	{
 		// Replace first character and get image
 		character[0] = *it;
-		sf::Image& img = ResMgr.GetImage( character );
 
-		sprite = sf::Sprite( img );
+		// Fix for lack of lower case chars (at the moment)
+		if ( character[0] >= 97 and character[0] <= 122 )
+			character[0] -= 32; // Make upper case
+		gdn::Image& img = ResMgr.GetImage( character );
+
+		sprite = gdn::Sprite( img );
 		sprite.SetPosition( pos.x + charOffset, pos.y );
 		window.Draw( sprite );
 

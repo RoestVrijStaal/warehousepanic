@@ -1,11 +1,5 @@
 #include "SceneHowToPlay.h"
 
-#include "WCEngine/EventManager.h"
-#include "WCEngine/ResourceManager.h"
-#include "WCEngine/Application.h"
-
-using namespace std;
-
 
 
 // This is the important part. You need to give this scene a name. I call this one game
@@ -17,14 +11,13 @@ SceneHowToPlay::~SceneHowToPlay()
 {
 }
 
-// Not because of this function
 void SceneHowToPlay::Initialize()
 {
 	// Screens
-	screens.push_back( sf::Sprite( ResMgr.GetImage( "tutorial 1" ) ) );
-	screens.push_back( sf::Sprite( ResMgr.GetImage( "tutorial 2" ) ) );
-	screens.push_back( sf::Sprite( ResMgr.GetImage( "tutorial 3" ) ) );
-	screens.push_back( sf::Sprite( ResMgr.GetImage( "tutorial 4" ) ) );
+	screens.push_back( gdn::Sprite( ResMgr.GetImage( "tutorial 1" ) ) );
+	screens.push_back( gdn::Sprite( ResMgr.GetImage( "tutorial 2" ) ) );
+	screens.push_back( gdn::Sprite( ResMgr.GetImage( "tutorial 3" ) ) );
+	screens.push_back( gdn::Sprite( ResMgr.GetImage( "tutorial 4" ) ) );
 	cur = screens.begin();
 
 	// Sounds
@@ -45,8 +38,8 @@ void SceneHowToPlay::Step()
 		--timer;
 
 	//Events
-	sf::Vector2f mousepos( App.GetWindow().GetInput().GetMouseX(), App.GetWindow().GetInput().GetMouseY()) ;
-	bool newMouseButton = App.GetWindow().GetInput().IsMouseButtonDown( sf::Mouse::Left );
+	gdn::Vector2f mousepos( App.GetWindow().GetMouseX(), App.GetWindow().GetMouseY() );
+	bool newMouseButton = App.GetWindow().IsMouseButtonDown();
 
 	// Handle mouse-down event
 	if ( newMouseButton and isMouseDown == false and cur != screens.end() )
@@ -62,7 +55,7 @@ void SceneHowToPlay::Step()
 
 	// End scene?
 	if ( cur == screens.end() and timer == 0 )
-		EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "menu" ) );
+		EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "menu" ) );
 
 	isMouseDown = newMouseButton;
 }
@@ -70,7 +63,7 @@ void SceneHowToPlay::Step()
 void SceneHowToPlay::Draw()
 {
 	if ( cur == screens.end() )
-		App.GetWindow().Clear( sf::Color(0, 0, 0) );
+		App.GetWindow().Clear( 0, 0, 0 );
 	else
 		App.GetWindow().Draw( *cur );
 }

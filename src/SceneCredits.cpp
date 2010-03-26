@@ -1,13 +1,9 @@
 #include "SceneCredits.h"
-#include "WCEngine/Application.h"
-#include "WCEngine/EventManager.h"
-#include "WCEngine/ResourceManager.h"
 
 
 
 SceneCredits::SceneCredits() : Scene( "credits" )
 {
-    curY = 320;
 }
 
 SceneCredits::~SceneCredits()
@@ -16,89 +12,92 @@ SceneCredits::~SceneCredits()
 
 void SceneCredits::Initialize()
 {
+	curOffset = 0;
 	isMouseDown = true;
+
+	AddText( "CREDITS", Text::LARGE );
+	AddText( "Producer", Text::MEDIUM );
+	AddText( "Uni Dahl", Text::SMALL );
+	AddText( "Game Design", Text::MEDIUM );
+	AddText( "GDN community", Text::SMALL );
+	AddText( "Game Programmer", Text::MEDIUM );
+	AddText( "Chase Warrington", Text::SMALL );
+	AddText( "Engine Programmer", Text::MEDIUM );
+	AddText( "Uni Dahl", Text::SMALL );
+	AddText( "Graphics", Text::MEDIUM );
+	AddText( "mr glasses", Text::SMALL );
+	AddText( "Chase Warrington", Text::SMALL );
+	AddText( "Uni Dahl", Text::SMALL );
+	AddText( "Sound Effects", Text::MEDIUM );
+	AddText( "...", Text::SMALL );
+	AddText( "Menu Music by", Text::MEDIUM );
+	AddText( "...", Text::SMALL );
+	AddText( "Highscore Music by", Text::MEDIUM );
+	AddText( "...", Text::SMALL );
+	AddText( "Game Music by", Text::MEDIUM );
+	AddText( "...", Text::SMALL );
+	AddText( "Thank you for playing", Text::SMALL );
+	AddText( "Visit us at", Text::SMALL );
+	AddText( "http://cpp.wikicomplete.info", Text::SMALL );
 }
 
 void SceneCredits::Terminate()
 {
+	for ( std::vector< Text* >::iterator it = credits.begin(); it != credits.end(); ++it )
+		delete (*it);
+	credits.clear();
 }
 
 void SceneCredits::Step()
 {
-	bool curMouseDown = App.GetWindow().GetInput().IsMouseButtonDown( sf::Mouse::Left );
+	bool curMouseDown = App.GetWindow().IsMouseButtonDown();
 	if ( curMouseDown and !isMouseDown ) // Mouse down event
 	{
-		EventMgr.PushEvent( ENGINE, GameEvent::QuitEvent() );
+		EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::QuitEvent() );
 	}
 	isMouseDown = curMouseDown;
-	curY -= 0.5;
+
+	for (std::vector< Text* >::iterator it = credits.begin(); it != credits.end(); ++it )
+	{
+		const gdn::Vector2f& pos = (**it).GetPosition();
+		(**it).SetPosition( pos.x, pos.y - 0.5f );
+	}
+	curOffset = 0.5f;
 }
 
 void SceneCredits::Draw()
 {
-	App.GetWindow().Clear( sf::Color( 0, 0, 0 ) );
-	float theY = curY;
+	App.GetWindow().Clear( 0, 0, 0 );
 
-    std::vector<Text> credits_text;
-
-	credits_text.push_back( Text() );   // Wouldn't draw CREDITS otherwise.
-	credits_text.push_back(makeString("CREDITS"  , 3, theY));
-    credits_text.push_back(makeString("SECTION 1", 2, theY));
-    float tmp = theY;
-    credits_text.push_back(makeString("PERSON 1" , 1, theY));
-    float tmp2 = theY;
-    credits_text.push_back(makeString("PERSON 2" , 1, theY));
-    credits_text.push_back(makeString("PERSON 3" , 1, theY));
-    credits_text.push_back(makeString("PERSON 4" , 0, tmp ));
-    credits_text.push_back(makeString("PERSON 5" , 0, tmp2));
-    tmp = theY;
-
-
-
-
-    theY += 10;
-    credits_text.push_back(makeString("SECTION 2", 2, theY));
-    tmp = theY;
-    credits_text.push_back(makeString("PERSON 6" , 1, theY));
-    credits_text.push_back(makeString("PERSON 7" , 1, theY));
-    credits_text.push_back(makeString("PERSON 8" , 0, tmp ));
-    theY += 100;
-    credits_text.push_back(makeString("GOODBYE"  , 3, theY));
-
-	for (int i = 1; i < credits_text.size(); i++)
+	for (std::vector< Text* >::iterator it = credits.begin(); it != credits.end(); ++it )
 	{
-	    credits_text[i].Draw();
+		float pos = (**it).GetPosition().y;
+
+		if ( pos > -40 and pos < App.GetHeight() )
+		{
+			(**it).Draw();
+		}
 	}
 }
 
-Text SceneCredits::makeString(std::string text, float hlevel, float &yToSet)
+void SceneCredits::AddText( std::string text, Text::Size size )
 {
-    if (hlevel == 3)
-    {
-        Text thestring( text, (320 - thestring.GetRect().GetWidth()) / 3.5, yToSet, Text::LARGE );
-        yToSet += thestring.GetRect().GetHeight() + 8;
-        return thestring;
-    }
-    else if (hlevel == 2)
-    {
-        Text thestring( text, (320 - thestring.GetRect().GetWidth()) / 4.5, yToSet, Text::MEDIUM );
-        yToSet += thestring.GetRect().GetHeight() + 5;
-        return thestring;
-    }
-    else if (hlevel == 1)
-    {
-        Text thestring( text, (320 - thestring.GetRect().GetWidth()) / 3.5, yToSet, Text::SMALL );
-        yToSet += thestring.GetRect().GetHeight() + 2;
-        return thestring;
-    }
-    else if (hlevel == 0)
-    {
-        Text thestring( text, (int)(320 - thestring.GetRect().GetWidth()) / 3.5 * 2, (int)yToSet, Text::SMALL );
-        yToSet += thestring.GetRect().GetHeight() + 2;
-        return thestring;
-    }
-    return Text();
+	// Calculate position
+	float curPos = ( credits.size() == 0 ? App.GetHeight() : credits.back()->GetPosition().y );
+	switch ( size )
+	{
+		case Text::SMALL: curPos += 25.0f; break;
+		case Text::MEDIUM: curPos += 50.0f; break;
+		case Text::LARGE: curPos += 10.0f; break;
+		default: break;
+	}
+
+	Text& t = *(new Text( text ));
+	credits.push_back( &t );
+	t.SetPosition( App.GetWidth() / 2.0f - (t.GetWidth() / 2.0f), curPos );
 }
+
+
 
 // This makes sure the scene is added to the engine!
 SceneCredits* credits = new SceneCredits();

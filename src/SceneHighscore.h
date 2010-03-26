@@ -1,7 +1,7 @@
 #ifndef SCENEHIGHSCORE_H
 #define SCENEHIGHSCORE_H
 
-#include "WCEngine/Scene.h"
+#include "WCEngine/GDN.h"
 #include "Keyboard.h"
 #include "Score.h"
 #include "Text.h"
@@ -12,7 +12,7 @@
 
 
 
-class SceneHighscore : public Scene
+class SceneHighscore : public gdn::Scene
 {
 	public:
 		SceneHighscore();
@@ -25,15 +25,15 @@ class SceneHighscore : public Scene
 		void Draw();
 
 	protected:
+		void InsertScore( Score* score );
 		bool isMouseDown;
 		Keyboard* keyboard;
-		int newScore;
-		std::string name;
-		bool didChange;
-		std::list< Score > scores;
+		Score* newScore;
+		Text* newTextName; // Pointer to the text for which the newly entered name should be put
+		std::list< Score* > scores;
 		sf::Sound sndClick;
 		Text highscore_title;
-		std::vector<Text> highscores;
+		std::vector< Text* > highscores;
 
 	private:
 };

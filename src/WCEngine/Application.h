@@ -1,9 +1,9 @@
 #ifndef APP_H
 #define APP_H
 
-#include <SFML/Graphics.hpp>
 #include <string>
 #include <map>
+#include "RenderWindow.h"
 
 
 
@@ -13,53 +13,57 @@
 
 
 
+#define App (*(gdn::Application::GetInstance()))
 
-#define App (*(Application::GetInstance()))
-
-// Forward decl.
-class Scene;
-
-class Application
+namespace gdn
 {
-public:
-	static Application* GetInstance();
+	// Forward decl.
+	class Scene;
+	class Timer;
 
-	bool Initialize( int width, int height, int bpp, std::string title ); // Open screen
-	void SetPhysicsFPS( float fps );
-	void Run(); // Start engine
+	class Application
+	{
+	public:
+		static Application* GetInstance();
 
-	void AddScene( Scene* scene );
-	sf::RenderWindow& GetWindow();
+		bool Initialize( int width, int height, int bpp, std::string title ); // Open screen
+		void SetPhysicsFPS( float fps );
+		void Run(); // Start engine
 
-	int GetWidth();
-	int GetHeight();
-	int GetBPP();
+		void AddScene( Scene* scene );
+		gdn::RenderWindow& GetWindow();
 
-protected:
-	Application();
-	virtual ~Application();
+		int GetWidth();
+		int GetHeight();
+		int GetBPP();
+		float GetFPS();
 
-	void ProcessSystemEvents(); // SFML events
-	void ProcessGameEvents(); // Home-made events
-	void SetScene( std::string name );
-	void Step();
-	void Draw();
+	protected:
+		Application();
+		virtual ~Application();
 
-	sf::RenderWindow window;
-	bool isRunning;
-	sf::Clock timer;
-	float physicsFps;
-	int width;
-	int height;
-	int bpp;
-	std::string title;
+		void ProcessSystemEvents(); // SFML events
+		void ProcessGameEvents(); // Home-made events
+		void SetScene( std::string name );
+		void Step();
+		void Draw();
 
-	// Current scene (game, menu, highscore etc.)
-	Scene* curScene;
-	std::map< std::string, Scene* > scenes;
+		gdn::RenderWindow window;
+		bool isRunning;
+		gdn::Timer* timer;
+		float physicsFps;
+		int width;
+		int height;
+		int bpp;
+		std::string title;
 
-private:
-	static Application* instance;
-};
+		// Current scene (game, menu, highscore etc.)
+		Scene* curScene;
+		std::map< std::string, Scene* > scenes;
+
+	private:
+		static Application* instance;
+	};
+} // namespace
 
 #endif // APP_H

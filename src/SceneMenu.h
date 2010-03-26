@@ -2,7 +2,7 @@
 #define SCENEMENU_H
 
 #include <SFML/Audio.hpp>
-#include "WCEngine/Scene.h"
+#include "WCEngine/GDN.h"
 
 #include <string>
 #include <vector>
@@ -16,7 +16,7 @@
 
 
 
-class SceneMenu : public Scene
+class SceneMenu : public gdn::Scene
 {
 	public:
 		SceneMenu();
@@ -32,7 +32,7 @@ class SceneMenu : public Scene
 		int selected;
 		bool isMouseDown;
 		std::vector<std::string> items;
-		sf::Sprite background;
+		gdn::Sprite background;
 		sf::Sound sndClick;
 
 	private:
