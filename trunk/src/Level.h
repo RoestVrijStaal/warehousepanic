@@ -172,7 +172,7 @@ public:
 									t->interval = rand() % (int)crateInterval;
 									t->delay = 0;
 									t->delayrevert = 5 * 100;
-									t->crates = t->craterevert = 3;
+									t->crates = t->craterevert = cratesPerTruck;
 									t->active = false;
 									objects[idx] = t;
 								}

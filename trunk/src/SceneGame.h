@@ -11,9 +11,11 @@
 #include "Truck.h"
 #include "Gate.h"
 #include "Text.h"
+#include "Star.h"
 
 #include <sstream>
 #include <list>
+#include <vector>
 #include <string>
 
 
@@ -39,6 +41,7 @@ class SceneGame : public gdn::Scene
 		std::list<Object*> objects;
 		std::list<Object*> clickables;
 		std::list<Object*> toDelete; // List of objects that we are responsible for deleting
+		std::vector<Star> stars;
 		int points;
 		bool isPaused;
 		bool isGameOver;
