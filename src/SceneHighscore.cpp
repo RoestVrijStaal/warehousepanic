@@ -169,6 +169,8 @@ void SceneHighscore::Draw()
 {
 	App.GetWindow().Clear( 0, 0, 0 );
 
+    highscore_title.Draw();
+
 	for (int i = 0; i < (int)highscores.size(); i++)
 	{
 		highscores[i]->Draw();

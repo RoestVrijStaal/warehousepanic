@@ -106,6 +106,8 @@ namespace gdn
 
 		images["keyboard"].LoadFromFile( "media/keyboard.png" );
 
+		images["star"].LoadFromFile( "media/star-public-domain.png" );
+
 		// Font - small
 		images["0 small"].LoadFromFile( "media/font_0_small.png" );
 		images["1 small"].LoadFromFile( "media/font_1_small.png" );
@@ -144,6 +146,10 @@ namespace gdn
 		images["Y small"].LoadFromFile( "media/font_Y_small.png" );
 		images["Z small"].LoadFromFile( "media/font_Z_small.png" );
 		images["  small"].LoadFromFile( "media/font_ _small.png" );
+		images["! small"].LoadFromFile( "media/font_!_small.png" );
+		images[". small"].LoadFromFile( "media/font_._small.png" );
+		images["_ small"].LoadFromFile( "media/font___small.png" );
+		images["- small"].LoadFromFile( "media/font_-_small.png" );
 		// Font - medium
 		images["0 medium"].LoadFromFile( "media/font_0_medium.png" );
 		images["1 medium"].LoadFromFile( "media/font_1_medium.png" );
@@ -182,6 +188,10 @@ namespace gdn
 		images["Y medium"].LoadFromFile( "media/font_Y_medium.png" );
 		images["Z medium"].LoadFromFile( "media/font_Z_medium.png" );
 		images["  medium"].LoadFromFile( "media/font_ _medium.png" );
+		images["! medium"].LoadFromFile( "media/font_!_medium.png" );
+		images[". medium"].LoadFromFile( "media/font_._medium.png" );
+		images["_ medium"].LoadFromFile( "media/font___medium.png" );
+		images["- medium"].LoadFromFile( "media/font_-_medium.png" );
 		// Font - large
 		images["0 large"].LoadFromFile( "media/font_0_large.png" );
 		images["1 large"].LoadFromFile( "media/font_1_large.png" );
@@ -220,15 +230,16 @@ namespace gdn
 		images["Y large"].LoadFromFile( "media/font_Y_large.png" );
 		images["Z large"].LoadFromFile( "media/font_Z_large.png" );
 		images["  large"].LoadFromFile( "media/font_ _large.png" );
+		images["! large"].LoadFromFile( "media/font_!_large.png" );
+		images[". large"].LoadFromFile( "media/font_._large.png" );
+		images["_ large"].LoadFromFile( "media/font___large.png" );
+		images["- large"].LoadFromFile( "media/font_-_large.png" );
 
 		// Sound buffers
 		sounds["switch"].LoadFromFile( "media/snd_button-25.wav" );
 		sounds["click"].LoadFromFile( "media/snd_button-30.wav" );
 
 		// TODO: Free memory again
-		music["new highscore"] = new sf::Music();
-		music["new highscore"]->OpenFromFile( "media/music_Ring Of Fire Midi-15375-Free-Loops.com.wav" );
-		music["new highscore"]->SetLoop( true );
 		music["game over"] = new sf::Music();
 		music["game over"]->OpenFromFile( "media/music_Sweet RnB Beat-23820-Free-Loops.com.wav" );
 		music["game over"]->SetLoop( true );

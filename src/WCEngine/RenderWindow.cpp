@@ -26,6 +26,7 @@ namespace gdn
 			return false;
 		}
 		screen = SDL_SetVideoMode( width, height, bpp, SDL_SWSURFACE );
+		SDL_WM_SetCaption( title.c_str(), NULL );
 		joystick = SDL_JoystickOpen( 0 );
 		SDL_JoystickEventState( SDL_DISABLE );
 

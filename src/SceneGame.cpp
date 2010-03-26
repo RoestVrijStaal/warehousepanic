@@ -266,6 +266,32 @@ void SceneGame::Step()
     {
         //Play running out of time sound.
     }
+
+    // Move the stars
+    for ( int i = 0; i < stars.size(); i++ )
+	{
+	    Star& star = stars[i];
+	    if ( star.pos.x > 50 )
+	    {
+            star.pos.x -= 0.25;
+	    }
+	    else if ( star.pos.x < 50 )
+	    {
+            star.pos.x += 0.25;
+	    }
+	    if ( star.pos.y > 220 )
+	    {
+            star.pos.y -= 0.25;
+	    }
+	    else if ( star.pos.y < 220 )
+	    {
+            star.pos.y += 0.25;
+	    }
+	    if ( star.pos.x <= 51 and star.pos.x >= 49 and star.pos.y >= 219 and star.pos.y <= 221 )
+	    {
+	        stars.erase( stars.begin() + i );
+	    }
+	}
 }
 
 void SceneGame::Draw()
@@ -383,6 +409,13 @@ void SceneGame::Draw()
 	str_score.SetText( score.str() );
 	str_score.SetPosition( 5, 217 );
 	str_score.Draw();
+
+	// Draw the stars
+	for ( int i = 0; i < stars.size(); i++ )
+	{
+	    stars[i].sprite.SetPosition( stars[i].pos.x, stars[i].pos.y );
+	    App.GetWindow().Draw( stars[i].sprite );
+	}
 }
 
 
@@ -506,6 +539,32 @@ bool SceneGame::DoCrate( Crate& crate )
 					if ( crate.color == crate.connected->color )
 					{
 						points += crate.value;
+						// Create the star(s), because we got points.
+						int starAmount = points / 25;
+						for ( int i = 0; i < starAmount; i++ )
+                        {
+                            stars.push_back( Star() );
+                            stars.back().SetSprite();
+                            stars.back().pos = TransformMapToScreen( crate.pos );
+                            int o1 = rand() % 2, o2 = rand() % 2;
+                            if ( o1 == 0 )
+                            {
+                                stars.back().pos.x += rand() % 20;
+                            }
+                            else
+                            {
+                                stars.back().pos.x -= rand() % 20;
+                            }
+                            if ( o2 == 0 )
+                            {
+                                stars.back().pos.y += rand() % 20;
+                            }
+                            else
+                            {
+                                stars.back().pos.y -= rand() % 20;
+                            }
+                            std::printf( "X: %f Y: %f\n", stars.back().pos.x, stars.back().pos.y );
+                        }
 					}
 					else
 					{

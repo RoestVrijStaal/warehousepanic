@@ -36,9 +36,11 @@ void SceneCredits::Initialize()
 	AddText( "...", Text::SMALL );
 	AddText( "Game Music by", Text::MEDIUM );
 	AddText( "...", Text::SMALL );
-	AddText( "Thank you for playing", Text::SMALL );
-	AddText( "Visit us at", Text::SMALL );
-	AddText( "http://cpp.wikicomplete.info", Text::SMALL );
+	AddText( "Thank you for playing", Text::MEDIUM );
+	AddText( "Visit us at", Text::CNTR_MEDIUM );
+	// Exclamation marks show up as slashes
+	// Also, underscores are colons
+	AddText( "http_!!cpp.wikicomplete.info", Text::CNTR_SMALL );
 }
 
 void SceneCredits::Terminate()
@@ -84,17 +86,21 @@ void SceneCredits::AddText( std::string text, Text::Size size )
 {
 	// Calculate position
 	float curPos = ( credits.size() == 0 ? App.GetHeight() : credits.back()->GetPosition().y );
+	float xOffset = 0;
 	switch ( size )
 	{
 		case Text::SMALL: curPos += 25.0f; break;
-		case Text::MEDIUM: curPos += 50.0f; break;
+		case Text::MEDIUM: curPos += 50.0f; xOffset = -60.0f; break;
 		case Text::LARGE: curPos += 10.0f; break;
+		case Text::CNTR_MEDIUM: curPos += 50.0f; break;
+		case Text::CNTR_SMALL: curPos += 25.0f; xOffset = -50.0f; break;
 		default: break;
 	}
 
 	Text& t = *(new Text( text ));
 	credits.push_back( &t );
-	t.SetPosition( App.GetWidth() / 2.0f - (t.GetWidth() / 2.0f), curPos );
+	t.SetPosition( App.GetWidth() / 2.0f - (t.GetWidth() / 2.0f) - 35.0f + xOffset, curPos );
+	t.SetSize( size );
 }
 
 
