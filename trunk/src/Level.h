@@ -24,6 +24,7 @@ public:
 		crateSpeed = crateInterval = crateSpeedIncrement = 0.0f;
 		cratesPerTruck = 10;
 		truckDelay = 5 * 100;   // Five seconds
+		amountOfTrucks = 5;
 	}
 
 	Level( std::string filename )
@@ -70,6 +71,10 @@ public:
 				else if ( key == "truckdelay" )
 				{
 				    StringToInt(value, truckDelay);
+				}
+				else if ( key == "amountoftrucks" )
+				{
+				    StringToInt(value, amountOfTrucks);
 				}
 				else if ( key == "tiles" )
 				{
@@ -250,6 +255,7 @@ public:
 	std::vector<GameColor::ColorType> colors;
 	int cratesPerTruck;
 	int truckDelay;
+	int amountOfTrucks;
 protected:
 private:
 };

@@ -87,6 +87,7 @@ int main ()
 	int cratesPerTruck = 10;
 	int truckDelay = 100 * 5; // Five seconds in game.
 	long levelTime = 100 * 180; // Three minutes in game.
+	int amountOfTrucks = 5;
 	getline(cin,filename);
 	if (filename != "")
 	{
@@ -134,6 +135,10 @@ int main ()
 				else if ( key == "truckdelay" )
 				{
 					StringToInt(value, truckDelay);
+				}
+				else if ( key == "amountoftrucks" )
+				{
+					StringToInt(value, amountOfTrucks);
 				}
 				else if ( key == "tiles" )
 				{
@@ -445,6 +450,7 @@ int main ()
 								file << "cratespeedincrement=" << crateSpeedIncrement << endl;
 								file << "cratespertruck=" << cratesPerTruck << endl;
 								file << "truckdelay=" << truckDelay << endl;
+								file << "amountoftrucks=" << amountOfTrucks << endl;
 								file << "tiles=";
 								int pos = 0;
 								for ( vector<random_class>::iterator it = level.begin(); it != level.end(); ++it, ++pos )

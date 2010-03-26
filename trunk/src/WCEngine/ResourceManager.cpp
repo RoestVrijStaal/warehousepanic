@@ -101,8 +101,8 @@ namespace gdn
 		images["button quit active"].LoadFromFile( "media/button_quit_on.png" );
 
 		images["text paused"].LoadFromFile( "media/text_paused.png" );
-	//	images["text game over"].LoadFromFile( "media/text_game_over.png" );
-	//	images["text level complete"].LoadFromFile( "media/text_level_complete.png" );
+		images["text fail"].LoadFromFile( "media/text_fail.png" );
+		images["text win"].LoadFromFile( "media/text_win.png" );
 
 		images["keyboard"].LoadFromFile( "media/keyboard.png" );
 
@@ -246,6 +246,9 @@ namespace gdn
 		music["menu"] = new sf::Music();
 		music["menu"]->OpenFromFile( "media/music_Free Hip Hop 3-9480-Free-Loops.com.wav" );
 		music["menu"]->SetLoop( true );
+		music["game"] = new sf::Music();
+		music["game"]->OpenFromFile( "media/music_Plain Loafer.mp3" );
+		music["game"]->SetLoop( true );
 	}
 
 	gdn::Image& ResourceManager::GetImage( std::string name )

@@ -45,8 +45,13 @@ class SceneGame : public gdn::Scene
 		int points;
 		bool isPaused;
 		bool isGameOver;
+		bool didWin;
+		bool didQuit;
+		bool justStopped;
 		Level level;
 		int timer; // Used for all sorts of stuff, e.g. delay between game being over and scene actually ending
+		int cratesLost;
+		int curLevel;
 
 		// Other Game Stuff
 		Text str_score;
