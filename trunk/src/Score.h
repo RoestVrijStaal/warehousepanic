@@ -6,3 +6,8 @@ struct Score
     int score;
     std::string name;
 };
+
+bool ScoreSort(Score* first, Score* second)
+{
+	return first->score > second->score;
+}

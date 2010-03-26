@@ -1,13 +1,12 @@
 #include "SceneHighscore.h"
 
-#include "WCEngine/Application.h"
-#include "WCEngine/EventManager.h"
-#include "WCEngine/ResourceManager.h"
 #include "Functions.h"
 
 #include <fstream>
 #include <sstream>
 #include <list>
+#include <iostream>
+using namespace std;
 
 
 // Constructors
@@ -19,110 +18,88 @@ SceneHighscore::~SceneHighscore()
 {
 }
 
-
-
 // Methods
 void SceneHighscore::Initialize()
 {
 	sndClick = sf::Sound( ResMgr.GetSound( "click" ) );
 	isMouseDown = true;
 	keyboard = NULL;
-	newScore = 0;
-	name = "";
+	newScore = NULL;
+	newTextName = NULL;
 
-	std::list< Score >::iterator it;
-    bool tmp = false;
-    std::ifstream myfile ("highscores.wph");
-    if (myfile.is_open())
-    {
-        while (! myfile.eof() )
-        {
-            std::string line;
-            getline(myfile,line);
-            size_t equals = line.find("=");
-            int thescore;
-            StringToInt(line.substr(0,equals),thescore);
-            std::string thename = line.substr(equals + 1);
-            bool stop = false;
-            std::list< Score >::iterator it = scores.end();
-            while (stop == false)
-            {
-                if (it->score < newScore)
-                {
-                    it--;
-                }
-                else
-                {
-                    stop = true;
-                }
-            }
-            scores.insert( it, 1, Score(thescore, thename) );
-        }
-        myfile.close();
-    }
-    else
-    {
-        scores.insert( scores.begin(),1,Score( 3 * 25, "MILESTOE MARKER" ) );
-        scores.insert( scores.begin(),1,Score( 5 * 25, "MILESTOE MARKER" ) );
-        scores.insert( scores.begin(),1,Score( 10 * 25, "MILESTOE MARKER" ) );
-        scores.insert( scores.begin(),1,Score( 25 * 25, "MILESTOE MARKER" ) );
-        scores.insert( scores.begin(),1,Score( 30 * 25, "MILESTOE MARKER" ) );
-        scores.insert( scores.begin(),1,Score( 40 * 25, "MILESTOE MARKER" ) );
-        scores.insert( scores.begin(),1,Score( 50 * 25, "MILESTOE MARKER" ) );
-        scores.insert( scores.begin(),1,Score( 75 * 25, "MILESTOE MARKER" ) );
-        scores.insert( scores.begin(),1,Score( 100 * 25, "MILESTOE MARKER" ) );
-        scores.insert( scores.begin(),1,Score( 150 * 25, "MILESTOE MARKER" ) );
-    }
+	std::list< Score* >::iterator it;
+	std::ifstream myfile ("highscores.wph");
+	if (myfile.is_open())
+	{
+		while (!myfile.eof() )
+		{
+			std::string line;
+			getline(myfile, line);
+			size_t equals = line.find("=");
+			int thescore;
+			StringToInt(line.substr(0, equals), thescore);
+			std::string thename = line.substr(equals + 1);
+			InsertScore( new Score(thescore, thename) );
+		}
+		myfile.close();
+	}
+	else
+	{
+		InsertScore( new Score( 3 * 25, "Noob" ) );
+		InsertScore( new Score( 5 * 25, "Newbie" ) );
+		InsertScore( new Score( 10 * 25, "Average Joe" ) );
+		InsertScore( new Score( 25 * 25, "L337" ) );
+		InsertScore( new Score( 30 * 25, "u9" ) );
+		InsertScore( new Score( 40 * 25, "wannabe" ) );
+		InsertScore( new Score( 50 * 25, "mr glasses" ) );
+		InsertScore( new Score( 75 * 25, "Spacechase0" ) );
+		InsertScore( new Score( 100 * 25, "Your mom" ) );
+		InsertScore( new Score( 150 * 25, "Hartnell" ) );
+	}
 
 	// Any event for highscore scene?
-	while ( EventMgr.HasEvent( HIGHSCORE ) )
+	while ( EventMgr.HasEvent( gdn::HIGHSCORE ) )
 	{
-		GameEvent& event = EventMgr.PeekEvent( HIGHSCORE );
+		ResMgr.GetMusic( "game over" ).Play();
+		gdn::GameEvent& event = EventMgr.PeekEvent( gdn::HIGHSCORE );
 		switch ( event.type )
 		{
-			case GameEvent::Highscore:
-				// Reached highscore table from game, so play music depending on how well they did.
-				newScore = event.Highscore_new_score;
-				for (it = scores.begin(); it != scores.end(); it++)
+			case gdn::GameEvent::Highscore:
+				if ( scores.back()->score < event.Highscore_new_score )
 				{
-				    if (newScore > it->score)
-				    {
-				        tmp = true;
-				    }
-				}
-				if (tmp == true)
-				{
-                    ResMgr.GetMusic( "new highscore" ).Play();
-                    keyboard = new Keyboard();
+					keyboard = new Keyboard();
 					keyboard->Show();
-					didChange = true;
-				}
-				else
-				{
-                    ResMgr.GetMusic( "game over" ).Play();
+					newScore = new Score( event.Highscore_new_score, "" );
+					InsertScore( newScore );
 				}
 				break;
 
 			default:
 				break;
 		}
-		EventMgr.PopEvent( HIGHSCORE );
+		EventMgr.PopEvent( gdn::HIGHSCORE );
 	}
-    highscore_title = Text( std::string( "HIGHSCORES" ), 0, 0, Text::LARGE );
-    highscore_title.SetPosition( 320 - highscore_title.GetRect().GetWidth(), 2 );
-    int str_sofar = 0;
-	for (std::list< Score >::iterator it = scores.begin(); it != scores.end(); it++)
+
+	highscore_title = Text( std::string( "HIGHSCORES" ), 0, 0, Text::LARGE );
+	highscore_title.SetPosition( App.GetWidth() / 2 - highscore_title.GetWidth() / 2.0f, 2.0f );
+
+	int str_sofar = 0;
+	for (std::list< Score* >::iterator it = scores.begin(); it != scores.end(); it++)
 	{
-	    if (str_sofar < 10)
-	    {
-            highscores.push_back( Text(std::string(it->name), 40, str_sofar * 20 + 35, Text::MEDIUM) );
-            highscores.back().SetPosition( 40, str_sofar * 20 + 35 );
-            std::stringstream thescore;
-            thescore << it->score;
-            highscores.push_back( Text(thescore.str(), 225, str_sofar * 20 + 35, Text::MEDIUM) );
-            highscores.back().SetPosition( 225, str_sofar * 20 + 35 );
-	    }
-	    str_sofar += 1;
+		if (str_sofar < 10)
+		{
+			highscores.push_back( new Text(std::string((*it)->name), 40, str_sofar * 20 + 35, Text::MEDIUM) );
+
+			// Get a handle where we can put name after typing (if applicable)
+			if ( *it == newScore )
+				newTextName = highscores.back();
+
+			std::stringstream thescore;
+			thescore << (*it)->score;
+			highscores.push_back( new Text(thescore.str(), 0, 0, Text::MEDIUM) );
+			highscores.back()->SetPosition( App.GetWidth() - highscores.back()->GetWidth() - 40, str_sofar * 20 + 35 );
+		}
+		str_sofar += 1;
 	}
 }
 
@@ -131,15 +108,18 @@ void SceneHighscore::Terminate()
 	if ( keyboard )
 		delete keyboard;
 	keyboard = NULL;
-	if (ResMgr.GetMusic( "new highscore" ).GetStatus() == sf::Music::Playing)
+	if (ResMgr.GetMusic( "game over" ).GetStatus() == sf::Music::Playing)
 	{
-	    ResMgr.GetMusic( "new highscore" ).Stop();
+		ResMgr.GetMusic( "game over" ).Stop();
 	}
-	else if (ResMgr.GetMusic( "game over" ).GetStatus() == sf::Music::Playing)
-	{
-	    ResMgr.GetMusic( "game over" ).Stop();
-	}
+
+	for ( std::list<Score*>::iterator it = scores.begin(); it != scores.end(); ++it )
+		delete *it;
 	scores.clear();
+
+	for ( std::vector<Text*>::iterator it = highscores.begin(); it != highscores.end(); ++it )
+		delete *it;
+	highscores.clear();
 }
 
 void SceneHighscore::Step()
@@ -152,39 +132,22 @@ void SceneHighscore::Step()
 			// User pressed enter?
 			if ( keyboard->IsDone() )
 			{
-				name = keyboard->GetText();
+				newScore->name = keyboard->GetText();
+				newTextName->SetText( newScore->name );
 				keyboard->Hide();
 				isMouseDown = true;
-				std::list< Score >::iterator it;
-				int sofar = 0;
-				for (it = scores.begin(); it != scores.end(); it++)
+
+				std::ofstream file("highscores.wph", std::ios::out | std::ios::trunc);
+				int str_sofar = 0;
+				for (std::list< Score* >::iterator it = scores.begin(); it != scores.end(); it++)
 				{
-				    if (it->score >= newScore)
-				    {
-				        sofar += 1;
-				        continue;
-				    }
-				    break;
+					if (str_sofar < 10)
+					{
+						file << (*it)->score << "=" << (*it)->name << std::endl;
+					}
+					str_sofar += 1;
 				}
-				std::list< Score >::iterator it2 = scores.begin();
-				while (sofar > 0)
-				{
-				    it2++;
-				    sofar--;
-				}
-				scores.insert( it2, 1, Score(newScore, name) );
-                std::ofstream file("highscores.wph",std::ios::out | std::ios::trunc);
-                int str_sofar = 0;
-                for (std::list< Score >::iterator it = scores.begin(); it != scores.end(); it++)
-                {
-                    if (str_sofar < 10)
-                    {
-                        file << it->score << "=" << it->name << std::endl;
-                    }
-                    str_sofar += 1;
-                }
-                file.close();
-                didChange = false;
+				file.close();
 			}
 		}
 	}
@@ -192,11 +155,11 @@ void SceneHighscore::Step()
 	// Ignore everything if keyboard is shown
 	if ( keyboard == NULL or !keyboard->IsShown() )
 	{
-		bool curMouseDown = App.GetWindow().GetInput().IsMouseButtonDown( sf::Mouse::Left );
+		bool curMouseDown = App.GetWindow().IsMouseButtonDown();
 		if ( curMouseDown and !isMouseDown )
 		{
 			sndClick.Play();
-			EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "menu" ) );
+			EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "menu" ) );
 		}
 		isMouseDown = curMouseDown;
 	}
@@ -204,16 +167,21 @@ void SceneHighscore::Step()
 
 void SceneHighscore::Draw()
 {
-	App.GetWindow().Clear( sf::Color( 0, 0, 0 ) );
+	App.GetWindow().Clear( 0, 0, 0 );
 
-	highscore_title.Draw();
 	for (int i = 0; i < (int)highscores.size(); i++)
 	{
-	    highscores[i].Draw();
+		highscores[i]->Draw();
 	}
 
 	if ( keyboard )
 		keyboard->Draw();
+}
+
+void SceneHighscore::InsertScore( Score* score )
+{
+	scores.push_back( score );
+	scores.sort( ScoreSort );
 }
 
 

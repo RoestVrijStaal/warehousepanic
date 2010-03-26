@@ -1,10 +1,8 @@
 #include "SceneGame.h"
 
-#include "WCEngine/EventManager.h"
-#include "WCEngine/ResourceManager.h"
-#include "WCEngine/Application.h"
 
 #include <iostream>
+#include <cmath>
 using namespace std;
 
 
@@ -47,12 +45,12 @@ void SceneGame::Initialize()
 	}
 
 	// Buttons
-	pbuttonPause = sf::Sprite( ResMgr.GetImage( "button pause" ) );
+	pbuttonPause = gdn::Sprite( ResMgr.GetImage( "button pause" ) );
 	pbuttonPause.SetCenter( pbuttonPause.GetImage()->GetWidth() / 2.0f, pbuttonPause.GetImage()->GetHeight() / 2.0f );
 	pbuttonPause.SetPosition(
 		App.GetWidth() - pbuttonPause.GetImage()->GetWidth() / 2.0f - 5,
 		pbuttonPause.GetImage()->GetWidth() / 2.0f + 5 ); // Top right corner
-	pbuttonQuit = sf::Sprite( ResMgr.GetImage( "button quit" ) );
+	pbuttonQuit = gdn::Sprite( ResMgr.GetImage( "button quit" ) );
 	pbuttonQuit.SetCenter( pbuttonQuit.GetImage()->GetWidth() / 2.0f, pbuttonQuit.GetImage()->GetHeight() / 2.0f );
 	pbuttonQuit.SetPosition(
 		App.GetWidth() - pbuttonPause.GetImage()->GetWidth() - pbuttonQuit.GetImage()->GetWidth() / 2.0f - 10,
@@ -95,8 +93,8 @@ void SceneGame::Terminate()
 void SceneGame::Step()
 {
 	//Events
-	sf::Vector2f mousepos( App.GetWindow().GetInput().GetMouseX(), App.GetWindow().GetInput().GetMouseY()) ;
-	bool newMouseButton = App.GetWindow().GetInput().IsMouseButtonDown( sf::Mouse::Left );
+	gdn::Vector2f mousepos( App.GetWindow().GetMouseX(), App.GetWindow().GetMouseY() );
+	bool newMouseButton = App.GetWindow().IsMouseButtonDown();
 
 	// Handle mouse-down event
 	if (newMouseButton and isMouseDown == false)
@@ -112,7 +110,7 @@ void SceneGame::Step()
 
 				if ( popup )
 					delete popup;
-				popup = new sf::Sprite( ResMgr.GetImage( "text paused" ) );
+				popup = new gdn::Sprite( ResMgr.GetImage( "text paused" ) );
 				popup->SetCenter( popup->GetImage()->GetWidth() / 2.0f, popup->GetImage()->GetHeight() / 2.0f );
 				popup->SetPosition( (float)App.GetWidth() / 2.0f, -(float)(popup->GetImage()->GetHeight()) / 2.0f ); // At top of screen (to animate falling down)
 			}
@@ -142,7 +140,7 @@ void SceneGame::Step()
 		// Mouse down event, running game
 		else
 		{
-			sf::Vector2f mappos = TransformScreenToMap( mousepos );
+			gdn::Vector2f mappos = TransformScreenToMap( mousepos );
 			Object* obj = FindClickedObject( mappos );
 			if ( obj )
 			{
@@ -163,26 +161,6 @@ void SceneGame::Step()
 						break;
 				}
 			}
-
-			// Translate screen coordinates to level grid coordinates
-/*			sf::Vector2f mappos = TransformScreenToMap( mousepos );
-			Object* obj = level.GetObjectAt( (int)mappos.x, (int)mappos.y );
-			if ( obj )
-			{
-				switch ( obj->type )
-				{
-					case Object::CONVEYOR:
-						{
-							Conveyor& c = *(Conveyor*)obj;
-							c.Switch();
-						}
-						break;
-
-					// Do nothing for the rest of the objects
-					default:
-						break;
-				}
-			}*/
 		}
 	} // end mouse down event
 
@@ -263,14 +241,14 @@ void SceneGame::Step()
 	// End game?
 	if ( isGameOver and timer <= 0 )
 	{
-		EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
-		EventMgr.PushEvent( HIGHSCORE, GameEvent::HighscoreEvent( points ) );
+		EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "highscore" ) );
+		EventMgr.PushEvent( gdn::HIGHSCORE, gdn::GameEvent::HighscoreEvent( points ) );
 	}
 
 	// If we have a popup, center it
 	if ( popup )
 	{
-		sf::Vector2f pos = popup->GetPosition();
+		gdn::Vector2f pos = popup->GetPosition();
 		popup->SetPosition( pos.x, pos.y + ( App.GetHeight() / 2.0f - pos.y ) / 5.0f );
 	}
 
@@ -295,13 +273,13 @@ void SceneGame::Draw()
 	//sf::Sprite bg( ResMgr.GetImage( "level background" ) );
 	//bg.SetColor( sf::Color( 60, 60, 60 ) );
 	//window->Draw( bg );
-	App.GetWindow().Clear( sf::Color(100,100,100) );
+	App.GetWindow().Clear( 100, 100, 100 );
 
 	// Draw all objects
 	for ( std::list<Object*>::iterator it = objects.begin(); it != objects.end(); ++it )
 	{
 		Object& obj = (**it);
-		sf::Vector2f screenPos = TransformMapToScreen( obj.pos );
+		gdn::Vector2f screenPos = TransformMapToScreen( obj.pos );
 		switch ( obj.type )
 		{
 			case Object::CRATE:
@@ -395,10 +373,9 @@ void SceneGame::Draw()
 	if ( popup )
 		App.GetWindow().Draw( *popup );
 
-    stringstream time;
-	time << "TIME   " << (level.levelTime / 100);
+	stringstream time;
+	time << "TIME   " << (level.levelTime / App.GetFPS());
 	str_time.SetText( time.str() );
-	sf::FloatRect time_rect = str_time.GetRect();
 	str_time.SetPosition( 5, 197 );
 	str_time.Draw();
 	stringstream score;
@@ -411,18 +388,18 @@ void SceneGame::Draw()
 
 
 // Helper functions
-sf::Vector2f SceneGame::TransformScreenToMap( sf::Vector2f& pos )
+gdn::Vector2f SceneGame::TransformScreenToMap( gdn::Vector2f& pos )
 {
 	static float cosval = cos( -M_PI / 4.0 );
 	static float sinval = sin( -M_PI / 4.0 );
 
 	// Translate to center of screen
-	sf::Vector2f descreen(
+	gdn::Vector2f descreen(
 		pos.x - 160,
 		pos.y - 120 );
 
 	// Scale to fit screen resolution
-	sf::Vector2f descaled(
+	gdn::Vector2f descaled(
 		descreen.x / 28.4f,
 		descreen.y / 28.4f );
 
@@ -430,28 +407,28 @@ sf::Vector2f SceneGame::TransformScreenToMap( sf::Vector2f& pos )
 	descaled.y *= 2.0f;
 
 	// Rotate 45 degrees
-	sf::Vector2f derotated(
+	gdn::Vector2f derotated(
 		descaled.x * cosval + descaled.y * sinval,
 		descaled.y * cosval - descaled.x * sinval );
 
-	sf::Vector2f decentered(
+	gdn::Vector2f decentered(
 		derotated.x + 0.5f + (float)level.width / 2.0f,
 		derotated.y + 0.5f + (float)level.height / 2.0f );
 
 	return decentered;
 }
 
-sf::Vector2f SceneGame::TransformMapToScreen( sf::Vector2f& pos )
+gdn::Vector2f SceneGame::TransformMapToScreen( gdn::Vector2f& pos )
 {
 	static float cosval = cos( M_PI / 4.0 );
 	static float sinval = sin( M_PI / 4.0 );
 
-	sf::Vector2f centered(
+	gdn::Vector2f centered(
 		pos.x - (float)level.width / 2.0f,
 		pos.y - (float)level.height / 2.0f );
 
 	// Rotate 45 degrees
-	sf::Vector2f rotated(
+	gdn::Vector2f rotated(
 		centered.x * cosval + centered.y * sinval,
 		centered.y * cosval - centered.x * sinval );
 
@@ -459,29 +436,29 @@ sf::Vector2f SceneGame::TransformMapToScreen( sf::Vector2f& pos )
 	rotated.y /= 2.0f;
 
 	// Scale to fit screen resolution
-	sf::Vector2f scaled(
+	gdn::Vector2f scaled(
 		rotated.x * 28.4f,
 		rotated.y * 28.4f );
 		//rotated.x * 28.4864f,
 		//rotated.y * 28.55f );
 
 	// Translate to center of screen
-	sf::Vector2f screen(
+	gdn::Vector2f screen(
 		(scaled.x) + 160,
 		(scaled.y) + 120 );
 	return screen;
 }
 
-float SceneGame::GetDistanceSQ( sf::Vector2f pos1, sf::Vector2f pos2 )
+float SceneGame::GetDistanceSQ( gdn::Vector2f& pos1, gdn::Vector2f& pos2 )
 {
-	sf::Vector2f diff( pos1.x - pos2.x, pos1.y - pos2.y );
+	gdn::Vector2f diff( pos1.x - pos2.x, pos1.y - pos2.y );
 	return diff.x * diff.x + diff.y * diff.y;
 }
 
-Object* SceneGame::FindClickedObject( sf::Vector2f& mappos )
+Object* SceneGame::FindClickedObject( gdn::Vector2f& mappos )
 {
 	// Offset mouse coordinate by half, as tiles are placed center, while coords start upper left
-	sf::Vector2f pos( mappos.x - .5f, mappos.y - .5f );
+	gdn::Vector2f pos( mappos.x - .5f, mappos.y - .5f );
 	float bestDistSQ = 3.5f * 3.5f;
 	Object* res = NULL;
 	for (std::list<Object*>::iterator it = clickables.begin(); it != clickables.end(); ++it )
@@ -585,7 +562,7 @@ bool SceneGame::DoCrate( Crate& crate )
 		// Will not reach center of conveyor, so move closer
 		else
 		{
-			sf::Vector2f diff( crate.connected->pos.x - crate.pos.x, crate.connected->pos.y - crate.pos.y );
+			gdn::Vector2f diff( crate.connected->pos.x - crate.pos.x, crate.connected->pos.y - crate.pos.y );
 			float length = sqrtf( diff.x * diff.x + diff.y * diff.y );
 			diff.x /= length;
 			diff.y /= length;

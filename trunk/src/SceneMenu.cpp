@@ -1,13 +1,9 @@
 #include "SceneMenu.h"
 
-#include "WCEngine/EventManager.h"
-#include "WCEngine/ResourceManager.h"
-
 #include <sstream>
 
 
-
-// This is the important part. You need to
+// This is the important part. You need to add the name of this scene
 SceneMenu::SceneMenu() : Scene( "menu" )
 {
 }
@@ -25,7 +21,7 @@ void SceneMenu::Initialize()
 	items.push_back( "Highscore" );
 	items.push_back( "Quit" );
 
-	background.SetImage( ResMgr.GetImage( "title" ) );
+	background = gdn::Sprite( ResMgr.GetImage( "title" ) );
 
 	if ( ResMgr.GetMusic( "menu" ).GetStatus() != sf::Music::Playing )
 	{
@@ -36,13 +32,14 @@ void SceneMenu::Initialize()
 
 void SceneMenu::Terminate()
 {
+	background = gdn::Sprite();
 	items.clear();
 }
 
 void SceneMenu::Step()
 {
-	bool curMouseDown = App.GetWindow().GetInput().IsMouseButtonDown( sf::Mouse::Left );
-	sf::Vector2f mousepos( App.GetWindow().GetInput().GetMouseX(), App.GetWindow().GetInput().GetMouseY() );
+	bool curMouseDown = App.GetWindow().IsMouseButtonDown();
+	gdn::Vector2f mousepos( App.GetWindow().GetMouseX(), App.GetWindow().GetMouseY() );
 
 	// Mouse down event
 	if ( curMouseDown and !isMouseDown )
@@ -76,20 +73,20 @@ void SceneMenu::Step()
 		switch ( selected )
 		{
 			case 0:
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "game" ) );
+				EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "game" ) );
 				ResMgr.GetMusic( "menu" ).Stop();
 				break;
 
 			case 1:
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "howtoplay" ) );
+				EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "howtoplay" ) );
 				break;
 
 			case 2:
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "highscore" ) );
+				EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "highscore" ) );
 				break;
 
 			case 3:
-				EventMgr.PushEvent( ENGINE, GameEvent::ChangeSceneEvent( "credits" ) );
+				EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "credits" ) );
 				break;
 
 			default:

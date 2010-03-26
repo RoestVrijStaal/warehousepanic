@@ -1,7 +1,7 @@
 #ifndef SCENEGAME_H
 #define SCENEGAME_H
 
-#include "WCEngine/Scene.h"
+#include "WCEngine/GDN.h"
 
 //Includes
 #include "Level.h"
@@ -22,7 +22,7 @@
 
 
 
-class SceneGame : public Scene
+class SceneGame : public gdn::Scene
 {
 	public:
 		SceneGame();
@@ -49,9 +49,9 @@ class SceneGame : public Scene
 		Text str_score;
 		Text str_time;
 
-		sf::Sprite pbuttonPause;
-		sf::Sprite pbuttonQuit;
-		sf::Sprite* popup;
+		gdn::Sprite pbuttonPause;
+		gdn::Sprite pbuttonQuit;
+		gdn::Sprite* popup;
 
 		sf::Sound sndSwitch;
 		sf::Sound sndClick;
@@ -60,10 +60,10 @@ class SceneGame : public Scene
 		bool isMouseDown;
 
 		// Helper functions
-		sf::Vector2f TransformScreenToMap( sf::Vector2f& pos );
-		sf::Vector2f TransformMapToScreen( sf::Vector2f& pos );
-		float GetDistanceSQ( sf::Vector2f pos1, sf::Vector2f pos2 );
-		Object* FindClickedObject( sf::Vector2f& mappos );
+		gdn::Vector2f TransformScreenToMap( gdn::Vector2f& pos );
+		gdn::Vector2f TransformMapToScreen( gdn::Vector2f& pos );
+		float GetDistanceSQ( gdn::Vector2f& pos1, gdn::Vector2f& pos2 );
+		Object* FindClickedObject( gdn::Vector2f& mappos );
 		bool DoCrate( Crate& crate );
 		bool DoTruck( Truck& truck );
 

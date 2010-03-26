@@ -1,12 +1,8 @@
 #ifndef KEYBOARD_H
 #define KEYBOARD_H
 
-#include <SFML/Audio.hpp>
-#include "WCEngine/Application.h"
 #include "Text.h"
 #include <string>
-
-
 
 class Keyboard
 {
@@ -32,7 +28,8 @@ protected:
 	bool isDone;
 	bool isShown;
 	float yPos;
-	sf::Sound sndClick;
+	// TODO: Add sound
+	//sf::Sound sndClick;
 
 private:
 };

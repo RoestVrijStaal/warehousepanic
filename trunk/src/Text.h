@@ -2,8 +2,7 @@
 #define TEXT_H
 
 #include <string>
-#include <SFML/Graphics.hpp>
-
+#include "WCEngine/GDN.h"
 
 
 class Text
@@ -15,16 +14,17 @@ class Text
 		virtual ~Text();
 
 		void SetText( std::string newtext );
-		void SetPosition( sf::Vector2f& newpos );
+		void SetPosition( gdn::Vector2f& newpos );
 		void SetPosition( float x, float y );
+		const gdn::Vector2f& GetPosition();
 		void SetSize( Size newsize );
-		sf::Rect<float> GetRect();
+		int GetWidth();
 
 		void Draw();
 
 	protected:
 		std::string text;
-		sf::Vector2f pos;
+		gdn::Vector2f pos;
 		Size size;
 
 	private:

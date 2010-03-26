@@ -1,10 +1,8 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include "WCEngine/ResourceManager.h"
+#include "WCEngine/GDN.h"
 #include "Settings.h"
-
-#include <SFML/Graphics.hpp>
 #include <sstream>
 
 
@@ -25,7 +23,7 @@ public:
 	ObjectType type;
 
 	// Position on 2D level. Not graphical position
-	sf::Vector2f pos;
+	gdn::Vector2f pos;
 
 	// Facing direction, i.e. the direction of flow. 0=right, 1=up, 2=left, 3=down (see the unit circle for more info)
 	int dir;
@@ -39,7 +37,7 @@ public:
 	Object* connected;
 
 	// Sprite to draw. Stored here so offcet (center) can be set only once
-	sf::Sprite sprite;
+	gdn::Sprite sprite;
 
 	void SetSprite()
 	{

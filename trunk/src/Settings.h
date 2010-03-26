@@ -2,6 +2,7 @@
 #define SETTTINGS_H
 
 
+#include "WCEngine/GDN.h"
 
 #include <string>
 
@@ -17,7 +18,7 @@ namespace GameColor
 }
 
 // "Perspective" point, i.e. the point to which we measure distance for sorting drawing order
-const sf::Vector2f SORT_POINT(18,0);
+gdn::Vector2f SORT_POINT(18,0);
 
 
 #endif // SETTTINGS_H
