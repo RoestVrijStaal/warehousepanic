@@ -18,8 +18,70 @@ SceneGame::~SceneGame()
 
 void SceneGame::Initialize()
 {
+    std::string levelname = "levels/test level.lvl";
+	points = 0;
+	while ( EventMgr.HasEvent( gdn::HIGHSCORE ) )
+	{
+		gdn::GameEvent& event = EventMgr.PeekEvent( gdn::HIGHSCORE );
+		switch ( event.type )
+		{
+			case gdn::GameEvent::Highscore:
+				points = event.Highscore_new_score;
+				break;
+
+			default:
+				break;
+		}
+		EventMgr.PopEvent( gdn::HIGHSCORE );
+	}
+	while ( EventMgr.HasEvent( gdn::GAME ) )
+	{
+		gdn::GameEvent& event = EventMgr.PeekEvent( gdn::GAME );
+		switch ( event.type )
+		{
+			case gdn::GameEvent::ChangeLevel:
+				switch ( event.ChangeLevel_next_level )
+				{
+					case 0:
+                        levelname = "levels/sc0_l1.lvl";
+                        break;
+
+					case 1:
+                        levelname = "levels/sc0_l2.lvl";
+                        break;
+
+					case 2:
+                        levelname = "levels/sc0_l3.lvl";
+                        break;
+
+					case 3:
+                        levelname = "levels/test level.lvl";
+                        break;
+
+                    // Go to highscores
+					case 4:
+                        EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "highscore" ) );
+                        EventMgr.PushEvent( gdn::HIGHSCORE, gdn::GameEvent::HighscoreEvent( points ) );
+                        break;
+
+					default:
+                        levelname = "levels/test level.lvl";
+                        break;
+				}
+				break;
+
+            case gdn::GameEvent::Highscore:
+				points = event.Highscore_new_score;
+				break;
+
+			default:
+				break;
+		}
+		curLevel = event.ChangeLevel_next_level;
+		EventMgr.PopEvent( gdn::GAME );
+	}
 	// Level stuff
-	level = Level( "levels/test level.lvl" ); // TODO: How do we choose level?
+	level = Level( levelname ); // TODO: How do we choose level?
 	for ( std::vector<Object*>::iterator it = level.objects.begin(); it != level.objects.end(); ++it )
 	{
 		if ( *it != NULL )
@@ -66,11 +128,15 @@ void SceneGame::Initialize()
 	isMouseDown = false;
 	isPaused = false;
 	isGameOver = false;
+	didWin = true;
+	justStopped = true;
 	timer = 0;
-	points = 0;
+	cratesLost = 0;
 
 	str_score.SetSize( Text::MEDIUM );
 	str_time.SetSize( Text::MEDIUM );
+
+	ResMgr.GetMusic( "game" ).Play();
 }
 
 void SceneGame::Terminate()
@@ -88,10 +154,21 @@ void SceneGame::Terminate()
 		delete popup;
 		popup = NULL;
 	}
+
+	ResMgr.GetMusic( "game" ).Stop();
 }
 
 void SceneGame::Step()
 {
+    if ( cratesLost >= 5 and !isGameOver )
+    {
+        isGameOver = true;
+        level.levelTime = 0;
+        didQuit = false;
+        didWin = false;
+        timer = (int)(App.GetFPS() * 3);
+        justStopped = true;
+    }
 	//Events
 	gdn::Vector2f mousepos( App.GetWindow().GetMouseX(), App.GetWindow().GetMouseY() );
 	bool newMouseButton = App.GetWindow().IsMouseButtonDown();
@@ -124,15 +201,18 @@ void SceneGame::Step()
 		}
 
 		// Handle mouse-down event game paused
-		if (isPaused)
+		if ( isPaused or isGameOver )
 		{
 			// Clicked inside quit button?
 			if ( GetDistanceSQ(mousepos, pbuttonQuit.GetPosition()) < pbuttonQuit.GetImage()->GetWidth() / 2.0f * pbuttonQuit.GetImage()->GetWidth() / 2.0f )
 			{
 				sndClick.Play();
-				isGameOver = true;
-				timer = 50;
+                timer = 50;
 				pbuttonQuit.SetImage( ResMgr.GetImage( "button quit active" ) );
+				justStopped = false;
+				didQuit = true;
+				didWin = false;
+				isGameOver = true;
 			}
 
 		}
@@ -165,7 +245,7 @@ void SceneGame::Step()
 	} // end mouse down event
 
 	//Compute
-	if (isPaused == false)
+	if (isPaused == false and !isGameOver )
 	{
 		level.Update();
 
@@ -232,17 +312,58 @@ void SceneGame::Step()
 				}
 			} while ( true );
 		} // Loop through game objects
-	} // Game not poused
+	} // Game not paused
 
 	// Timer
 	if ( timer > 0 )
+	{
 		--timer;
+	}
 
 	// End game?
-	if ( isGameOver and timer <= 0 )
+	if ( isGameOver and timer <= 0 and level.levelTime <= 0 and !justStopped and !didQuit )
 	{
-		EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "highscore" ) );
-		EventMgr.PushEvent( gdn::HIGHSCORE, gdn::GameEvent::HighscoreEvent( points ) );
+	    if ( didWin )
+	    {
+            EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "game" ) );
+            EventMgr.PushEvent( gdn::GAME, gdn::GameEvent::ChangeLevelEvent( curLevel + 1, points ) );
+	    }
+	    else
+	    {
+            EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "highscore" ) );
+            EventMgr.PushEvent( gdn::HIGHSCORE, gdn::GameEvent::HighscoreEvent( points ) );
+	    }
+	}
+	else if ( isGameOver and justStopped and level.levelTime <= 0 and !didQuit)
+	{
+	    if ( didWin )
+	    {
+	        if ( popup )
+					delete popup;
+				popup = new gdn::Sprite( ResMgr.GetImage( "text win" ) );
+				popup->SetCenter( popup->GetImage()->GetWidth() / 2.0f, popup->GetImage()->GetHeight() / 2.0f );
+				popup->SetPosition( (float)App.GetWidth() / 2.0f, -(float)(popup->GetImage()->GetHeight()) / 2.0f ); // At top of screen (to animate falling down)
+	    }
+	    else
+	    {
+	        if ( popup )
+					delete popup;
+				popup = new gdn::Sprite( ResMgr.GetImage( "text fail" ) );
+				popup->SetCenter( popup->GetImage()->GetWidth() / 2.0f, popup->GetImage()->GetHeight() / 2.0f );
+				popup->SetPosition( (float)App.GetWidth() / 2.0f, -(float)(popup->GetImage()->GetHeight()) / 2.0f ); // At top of screen (to animate falling down)
+	    }
+	    justStopped = false;
+	}
+	else if ( level.levelTime <= 0 and !isGameOver and !didQuit )
+	{
+	    isGameOver = true;
+	    didWin = false;
+        timer = (int)(App.GetFPS() * 3);
+	}
+	else if ( timer <= 0 and didQuit )
+	{
+        EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "highscore" ) );
+        EventMgr.PushEvent( gdn::HIGHSCORE, gdn::GameEvent::HighscoreEvent( points ) );
 	}
 
 	// If we have a popup, center it
@@ -253,14 +374,47 @@ void SceneGame::Step()
 	}
 
 	isMouseDown = newMouseButton;
-	if ( level.levelTime >= 1 )
+	if ( level.levelTime >= 1 and !isPaused )
 	{
 	    level.levelTime -= 1;
     }
 	// Out of time?
-    if ( level.levelTime <= 0 )
+    if ( level.levelTime <= 0 and justStopped )
     {
         isGameOver = true;
+        didWin = false;
+        timer = (int)(App.GetFPS() * 3);
+    }
+    if ( level.amountOfTrucks <= 0 and level.levelTime > 0 )
+    {
+        bool crateLeft = false;
+        for ( std::list<Object*>::iterator it = objects.begin(); it != objects.end(); ++it )
+        {
+            if ( crateLeft )
+                break;
+            Object& obj = (**it);
+            switch ( obj.type )
+            {
+                case Object::CRATE:
+                    crateLeft = true;
+                    break;
+
+                case Object::GATE:
+                case Object::GATE_BACKGROUND:
+                case Object::INCINERATOR:
+                case Object::TRUCK:
+                default:
+                    break;
+            }
+        }
+        if ( !crateLeft )
+        {
+            isGameOver = true;
+            justStopped = true;
+            level.levelTime = 0;
+            didQuit = false;
+            timer = (int)(App.GetFPS() * 3);
+        }
     }
     if ( level.levelTime == 100 * 10 )  // If there are only ten seconds left.
     {
@@ -268,7 +422,7 @@ void SceneGame::Step()
     }
 
     // Move the stars
-    for ( int i = 0; i < stars.size(); i++ )
+    for ( unsigned int i = 0; i < stars.size(); i++ )
 	{
 	    Star& star = stars[i];
 	    if ( star.pos.x > 50 )
@@ -411,7 +565,7 @@ void SceneGame::Draw()
 	str_score.Draw();
 
 	// Draw the stars
-	for ( int i = 0; i < stars.size(); i++ )
+	for ( unsigned int i = 0; i < stars.size(); i++ )
 	{
 	    stars[i].sprite.SetPosition( stars[i].pos.x, stars[i].pos.y );
 	    App.GetWindow().Draw( stars[i].sprite );
@@ -540,7 +694,7 @@ bool SceneGame::DoCrate( Crate& crate )
 					{
 						points += crate.value;
 						// Create the star(s), because we got points.
-						int starAmount = points / 25;
+						int starAmount = crate.value / 25;
 						for ( int i = 0; i < starAmount; i++ )
                         {
                             stars.push_back( Star() );
@@ -563,12 +717,12 @@ bool SceneGame::DoCrate( Crate& crate )
                             {
                                 stars.back().pos.y -= rand() % 20;
                             }
-                            std::printf( "X: %f Y: %f\n", stars.back().pos.x, stars.back().pos.y );
                         }
 					}
 					else
 					{
 						points -= crate.value;
+						cratesLost++;
 					}
 					crate.connected->connected = NULL; // "Gate, I am not on you anymore"
 					crate.connected = NULL;
@@ -663,7 +817,7 @@ bool SceneGame::DoTruck( Truck& truck )
 	}
 	else
 	{
-	    if ( truck.crates > 0 and truck.delay <= 0 )
+	    if ( truck.crates > 0 and truck.delay <= 0 and level.amountOfTrucks > 0 )
 	    {
             if ( truck.dir == Dir::RIGHT )
             {
@@ -680,42 +834,39 @@ bool SceneGame::DoTruck( Truck& truck )
                 truck.pos.y = truck.targetpos.y;
             }
             // Play backing up sound
-            //cout << "Parking...\n";
 	    }
 	    else if ( truck.delay <= 0 )
 	    {
 	        if ( truck.dir == Dir::RIGHT )
             {
                 truck.pos.x -= truck.cdir;
-                if ( truck.pos.x <= truck.targetpos.x - 5 and truck.pos.y == truck.targetpos.y )
+                if ( truck.pos.x <= truck.targetpos.x - 7 and truck.pos.y == truck.targetpos.y )
                 {
                     truck.delay = truck.delayrevert;
-                    truck.pos.x = truck.targetpos.x - 5;
+                    truck.pos.x = truck.targetpos.x - 7;
                     truck.pos.y = truck.targetpos.y;
                 }
             }
             else
             {
                 truck.pos.y -= truck.cdir;
-                if ( truck.pos.x == truck.targetpos.x and truck.pos.y >= truck.targetpos.y + 5 )
+                if ( truck.pos.x == truck.targetpos.x and truck.pos.y >= truck.targetpos.y + 7 )
                 {
                     truck.delay = truck.delayrevert;
                     truck.pos.x = truck.targetpos.x;
-                    truck.pos.y = truck.targetpos.y + 5;
+                    truck.pos.y = truck.targetpos.y + 7;
                 }
             }
             // Play driving away sound
-            //cout << "Leaving...\n";
 	    }
-	    else
+	    else if ( level.amountOfTrucks > 0 )
 	    {
 	        truck.delay -= 1;
-            //printf( "Until new truck: %i/%i\n", truck.delay, truck.delayrevert );
             if ( truck.delay <= 0 )
             {
                 truck.crates = truck.craterevert;
                 truck.active = false;
-                //cout << "New truck incoming!\n";
+                level.amountOfTrucks -= 1;
             }
 	    }
 	}

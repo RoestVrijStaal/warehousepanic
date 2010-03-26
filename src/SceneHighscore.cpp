@@ -45,16 +45,16 @@ void SceneHighscore::Initialize()
 	}
 	else
 	{
-		InsertScore( new Score( 3 * 25, "Noob" ) );
-		InsertScore( new Score( 5 * 25, "Newbie" ) );
-		InsertScore( new Score( 10 * 25, "Average Joe" ) );
-		InsertScore( new Score( 25 * 25, "L337" ) );
-		InsertScore( new Score( 30 * 25, "u9" ) );
-		InsertScore( new Score( 40 * 25, "wannabe" ) );
-		InsertScore( new Score( 50 * 25, "mr glasses" ) );
-		InsertScore( new Score( 75 * 25, "Spacechase0" ) );
-		InsertScore( new Score( 100 * 25, "Your mom" ) );
-		InsertScore( new Score( 150 * 25, "Hartnell" ) );
+		InsertScore( new Score( 10 * 25, "Noob" ) );
+		InsertScore( new Score( 25 * 25, "Newbie" ) );
+		InsertScore( new Score( 50 * 25, "Average Joe" ) );
+		InsertScore( new Score( 75 * 25, "L337" ) );
+		InsertScore( new Score( 95 * 25, "u9" ) );
+		InsertScore( new Score( 100 * 25, "wannabe" ) );
+		InsertScore( new Score( 150 * 25, "mr glasses" ) );
+		InsertScore( new Score( 200 * 25, "Spacechase0" ) );
+		InsertScore( new Score( 250 * 25, "Your mom" ) );
+		InsertScore( new Score( 300 * 25, "Hartnell" ) );
 	}
 
 	// Any event for highscore scene?
