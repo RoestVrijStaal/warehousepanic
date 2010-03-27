@@ -5,7 +5,7 @@
 
 
 
-#define MIN_SPLASH_TIME 120
+#define MIN_SPLASH_TIME (App.GetFPS() * 3)
 
 
 

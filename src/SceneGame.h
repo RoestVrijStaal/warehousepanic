@@ -48,6 +48,7 @@ class SceneGame : public gdn::Scene
 		bool didWin;
 		bool didQuit;
 		bool justStopped;
+		bool sound;
 		Level level;
 		int timer; // Used for all sorts of stuff, e.g. delay between game being over and scene actually ending
 		int cratesLost;
@@ -63,6 +64,12 @@ class SceneGame : public gdn::Scene
 
 		gdn::Sound sndSwitch;
 		gdn::Sound sndClick;
+		gdn::Sound sndCrate;
+		gdn::Sound sndBack;
+		gdn::Sound sndDrive;
+		gdn::Sound sndPoint;
+		gdn::Sound sndWin;
+		gdn::Sound sndFail;
 
 		//Keys and such
 		bool isMouseDown;

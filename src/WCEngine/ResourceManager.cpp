@@ -240,6 +240,12 @@ namespace gdn
 		// Sound buffers
 		sounds["switch"].LoadFromFile( "media/snd_button-25.wav" );
 		sounds["click"].LoadFromFile( "media/snd_button-30.wav" );
+		sounds["drive"].LoadFromFile( "media/snd_Truck Idle And Pull Off-SoundBible.com-1854979252.wav" );
+		sounds["back"].LoadFromFile( "media/snd_Backing Up-SoundBible.com-788937884.wav" );
+		sounds["crate"].LoadFromFile( "media/snd_Closing Drawer-SoundBible.com-1853830442.wav" );
+		sounds["point"].LoadFromFile( "media/snd_Dropping A Wrench-SoundBible.com-1488523476.wav" );
+		sounds["fail"].LoadFromFile( "media/snd_Not Even Phased-21219-Free-Loops.com.wav" );
+		sounds["win"].LoadFromFile( "media/snd_Synth Chorus Sounds-21216-Free-Loops.com.wav" );
 
 		// Music files
 		music["game over"].LoadFromFile( "media/music_Sweet RnB Beat-23820-Free-Loops.com.wav" );

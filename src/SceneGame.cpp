@@ -123,6 +123,12 @@ void SceneGame::Initialize()
 	// Sounds
 	sndSwitch = gdn::Sound( ResMgr.GetSound( "switch" ) );
 	sndClick = gdn::Sound( ResMgr.GetSound( "click" ) );
+	sndCrate = gdn::Sound( ResMgr.GetSound( "crate" ) );
+	sndBack = gdn::Sound( ResMgr.GetSound( "back" ) );
+	sndDrive = gdn::Sound( ResMgr.GetSound( "drive" ) );
+	sndPoint = gdn::Sound( ResMgr.GetSound( "point" ) );
+    sndWin = gdn::Sound( ResMgr.GetSound( "win" ) );
+    sndFail = gdn::Sound( ResMgr.GetSound( "fail" ) );
 
 	//Other stuff
 	isMouseDown = false;
@@ -131,6 +137,7 @@ void SceneGame::Initialize()
 	didWin = true;
 	didQuit = false;
 	justStopped = false;
+	sound = false;
 	timer = 0;
 	cratesLost = 0;
 
@@ -161,7 +168,7 @@ void SceneGame::Terminate()
 
 void SceneGame::Step()
 {
-    if ( cratesLost >= 5 and !isGameOver )
+    if ( cratesLost >= 1 and !isGameOver )
     {
         isGameOver = true;
         //level.levelTime = 0;
@@ -182,7 +189,7 @@ void SceneGame::Step()
 		{
 			sndClick.Play();
 			isPaused = !isPaused;
-			if ( isPaused )
+			if ( isPaused and !isGameOver )
 			{
 				pbuttonPause.SetImage( ResMgr.GetImage( "button pause active" ) );
 
@@ -202,7 +209,7 @@ void SceneGame::Step()
 		}
 
 		// Handle mouse-down event game paused
-		if ( isPaused or isGameOver )
+		if ( isPaused and !isGameOver )
 		{
 			// Clicked inside quit button?
 			if ( GetDistanceSQ(mousepos, pbuttonQuit.GetPosition()) < pbuttonQuit.GetImage()->GetWidth() / 2.0f * pbuttonQuit.GetImage()->GetWidth() / 2.0f )
@@ -335,25 +342,36 @@ void SceneGame::Step()
             EventMgr.PushEvent( gdn::HIGHSCORE, gdn::GameEvent::HighscoreEvent( points ) );
 	    }
 	}
-	else if ( isGameOver and justStopped and /*level.levelTime <= 0 and*/ !didQuit)
+	else if ( isGameOver and justStopped and /*level.levelTime <= 0 and*/ !didQuit )
 	{
 	    if ( didWin )
 	    {
+	        if ( !sound )
+	        {
+                sndWin.Play();
+                sound = true;
+	        }
 	        if ( popup )
-					delete popup;
-				popup = new gdn::Sprite( ResMgr.GetImage( "text win" ) );
-				popup->SetCenter( popup->GetImage()->GetWidth() / 2.0f, popup->GetImage()->GetHeight() / 2.0f );
-				popup->SetPosition( (float)App.GetWidth() / 2.0f, -(float)(popup->GetImage()->GetHeight()) / 2.0f ); // At top of screen (to animate falling down)
+                    delete popup;
+            popup = new gdn::Sprite( ResMgr.GetImage( "text win" ) );
+            popup->SetCenter( popup->GetImage()->GetWidth() / 2.0f, popup->GetImage()->GetHeight() / 2.0f );
+            popup->SetPosition( (float)App.GetWidth() / 2.0f, -(float)(popup->GetImage()->GetHeight()) / 2.0f ); // At top of screen (to animate falling down)
+            justStopped = false;
 	    }
 	    else
 	    {
+	        if ( !sound )
+	        {
+                sndFail.Play();
+                sound = true;
+	        }
 	        if ( popup )
-					delete popup;
-				popup = new gdn::Sprite( ResMgr.GetImage( "text fail" ) );
-				popup->SetCenter( popup->GetImage()->GetWidth() / 2.0f, popup->GetImage()->GetHeight() / 2.0f );
-				popup->SetPosition( (float)App.GetWidth() / 2.0f, -(float)(popup->GetImage()->GetHeight()) / 2.0f ); // At top of screen (to animate falling down)
+                    delete popup;
+            popup = new gdn::Sprite( ResMgr.GetImage( "text fail" ) );
+            popup->SetCenter( popup->GetImage()->GetWidth() / 2.0f, popup->GetImage()->GetHeight() / 2.0f );
+            popup->SetPosition( (float)App.GetWidth() / 2.0f, -(float)(popup->GetImage()->GetHeight()) / 2.0f ); // At top of screen (to animate falling down)
+            justStopped = false;
 	    }
-	    justStopped = false;
 	}
 	/*else if ( level.levelTime <= 0 and !isGameOver and !didQuit )
 	{
@@ -408,13 +426,14 @@ void SceneGame::Step()
                     break;
             }
         }
-        if ( !crateLeft )
+        if ( !crateLeft and level.amountOfTrucks <= 0 and !isGameOver )
         {
             isGameOver = true;
             justStopped = true;
             //level.levelTime = 0;
             didQuit = false;
             timer = (int)(App.GetFPS() * 3);
+            didWin = true;
         }
     }
     /*if ( level.levelTime == 100 * 10 )  // If there are only ten seconds left.
@@ -719,11 +738,11 @@ bool SceneGame::DoCrate( Crate& crate )
                                 stars.back().pos.y -= rand() % 20;
                             }
                         }
+                        sndPoint.Play();
 					}
 					else
 					{
-						points -= crate.value;
-						cratesLost++;
+					    ++cratesLost;
 					}
 					crate.connected->connected = NULL; // "Gate, I am not on you anymore"
 					crate.connected = NULL;
@@ -794,6 +813,7 @@ bool SceneGame::DoTruck( Truck& truck )
 {
 	if ( truck.active and truck.crates > 0 )
 	{
+	    truck.soundPlaying = false;
 		if ( truck.interval <= 0 and truck.targetpos.x == truck.pos.x and truck.targetpos.y == truck.pos.y )
 		{
 			truck.interval = truck.intervalmax;
@@ -812,7 +832,8 @@ bool SceneGame::DoTruck( Truck& truck )
 			else if ( truck.dir == Dir::DOWN )
 				crate.connected = level.GetObjectAt( (int)truck.targetpos.x, (int)truck.targetpos.y + 1 );
             truck.crates -= 1;
-            //printf( "Crates left: %i/%i\n", truck.crates, truck.craterevert );
+
+            sndCrate.Play();
 		}
 		truck.interval -= 1;
 	}
@@ -823,10 +844,20 @@ bool SceneGame::DoTruck( Truck& truck )
             if ( truck.dir == Dir::RIGHT )
             {
                 truck.pos.x += truck.cdir;
+                if ( !truck.soundPlaying )
+                {
+                    truck.soundPlaying = true;
+                    sndBack.Play();
+                }
             }
             else
             {
                 truck.pos.y += truck.cdir;
+                if ( !truck.soundPlaying )
+                {
+                    truck.soundPlaying = true;
+                    sndBack.Play();
+                }
             }
             if ( truck.pos.x >= truck.targetpos.x and truck.pos.y <= truck.targetpos.y )
             {
@@ -834,11 +865,10 @@ bool SceneGame::DoTruck( Truck& truck )
                 truck.pos.x = truck.targetpos.x;
                 truck.pos.y = truck.targetpos.y;
             }
-            // Play backing up sound
 	    }
 	    else if ( truck.delay <= 0 )
 	    {
-	        if ( truck.dir == Dir::RIGHT )
+	        if ( truck.dir == Dir::RIGHT and level.amountOfTrucks > 0 )
             {
                 truck.pos.x -= truck.cdir;
                 if ( truck.pos.x <= truck.targetpos.x - 7 and truck.pos.y == truck.targetpos.y )
@@ -846,6 +876,11 @@ bool SceneGame::DoTruck( Truck& truck )
                     truck.delay = truck.delayrevert;
                     truck.pos.x = truck.targetpos.x - 7;
                     truck.pos.y = truck.targetpos.y;
+                }
+                if ( !truck.soundPlaying )
+                {
+                    truck.soundPlaying = true;
+                    sndDrive.Play();
                 }
             }
             else
@@ -857,8 +892,13 @@ bool SceneGame::DoTruck( Truck& truck )
                     truck.pos.x = truck.targetpos.x;
                     truck.pos.y = truck.targetpos.y + 7;
                 }
+                if ( !truck.soundPlaying )
+                {
+                    truck.soundPlaying = true;
+                    sndDrive.Play();
+                }
             }
-            // Play driving away sound
+
 	    }
 	    else if ( level.amountOfTrucks > 0 )
 	    {
@@ -867,6 +907,7 @@ bool SceneGame::DoTruck( Truck& truck )
             {
                 truck.crates = truck.craterevert;
                 truck.active = false;
+                truck.soundPlaying = false;
                 level.amountOfTrucks -= 1;
             }
 	    }
