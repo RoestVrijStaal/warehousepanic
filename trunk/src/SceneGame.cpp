@@ -169,7 +169,7 @@ void SceneGame::Terminate()
 
 void SceneGame::Step()
 {
-    if ( cratesLost >= 1 and !isGameOver )
+    if ( cratesLost >= 5 and !isGameOver )
     {
         isGameOver = true;
         //level.levelTime = 0;
