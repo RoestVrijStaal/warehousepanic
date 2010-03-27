@@ -34,13 +34,13 @@ void SceneCredits::Initialize()
 	AddText( "Fonts", Text::MEDIUM );
 	AddText( "Yoinks by A.J. Palmer", Text::SMALL );
 	AddText( "Sound Effects", Text::MEDIUM );
-	AddText( "...", Text::SMALL );
+	AddText( "soundjay.com", Text::SMALL );
 	AddText( "Menu Music", Text::MEDIUM );
-	AddText( "...", Text::SMALL );
+	AddText( "Mike Koenig free-loops.com", Text::SMALL );
 	AddText( "Highscore Music", Text::MEDIUM );
-	AddText( "...", Text::SMALL );
+	AddText( "Dfrltiger free-loops.com", Text::SMALL );
 	AddText( "Game Music", Text::MEDIUM );
-	AddText( "...", Text::SMALL );
+	AddText( "Mike Koenig free-loops.com", Text::SMALL );
 	AddText( "", Text::MEDIUM );
 	AddText( "A big shout-out", Text::SMALL );
 	AddText( "to the GP32X community", Text::SMALL );

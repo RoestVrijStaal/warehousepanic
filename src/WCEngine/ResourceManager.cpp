@@ -252,7 +252,7 @@ namespace gdn
 		music["game over"].SetLoop( true );
 		music["menu"].LoadFromFile( "media/music_Free Hip Hop 3-9480-Free-Loops.com.wav" );
 		music["menu"].SetLoop( true );
-		music["game"].LoadFromFile( "media/music_Plain Loafer.mp3" );
+		music["game"].LoadFromFile( "media/Free Trance Loops 1-9468-Free-Loops.com.wav" );
 		music["game"].SetLoop( true );
 	}
 

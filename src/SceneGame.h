@@ -41,7 +41,7 @@ class SceneGame : public gdn::Scene
 		std::list<Object*> objects;
 		std::list<Object*> clickables;
 		std::list<Object*> toDelete; // List of objects that we are responsible for deleting
-		std::vector<Star> stars;
+		std::list<Star*> stars;
 		int points;
 		bool isPaused;
 		bool isGameOver;
