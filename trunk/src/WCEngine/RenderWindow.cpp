@@ -21,6 +21,9 @@ namespace gdn
 	bool RenderWindow::Create( int width, int height, int bpp, std::string title )
 	{
 		bool isFailed = SDL_Init( SDL_INIT_EVERYTHING );
+		#ifdef WIZ
+		SDL_ShowCursor( SDL_DISABLE );
+		#endif
 		if ( isFailed )
 		{
 			return false;
@@ -81,6 +84,8 @@ namespace gdn
 		{
 			SDL_Flip( screen );
 		}
+		//update the screen
+		//SDL_UpdateRect(wizScreen,0,0,0,0);
 	}
 
 	bool RenderWindow::IsMouseButtonDown()

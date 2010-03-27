@@ -18,7 +18,7 @@ SceneGame::~SceneGame()
 
 void SceneGame::Initialize()
 {
-    std::string levelname = "levels/test level.lvl";
+	std::string levelname = "levels/test level.lvl";
 	points = 0;
 	while ( EventMgr.HasEvent( gdn::HIGHSCORE ) )
 	{
@@ -142,6 +142,7 @@ void SceneGame::Initialize()
 	cratesLost = 0;
 
 	str_score.SetSize( Text::MEDIUM );
+	str_score.SetPosition( 5, 217 );
 	//str_time.SetSize( Text::MEDIUM );
 
 	ResMgr.GetMusic( "game" ).Play();
@@ -320,6 +321,40 @@ void SceneGame::Step()
 				}
 			} while ( true );
 		} // Loop through game objects
+
+
+		// Move the stars
+		gdn::Vector2f target = str_score.GetPosition();
+		target.x += str_score.GetWidth() / 2.0f;
+		for ( std::list<Star*>::iterator it = stars.begin(); it != stars.end(); ++it )
+		{
+			Star& star = (**it);
+			gdn::Vector2f diff( target.x - star.pos.x, target.y - star.pos.y );
+
+			if ( diff.x * diff.x + diff.y * diff.y < 20 * 20 )
+			{
+				it = stars.erase( it );
+			}
+			else
+			{
+				if ( star.delay <= 0 )
+				{
+					star.vel.x += diff.x / 500;
+					star.vel.y += diff.y / 500;
+				}
+				else
+				{
+					--star.delay;
+				}
+
+				star.vel.x *= 0.95f;
+				star.vel.y *= 0.95f;
+
+				star.pos.x += star.vel.x;
+				star.pos.y += star.vel.y;
+			}
+		}
+
 	} // Game not paused
 
 	// Timer
@@ -389,7 +424,7 @@ void SceneGame::Step()
 	if ( popup )
 	{
 		gdn::Vector2f pos = popup->GetPosition();
-		popup->SetPosition( pos.x, pos.y + ( App.GetHeight() / 2.0f - pos.y ) / 5.0f );
+		popup->SetPosition( pos.x, pos.y + ( App.GetHeight() / 2.0f - pos.y ) / 8.0f );
 	}
 
 	isMouseDown = newMouseButton;
@@ -441,31 +476,6 @@ void SceneGame::Step()
         //Play running out of time sound.
     }*/
 
-    // Move the stars
-    for ( unsigned int i = 0; i < stars.size(); i++ )
-	{
-	    Star& star = stars[i];
-	    if ( star.pos.x > 50 )
-	    {
-            star.pos.x -= 0.25;
-	    }
-	    else if ( star.pos.x < 50 )
-	    {
-            star.pos.x += 0.25;
-	    }
-	    if ( star.pos.y > 220 )
-	    {
-            star.pos.y -= 0.25;
-	    }
-	    else if ( star.pos.y < 220 )
-	    {
-            star.pos.y += 0.25;
-	    }
-	    if ( star.pos.x <= 51 and star.pos.x >= 49 and star.pos.y >= 219 and star.pos.y <= 221 )
-	    {
-	        stars.erase( stars.begin() + i );
-	    }
-	}
 }
 
 void SceneGame::Draw()
@@ -581,14 +591,14 @@ void SceneGame::Draw()
 	stringstream score;
 	score << "SCORE   " << points;
 	str_score.SetText( score.str() );
-	str_score.SetPosition( 5, 217 );
 	str_score.Draw();
 
 	// Draw the stars
-	for ( unsigned int i = 0; i < stars.size(); i++ )
+	for ( std::list<Star*>::iterator it = stars.begin(); it != stars.end(); ++it )
 	{
-	    stars[i].sprite.SetPosition( stars[i].pos.x, stars[i].pos.y );
-	    App.GetWindow().Draw( stars[i].sprite );
+		Star& star = (**it);
+		star.sprite.SetPosition( star.pos.x, star.pos.y );
+		App.GetWindow().Draw( star.sprite );
 	}
 }
 
@@ -713,36 +723,21 @@ bool SceneGame::DoCrate( Crate& crate )
 					if ( crate.color == crate.connected->color )
 					{
 						points += crate.value;
-						// Create the star(s), because we got points.
-						int starAmount = crate.value / 25;
+						// Create the star(s), because we got points
+						int starAmount = crate.value / 12;
 						for ( int i = 0; i < starAmount; i++ )
-                        {
-                            stars.push_back( Star() );
-                            stars.back().SetSprite();
-                            stars.back().pos = TransformMapToScreen( crate.pos );
-                            int o1 = rand() % 2, o2 = rand() % 2;
-                            if ( o1 == 0 )
-                            {
-                                stars.back().pos.x += rand() % 20;
-                            }
-                            else
-                            {
-                                stars.back().pos.x -= rand() % 20;
-                            }
-                            if ( o2 == 0 )
-                            {
-                                stars.back().pos.y += rand() % 20;
-                            }
-                            else
-                            {
-                                stars.back().pos.y -= rand() % 20;
-                            }
-                        }
+						{
+							stars.push_back( new Star() );
+							stars.back()->pos = TransformMapToScreen( crate.pos );
+							stars.back()->vel.x = (float)((rand() % 10) - 5) / 2.0f;
+							stars.back()->vel.y = (float)((rand() % 10) - 5) / 2.0f;
+							stars.back()->delay = rand() % 30;
+						}
                         sndPoint.Play();
 					}
 					else
 					{
-					    ++cratesLost;
+						++cratesLost;
 					}
 					crate.connected->connected = NULL; // "Gate, I am not on you anymore"
 					crate.connected = NULL;
