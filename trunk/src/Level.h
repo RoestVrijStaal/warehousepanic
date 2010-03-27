@@ -179,6 +179,7 @@ public:
 									t->delayrevert = 5 * 100;
 									t->crates = t->craterevert = cratesPerTruck;
 									t->active = false;
+									t->soundPlaying = false;
 									objects[idx] = t;
 								}
 								break;

@@ -44,6 +44,7 @@ public:
 	int interval;
 	int delay;
 	bool active;
+	bool soundPlaying;
 	std::vector<GameColor::ColorType> colors;
 	gdn::Vector2f targetpos;    // This is for truck animation.
 	float cdir;
