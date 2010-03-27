@@ -146,6 +146,7 @@ void SceneGame::Initialize()
 	//str_time.SetSize( Text::MEDIUM );
 
 	ResMgr.GetMusic( "game" ).Play();
+	bg_tile.SetImage( ResMgr.GetImage( "tile" ) );
 }
 
 void SceneGame::Terminate()
@@ -484,6 +485,9 @@ void SceneGame::Draw()
 	//bg.SetColor( sf::Color( 60, 60, 60 ) );
 	//window->Draw( bg );
 	App.GetWindow().Clear( 100, 100, 100 );
+
+    //Draw background tiles
+    App.GetWindow().Draw( bg_tile );
 
 	// Draw all objects
 	for ( std::list<Object*>::iterator it = objects.begin(); it != objects.end(); ++it )
