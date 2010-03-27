@@ -27,6 +27,8 @@ void SceneHighscore::Initialize()
 	newScore = NULL;
 	newTextName = NULL;
 
+	bg_general = gdn::Sprite( ResMgr.GetImage( "general" ) );
+
 	std::list< Score* >::iterator it;
 	std::ifstream myfile ("highscores.wph");
 	if (myfile.is_open())
@@ -168,6 +170,8 @@ void SceneHighscore::Step()
 void SceneHighscore::Draw()
 {
 	App.GetWindow().Clear( 0, 0, 0 );
+
+    App.GetWindow().Draw( bg_general );
 
     highscore_title.Draw();
 

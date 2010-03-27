@@ -33,6 +33,7 @@ class SceneHighscore : public gdn::Scene
 		gdn::Sound sndClick;
 		Text highscore_title;
 		std::vector< Text* > highscores;
+		gdn::Sprite bg_general;
 
 	private:
 };
