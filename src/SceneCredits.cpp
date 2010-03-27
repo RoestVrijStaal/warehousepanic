@@ -26,16 +26,24 @@ void SceneCredits::Initialize()
 	AddText( "Uni Dahl", Text::SMALL );
 	AddText( "Graphics", Text::MEDIUM );
 	AddText( "mr glasses", Text::SMALL );
+	AddText( "Shawn Hartnell", Text::SMALL );
 	AddText( "Chase Warrington", Text::SMALL );
 	AddText( "Uni Dahl", Text::SMALL );
+	AddText( "Fonts", Text::MEDIUM );
+	AddText( "Yoinks by A.J. Palmer", Text::SMALL );
 	AddText( "Sound Effects", Text::MEDIUM );
 	AddText( "...", Text::SMALL );
-	AddText( "Menu Music by", Text::MEDIUM );
+	AddText( "Menu Music", Text::MEDIUM );
 	AddText( "...", Text::SMALL );
-	AddText( "Highscore Music by", Text::MEDIUM );
+	AddText( "Highscore Music", Text::MEDIUM );
 	AddText( "...", Text::SMALL );
-	AddText( "Game Music by", Text::MEDIUM );
+	AddText( "Game Music", Text::MEDIUM );
 	AddText( "...", Text::SMALL );
+	AddText( "", Text::MEDIUM );
+	AddText( "A big shout-out", Text::SMALL );
+	AddText( "to the GP32X community", Text::SMALL );
+	AddText( "and all the sponsors", Text::SMALL );
+	AddText( "", Text::MEDIUM );
 	AddText( "Thank you for playing", Text::MEDIUM );
 	AddText( "Visit us at", Text::CNTR_MEDIUM );
 	// Exclamation marks show up as slashes
@@ -59,12 +67,15 @@ void SceneCredits::Step()
 	}
 	isMouseDown = curMouseDown;
 
-	for (std::vector< Text* >::iterator it = credits.begin(); it != credits.end(); ++it )
+	if ( credits.back()->GetPosition().y > App.GetHeight() / 2 )
 	{
-		const gdn::Vector2f& pos = (**it).GetPosition();
-		(**it).SetPosition( pos.x, pos.y - 0.5f );
+		for (std::vector< Text* >::iterator it = credits.begin(); it != credits.end(); ++it )
+		{
+			const gdn::Vector2f& pos = (**it).GetPosition();
+			(**it).SetPosition( pos.x, pos.y - 0.3f );
+		}
+		curOffset = 0.3f;
 	}
-	curOffset = 0.5f;
 }
 
 void SceneCredits::Draw()

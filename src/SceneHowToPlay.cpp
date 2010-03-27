@@ -21,7 +21,7 @@ void SceneHowToPlay::Initialize()
 	cur = screens.begin();
 
 	// Sounds
-	sndClick = sf::Sound( ResMgr.GetSound( "click" ) );
+	sndClick = gdn::Sound( ResMgr.GetSound( "click" ) );
 
 	//Other stuff
 	isMouseDown = true;

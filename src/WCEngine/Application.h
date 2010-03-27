@@ -42,7 +42,7 @@ namespace gdn
 		Application();
 		virtual ~Application();
 
-		void ProcessSystemEvents(); // SFML events
+		void ProcessSystemEvents();
 		void ProcessGameEvents(); // Home-made events
 		void SetScene( std::string name );
 		void Step();

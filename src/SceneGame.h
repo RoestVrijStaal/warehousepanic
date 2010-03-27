@@ -61,8 +61,8 @@ class SceneGame : public gdn::Scene
 		gdn::Sprite pbuttonQuit;
 		gdn::Sprite* popup;
 
-		sf::Sound sndSwitch;
-		sf::Sound sndClick;
+		gdn::Sound sndSwitch;
+		gdn::Sound sndClick;
 
 		//Keys and such
 		bool isMouseDown;

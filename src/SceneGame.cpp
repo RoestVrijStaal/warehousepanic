@@ -121,8 +121,8 @@ void SceneGame::Initialize()
 	popup = NULL;
 
 	// Sounds
-	sndSwitch = sf::Sound( ResMgr.GetSound( "switch" ) );
-	sndClick = sf::Sound( ResMgr.GetSound( "click" ) );
+	sndSwitch = gdn::Sound( ResMgr.GetSound( "switch" ) );
+	sndClick = gdn::Sound( ResMgr.GetSound( "click" ) );
 
 	//Other stuff
 	isMouseDown = false;

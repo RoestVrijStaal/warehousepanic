@@ -23,11 +23,11 @@ void SceneMenu::Initialize()
 
 	background = gdn::Sprite( ResMgr.GetImage( "title" ) );
 
-	if ( ResMgr.GetMusic( "menu" ).GetStatus() != sf::Music::Playing )
+	if ( !ResMgr.GetMusic( "menu" ).IsPlaying() )
 	{
 		ResMgr.GetMusic( "menu" ).Play();
 	}
-	sndClick = sf::Sound( ResMgr.GetSound( "click" ) );
+	sndClick = gdn::Sound( ResMgr.GetSound( "click" ) );
 }
 
 void SceneMenu::Terminate()

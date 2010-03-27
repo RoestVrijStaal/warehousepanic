@@ -3,8 +3,9 @@
 
 #include <string>
 #include <map>
-#include <SFML/Audio.hpp>
 #include "Image.h"
+#include "SoundBuffer.h"
+#include "Music.h"
 
 #define ResMgr (*(gdn::ResourceManager::GetInstance()))
 
@@ -16,8 +17,8 @@ namespace gdn
 		static ResourceManager* GetInstance();
 
 		gdn::Image& GetImage( std::string name );
-		sf::SoundBuffer& GetSound( std::string name );
-		sf::Music& GetMusic( std::string name );
+		gdn::SoundBuffer& GetSound( std::string name );
+		gdn::Music& GetMusic( std::string name );
 
 	protected:
 		ResourceManager(); // Protected constructor, so noone can create an instance
@@ -25,8 +26,8 @@ namespace gdn
 		void Initialize();
 
 		std::map< std::string, gdn::Image > images;
-		std::map< std::string, sf::SoundBuffer > sounds;
-		std::map< std::string, sf::Music* > music;
+		std::map< std::string, gdn::SoundBuffer > sounds;
+		std::map< std::string, gdn::Music > music;
 
 	private:
 		static ResourceManager* instance;
