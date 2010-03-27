@@ -9,9 +9,10 @@
 
 
 // Settings
-#define MENU_LEFT (228.0f)
-#define MENU_TOP (108.0f)
-#define MENU_SPACING (28.0f)
+#define MENU_LEFT (18.0f)
+#define MENU_WIDTH (86.0f)
+#define MENU_TOP (80.0f)
+#define MENU_SPACING (36.0f)
 
 
 

@@ -15,6 +15,8 @@ void SceneCredits::Initialize()
 	curOffset = 0;
 	isMouseDown = true;
 
+	bg_general = gdn::Sprite( ResMgr.GetImage( "general" ) );
+
 	AddText( "CREDITS", Text::LARGE );
 	AddText( "Producer", Text::MEDIUM );
 	AddText( "Uni Dahl", Text::SMALL );
@@ -81,6 +83,8 @@ void SceneCredits::Step()
 void SceneCredits::Draw()
 {
 	App.GetWindow().Clear( 0, 0, 0 );
+
+    App.GetWindow().Draw( bg_general );
 
 	for (std::vector< Text* >::iterator it = credits.begin(); it != credits.end(); ++it )
 	{

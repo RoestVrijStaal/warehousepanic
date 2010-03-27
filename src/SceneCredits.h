@@ -23,6 +23,7 @@ class SceneCredits : public gdn::Scene
 		std::vector< Text* > credits;
 		bool isMouseDown;
 		float curOffset;
+		gdn::Sprite bg_general;
 
 	private:
 };

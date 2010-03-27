@@ -44,7 +44,7 @@ void SceneMenu::Step()
 	// Mouse down event
 	if ( curMouseDown and !isMouseDown )
 	{
-		if ( mousepos.x >= MENU_LEFT and mousepos.y >= MENU_TOP )
+		if ( mousepos.x >= MENU_LEFT and mousepos.x <= MENU_LEFT + MENU_WIDTH and mousepos.y >= MENU_TOP )
 		{
 			selected = (int)(( mousepos.y - MENU_TOP ) / MENU_SPACING);
 			if ( selected >= (int)items.size() )
@@ -61,7 +61,7 @@ void SceneMenu::Step()
 	// Mouse drag event
 	if ( curMouseDown and isMouseDown )
 	{
-		if ( mousepos.x < MENU_LEFT or mousepos.y < MENU_TOP or (int)(( mousepos.y - MENU_TOP ) / MENU_SPACING) != selected )
+		if ( mousepos.x < MENU_LEFT or mousepos.x > MENU_LEFT + MENU_WIDTH or mousepos.y < MENU_TOP or (int)(( mousepos.y - MENU_TOP ) / MENU_SPACING) != selected )
 		{
 			selected = -1;
 		}
