@@ -129,7 +129,8 @@ void SceneGame::Initialize()
 	isPaused = false;
 	isGameOver = false;
 	didWin = true;
-	justStopped = true;
+	didQuit = false;
+	justStopped = false;
 	timer = 0;
 	cratesLost = 0;
 
