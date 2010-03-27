@@ -45,7 +45,7 @@ public:
 	int delay;
 	bool active;
 	std::vector<GameColor::ColorType> colors;
-	sf::Vector2f targetpos;    // This is for truck animation.
+	gdn::Vector2f targetpos;    // This is for truck animation.
 	float cdir;
 	int crates;
 	int craterevert;

@@ -21,7 +21,7 @@ SceneHighscore::~SceneHighscore()
 // Methods
 void SceneHighscore::Initialize()
 {
-	sndClick = sf::Sound( ResMgr.GetSound( "click" ) );
+	sndClick = gdn::Sound( ResMgr.GetSound( "click" ) );
 	isMouseDown = true;
 	keyboard = NULL;
 	newScore = NULL;
@@ -108,7 +108,7 @@ void SceneHighscore::Terminate()
 	if ( keyboard )
 		delete keyboard;
 	keyboard = NULL;
-	if (ResMgr.GetMusic( "game over" ).GetStatus() == sf::Music::Playing)
+	if ( ResMgr.GetMusic( "game over" ).IsPlaying() )
 	{
 		ResMgr.GetMusic( "game over" ).Stop();
 	}

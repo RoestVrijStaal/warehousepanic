@@ -7,6 +7,9 @@
 #include "EventManager.h"
 #include "Scene.h"
 #include "Sprite.h"
+#include "SoundBuffer.h"
+#include "Sound.h"
+#include "Music.h"
 #include "Vector2f.h"
 
 

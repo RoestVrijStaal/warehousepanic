@@ -6,10 +6,9 @@
 #include "Score.h"
 #include "Text.h"
 
-#include <SFML/Audio.hpp>
 #include <string>
 #include <list>
-
+#include <vector>
 
 
 class SceneHighscore : public gdn::Scene
@@ -31,7 +30,7 @@ class SceneHighscore : public gdn::Scene
 		Score* newScore;
 		Text* newTextName; // Pointer to the text for which the newly entered name should be put
 		std::list< Score* > scores;
-		sf::Sound sndClick;
+		gdn::Sound sndClick;
 		Text highscore_title;
 		std::vector< Text* > highscores;
 

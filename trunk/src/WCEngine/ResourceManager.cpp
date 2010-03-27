@@ -31,7 +31,8 @@ namespace gdn
 	{
 		// Empty objects returned when requested object not found
 		images["dummy"] = gdn::Image();
-		sounds["dummy"] = sf::SoundBuffer();
+		sounds["dummy"] = gdn::SoundBuffer();
+		music["dummy"] = gdn::Music();
 
 		// Backgrounds
 		images["splash"].LoadFromFile( "media/bg_splash.png" );
@@ -239,16 +240,13 @@ namespace gdn
 		sounds["switch"].LoadFromFile( "media/snd_button-25.wav" );
 		sounds["click"].LoadFromFile( "media/snd_button-30.wav" );
 
-		// TODO: Free memory again
-		music["game over"] = new sf::Music();
-		music["game over"]->OpenFromFile( "media/music_Sweet RnB Beat-23820-Free-Loops.com.wav" );
-		music["game over"]->SetLoop( true );
-		music["menu"] = new sf::Music();
-		music["menu"]->OpenFromFile( "media/music_Free Hip Hop 3-9480-Free-Loops.com.wav" );
-		music["menu"]->SetLoop( true );
-		music["game"] = new sf::Music();
-		music["game"]->OpenFromFile( "media/music_Plain Loafer.mp3" );
-		music["game"]->SetLoop( true );
+		// Music files
+		music["game over"].LoadFromFile( "media/music_Sweet RnB Beat-23820-Free-Loops.com.wav" );
+		music["game over"].SetLoop( true );
+		music["menu"].LoadFromFile( "media/music_Free Hip Hop 3-9480-Free-Loops.com.wav" );
+		music["menu"].SetLoop( true );
+		music["game"].LoadFromFile( "media/music_Plain Loafer.mp3" );
+		music["game"].SetLoop( true );
 	}
 
 	gdn::Image& ResourceManager::GetImage( std::string name )
@@ -264,9 +262,9 @@ namespace gdn
 		}
 	}
 
-	sf::SoundBuffer& ResourceManager::GetSound( std::string name )
+	gdn::SoundBuffer& ResourceManager::GetSound( std::string name )
 	{
-		std::map< std::string, sf::SoundBuffer >::iterator result = sounds.find( name );
+		std::map< std::string, gdn::SoundBuffer >::iterator result = sounds.find( name );
 		if ( result == sounds.end() )
 		{
 			return sounds["dummy"];
@@ -277,16 +275,16 @@ namespace gdn
 		}
 	}
 
-	sf::Music& ResourceManager::GetMusic( std::string name )
+	gdn::Music& ResourceManager::GetMusic( std::string name )
 	{
-		std::map< std::string, sf::Music* >::iterator result = music.find( name );
+		std::map< std::string, gdn::Music >::iterator result = music.find( name );
 		if ( result == music.end() )
 		{
-			return *music["dummy"];
+			return music["dummy"];
 		}
 		else
 		{
-			return *result->second;
+			return result->second;
 		}
 	}
 }
