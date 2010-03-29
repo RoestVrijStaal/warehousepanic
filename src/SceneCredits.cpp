@@ -49,7 +49,7 @@ void SceneCredits::Initialize()
 	AddText( "", Text::MEDIUM );
 	AddText( "Thank you for playing", Text::MEDIUM );
 	AddText( "Visit us at", Text::CNTR_MEDIUM );
-	AddText( "http:////cpp.wikicomplete.info", Text::CNTR_SMALL );
+	AddText( "http://cpp.wikicomplete.info", Text::CNTR_SMALL );
 }
 
 void SceneCredits::Terminate()

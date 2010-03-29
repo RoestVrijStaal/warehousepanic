@@ -28,8 +28,7 @@ protected:
 	bool isDone;
 	bool isShown;
 	float yPos;
-	// TODO: Add sound
-	//sf::Sound sndClick;
+	gdn::Sound sndClick;
 
 private:
 };

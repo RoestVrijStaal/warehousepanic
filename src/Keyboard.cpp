@@ -7,8 +7,7 @@ Keyboard::Keyboard()
 	isDone = false;
 	isShown = false;
 	yPos = App.GetHeight();
-	// TODO: Get sound back in
-	//sndClick = sf::Sound( ResMgr.GetSound( "click" ) );
+	sndClick = gdn::Sound( ResMgr.GetSound( "click" ) );
 }
 
 Keyboard::~Keyboard()
