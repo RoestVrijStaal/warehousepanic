@@ -55,6 +55,7 @@ namespace gdn
 		int width;
 		int height;
 		int bpp;
+		int volume;
 		std::string title;
 
 		// Current scene (game, menu, highscore etc.)

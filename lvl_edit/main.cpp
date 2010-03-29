@@ -91,15 +91,17 @@ int main ()
 	getline(cin,filename);
 	if (filename != "")
 	{
-		cout << "Loading file..." << endl;
+		cout << "Loading file... " << "levels/" + filename + ".lvl" << endl;
 		string line;
 		ifstream myfile(("levels/" + filename + ".lvl").c_str());
 		if (myfile.is_open())
 		{
+			cout << "file opened" << endl;
 			while (! myfile.eof() )
 			{
 				string line;
 				getline(myfile, line);
+				cout << "Line: " << line << endl;
 
 				string key = line.substr(0, line.find("="));
 				string value = line.substr(line.find("=") + 1);

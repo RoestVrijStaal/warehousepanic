@@ -14,11 +14,19 @@ void SceneSplash::Initialize()
 {
 	time = 0;
 	background = gdn::Sprite( ResMgr.GetImage( "splash" ) );
+	presenters.push_back( new Text( "Game Design Novice", 68, 100, Text::MEDIUM ) );
+	presenters.push_back( new Text( "presents", 125, 130, Text::SMALL ) );
 }
 
 void SceneSplash::Terminate()
 {
 	background = gdn::Sprite();
+
+	for ( std::vector< Text* >::iterator it = presenters.begin(); it != presenters.end(); ++it )
+	{
+		delete *it;
+	}
+	presenters.clear();
 }
 
 void SceneSplash::Step()
@@ -35,6 +43,11 @@ void SceneSplash::Step()
 void SceneSplash::Draw()
 {
 	App.GetWindow().Draw( background );
+
+	for ( std::vector< Text* >::iterator it = presenters.begin(); it != presenters.end(); ++it )
+	{
+		(**it).Draw();
+	}
 }
 
 

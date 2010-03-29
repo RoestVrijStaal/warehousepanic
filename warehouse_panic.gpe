@@ -1,0 +1,8 @@
+#!/bin/sh
+export LD_LIBRARY_PATH=.;$LD_LIBRARY_PATH
+./warehouse_panic.bin
+# >> ./log.txt 2>&1
+sync
+cd /usr/gp2x
+exec /usr/gp2x/gp2xmenu
+

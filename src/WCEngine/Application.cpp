@@ -1,7 +1,7 @@
 #include "Application.h"
 
 #include "SDL/SDL.h"
-
+#include "SDL/SDL_mixer.h"
 #include "EventManager.h"
 #include "Scene.h"
 #include "Timer.h"
@@ -50,6 +50,7 @@ namespace gdn
 		this->height = height;
 		this->bpp = bpp;
 		this->title = title;
+		volume = 40;
 
 		srand( (unsigned)time( 0 ) );
 
@@ -68,6 +69,9 @@ namespace gdn
 		if ( !window.IsOpened() )
 			return;
 
+		Mix_Volume( -1, volume );
+		Mix_VolumeMusic( volume );
+
 		timer->Reset();
 		float nextStepFrame = 0.0f;
 		isRunning = true;
@@ -85,6 +89,26 @@ namespace gdn
 
 				Step();
 				nextStepFrame += 1.0f / physicsFps;
+
+				// Check volume control
+				#ifdef WIZ
+				if( SDL_JoystickGetButton( window.joystick, 16 ) ) // Vol+
+				{
+					volume = volume + 1;
+					if ( volume > 128 )
+						volume = 128;
+					Mix_Volume( -1, volume );
+					Mix_VolumeMusic( volume );
+				}
+				if( SDL_JoystickGetButton( window.joystick, 17 ) ) // Vol-
+				{
+					volume = volume - 1;
+					if ( volume < 0 )
+						volume = 0;
+					Mix_Volume( -1, volume );
+					Mix_VolumeMusic( volume );
+				}
+				#endif
 			}
 
 			Draw();
@@ -122,12 +146,26 @@ namespace gdn
 					break;
 
 				case SDL_KEYDOWN:
-					#ifdef WIZ
-					isRunning = false;
-					#else
+					#ifndef WIZ
 					if ( event.key.keysym.sym == SDLK_ESCAPE )
 					{
 						isRunning = false;
+					}
+					else if ( event.key.keysym.sym == SDLK_PLUS )
+					{
+						volume = volume + 1;
+						if ( volume > 128 )
+							volume = 128;
+						Mix_Volume( -1, volume );
+						Mix_VolumeMusic( volume );
+					}
+					else if ( event.key.keysym.sym == SDLK_MINUS )
+					{
+						volume = volume - 1;
+						if ( volume < 0 )
+							volume = 0;
+						Mix_Volume( -1, volume );
+						Mix_VolumeMusic( volume );
 					}
 					#endif
 					break;

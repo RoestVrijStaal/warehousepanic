@@ -73,8 +73,9 @@ void SceneMenu::Step()
 		switch ( selected )
 		{
 			case 0:
-                EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "game" ) );
-				EventMgr.PushEvent( gdn::GAME, gdn::GameEvent::ChangeLevelEvent( 0, 0 ) );
+				EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "game" ) );
+				EventMgr.PushEvent( gdn::GAME, gdn::GameEvent::ChangeLevelEvent( 1 ) );
+				EventMgr.PushEvent( gdn::GAME, gdn::GameEvent::ChangeScoreEvent( 0 ) );
 				ResMgr.GetMusic( "menu" ).Stop();
 				break;
 

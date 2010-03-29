@@ -30,6 +30,7 @@ namespace gdn
 			Highscore,
 			Quit,
 			ChangeLevel,
+			ChangeScore,
 			count // Not used
 		};
 		EventType type;
@@ -50,25 +51,20 @@ namespace gdn
 		}
 		GameEvent( EventType t, int data ) : type( t )
 		{
-		    // Couldn't get switch to work.
-		    if ( t == Highscore )
-		    {
-		        Highscore_new_score = data;
-		    }
-		    else if ( t == ChangeLevel )
-		    {
-                ChangeLevel_next_level = data;
-		    }
+			// Couldn't get switch to work.
+			if ( t == Highscore )
+			{
+				Highscore_new_score = data;
+			}
+			else if ( t == ChangeLevel )
+			{
+				ChangeLevel_next_level = data;
+			}
+			else if ( t == ChangeScore )
+			{
+				ChangeLevel_the_score = data;
+			}
 		}
-		/*GameEvent( EventType t, int data1 ) : type( t )
-		{
-			ChangeLevel_next_level = 0;
-			ChangeLevel_next_level = data1;
-			ChangeLevel_the_score = 0;
-			ChangeLevel_the_score = data2;
-			printf( "data1: %i data2: %i\n", data1, data2 );
-			printf( "ChangeLevel_next_level: %i ChangeLevel_the_score: %i\n", ChangeLevel_next_level, ChangeLevel_the_score );
-		}*/
 		GameEvent( EventType t ) : type( t )
 		{
 		}
@@ -91,7 +87,8 @@ namespace gdn
 		}
 
 		static GameEvent ChangeSceneEvent( std::string newscene );
-		static GameEvent ChangeLevelEvent( int nlevel, int cscore );
+		static GameEvent ChangeLevelEvent( int nlevel );
+		static GameEvent ChangeScoreEvent( int newscore );
 		static GameEvent HighscoreEvent( int newscore );
 		static GameEvent QuitEvent();
 	};
