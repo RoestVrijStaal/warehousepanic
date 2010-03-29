@@ -28,13 +28,14 @@ void SceneCredits::Initialize()
 	AddText( "Uni Dahl", Text::SMALL );
 	AddText( "Graphics", Text::MEDIUM );
 	AddText( "mr glasses", Text::SMALL );
+	AddText( "Concept artist", Text::MEDIUM );
 	AddText( "Shawn Hartnell", Text::SMALL );
-	AddText( "Chase Warrington", Text::SMALL );
-	AddText( "Uni Dahl", Text::SMALL );
 	AddText( "Fonts", Text::MEDIUM );
 	AddText( "Yoinks by A.J. Palmer", Text::SMALL );
 	AddText( "Sound Effects", Text::MEDIUM );
 	AddText( "soundjay.com", Text::SMALL );
+	AddText( "soundbible.com", Text::SMALL );
+	AddText( "free-loops.com", Text::SMALL );
 	AddText( "Menu Music", Text::MEDIUM );
 	AddText( "Mike Koenig free-loops.com", Text::SMALL );
 	AddText( "Highscore Music", Text::MEDIUM );
@@ -48,9 +49,7 @@ void SceneCredits::Initialize()
 	AddText( "", Text::MEDIUM );
 	AddText( "Thank you for playing", Text::MEDIUM );
 	AddText( "Visit us at", Text::CNTR_MEDIUM );
-	// Exclamation marks show up as slashes
-	// Also, underscores are colons
-	AddText( "http_!!cpp.wikicomplete.info", Text::CNTR_SMALL );
+	AddText( "http:////cpp.wikicomplete.info", Text::CNTR_SMALL );
 }
 
 void SceneCredits::Terminate()

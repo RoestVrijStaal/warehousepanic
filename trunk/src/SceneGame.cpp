@@ -2,6 +2,7 @@
 
 
 #include <iostream>
+#include <sstream>
 #include <cmath>
 using namespace std;
 
@@ -18,70 +19,36 @@ SceneGame::~SceneGame()
 
 void SceneGame::Initialize()
 {
-	std::string levelname = "levels/test level.lvl";
+	std::stringstream levelname;
 	points = 0;
-	while ( EventMgr.HasEvent( gdn::HIGHSCORE ) )
-	{
-		gdn::GameEvent& event = EventMgr.PeekEvent( gdn::HIGHSCORE );
-		switch ( event.type )
-		{
-			case gdn::GameEvent::Highscore:
-				points = event.Highscore_new_score;
-				break;
-
-			default:
-				break;
-		}
-		EventMgr.PopEvent( gdn::HIGHSCORE );
-	}
 	while ( EventMgr.HasEvent( gdn::GAME ) )
 	{
 		gdn::GameEvent& event = EventMgr.PeekEvent( gdn::GAME );
 		switch ( event.type )
 		{
-			case gdn::GameEvent::ChangeLevel:
-				switch ( event.ChangeLevel_next_level )
-				{
-					case 0:
-                        levelname = "levels/sc0_l1.lvl";
-                        break;
-
-					case 1:
-                        levelname = "levels/sc0_l2.lvl";
-                        break;
-
-					case 2:
-                        levelname = "levels/sc0_l3.lvl";
-                        break;
-
-					case 3:
-                        levelname = "levels/test level.lvl";
-                        break;
-
-                    // Go to highscores
-					case 4:
-                        EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "highscore" ) );
-                        EventMgr.PushEvent( gdn::HIGHSCORE, gdn::GameEvent::HighscoreEvent( points ) );
-                        break;
-
-					default:
-                        levelname = "levels/test level.lvl";
-                        break;
-				}
+			case gdn::GameEvent::ChangeScore:
+				points = event.ChangeLevel_the_score;
 				break;
 
-            case gdn::GameEvent::Highscore:
-				points = event.Highscore_new_score;
+			case gdn::GameEvent::ChangeLevel:
+				curLevel = event.ChangeLevel_next_level;
+				levelname << "levels/" << curLevel << ".lvl";
 				break;
 
 			default:
 				break;
 		}
-		curLevel = event.ChangeLevel_next_level;
 		EventMgr.PopEvent( gdn::GAME );
 	}
+
 	// Level stuff
-	level = Level( levelname ); // TODO: How do we choose level?
+	level = Level( levelname.str() ); // TODO: How do we choose level?
+	if ( level.objects.size() == 0 )
+	{
+		// Go to highscores
+		EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "highscore" ) );
+		EventMgr.PushEvent( gdn::HIGHSCORE, gdn::GameEvent::HighscoreEvent( points ) );
+	}
 	for ( std::vector<Object*>::iterator it = level.objects.begin(); it != level.objects.end(); ++it )
 	{
 		if ( *it != NULL )
@@ -119,6 +86,7 @@ void SceneGame::Initialize()
 		pbuttonQuit.GetImage()->GetHeight() / 2.0f + 5 ); // Top right corner next to pause button
 	// We assign a new sprite to popup when we have some popup to display
 	popup = NULL;
+	background = gdn::Sprite( ResMgr.GetImage( "level" ) );
 
 	// Sounds
 	sndSwitch = gdn::Sound( ResMgr.GetSound( "switch" ) );
@@ -127,8 +95,8 @@ void SceneGame::Initialize()
 	sndBack = gdn::Sound( ResMgr.GetSound( "back" ) );
 	sndDrive = gdn::Sound( ResMgr.GetSound( "drive" ) );
 	sndPoint = gdn::Sound( ResMgr.GetSound( "point" ) );
-    sndWin = gdn::Sound( ResMgr.GetSound( "win" ) );
-    sndFail = gdn::Sound( ResMgr.GetSound( "fail" ) );
+	sndWin = gdn::Sound( ResMgr.GetSound( "win" ) );
+	sndFail = gdn::Sound( ResMgr.GetSound( "fail" ) );
 
 	//Other stuff
 	isMouseDown = false;
@@ -146,7 +114,6 @@ void SceneGame::Initialize()
 	//str_time.SetSize( Text::MEDIUM );
 
 	ResMgr.GetMusic( "game" ).Play();
-	bg_tile.SetImage( ResMgr.GetImage( "tile" ) );
 }
 
 void SceneGame::Terminate()
@@ -164,6 +131,10 @@ void SceneGame::Terminate()
 		delete popup;
 		popup = NULL;
 	}
+
+	for ( std::list<Star*>::iterator it = stars.begin(); it != stars.end(); ++it )
+		delete *it;
+	stars.clear();
 
 	ResMgr.GetMusic( "game" ).Stop();
 }
@@ -322,40 +293,6 @@ void SceneGame::Step()
 				}
 			} while ( true );
 		} // Loop through game objects
-
-
-		// Move the stars
-		gdn::Vector2f target = str_score.GetPosition();
-		target.x += str_score.GetWidth() / 2.0f;
-		for ( std::list<Star*>::iterator it = stars.begin(); it != stars.end(); ++it )
-		{
-			Star& star = (**it);
-			gdn::Vector2f diff( target.x - star.pos.x, target.y - star.pos.y );
-
-			if ( diff.x * diff.x + diff.y * diff.y < 20 * 20 )
-			{
-				it = stars.erase( it );
-			}
-			else
-			{
-				if ( star.delay <= 0 )
-				{
-					star.vel.x += diff.x / 500;
-					star.vel.y += diff.y / 500;
-				}
-				else
-				{
-					--star.delay;
-				}
-
-				star.vel.x *= 0.95f;
-				star.vel.y *= 0.95f;
-
-				star.pos.x += star.vel.x;
-				star.pos.y += star.vel.y;
-			}
-		}
-
 	} // Game not paused
 
 	// Timer
@@ -364,13 +301,47 @@ void SceneGame::Step()
 		--timer;
 	}
 
+	// Move the stars
+	gdn::Vector2f target = str_score.GetPosition();
+	target.x += str_score.GetWidth();
+	for ( std::list<Star*>::iterator it = stars.begin(); it != stars.end(); ++it )
+	{
+		Star& star = (**it);
+		gdn::Vector2f diff( target.x - star.pos.x, target.y - star.pos.y );
+
+		if ( diff.x * diff.x + diff.y * diff.y < 10 * 10 )
+		{
+			delete *it;
+			it = stars.erase( it );
+		}
+		else
+		{
+			if ( star.delay <= 0 )
+			{
+				star.vel.x += diff.x / 500;
+				star.vel.y += diff.y / 500;
+			}
+			else
+			{
+				--star.delay;
+			}
+
+			star.vel.x *= 0.95f;
+			star.vel.y *= 0.95f;
+
+			star.pos.x += star.vel.x;
+			star.pos.y += star.vel.y;
+		}
+	}
+
 	// End game?
 	if ( isGameOver and timer <= 0 and /*level.levelTime <= 0 and*/ !justStopped and !didQuit )
 	{
 	    if ( didWin )
 	    {
             EventMgr.PushEvent( gdn::ENGINE, gdn::GameEvent::ChangeSceneEvent( "game" ) );
-            EventMgr.PushEvent( gdn::GAME, gdn::GameEvent::ChangeLevelEvent( curLevel + 1, points ) );
+            EventMgr.PushEvent( gdn::GAME, gdn::GameEvent::ChangeLevelEvent( curLevel + 1 ) );
+				EventMgr.PushEvent( gdn::GAME, gdn::GameEvent::ChangeScoreEvent( points ) );
 	    }
 	    else
 	    {
@@ -484,10 +455,8 @@ void SceneGame::Draw()
 	//sf::Sprite bg( ResMgr.GetImage( "level background" ) );
 	//bg.SetColor( sf::Color( 60, 60, 60 ) );
 	//window->Draw( bg );
-	App.GetWindow().Clear( 100, 100, 100 );
-
-    //Draw background tiles
-    App.GetWindow().Draw( bg_tile );
+	App.GetWindow().Draw( background );
+	//App.GetWindow().Clear( 70, 70, 70 );
 
 	// Draw all objects
 	for ( std::list<Object*>::iterator it = objects.begin(); it != objects.end(); ++it )
@@ -500,12 +469,28 @@ void SceneGame::Draw()
 				obj.sprite.SetPosition( screenPos.x, screenPos.y - 5 ); // Draw atop conveyor
 				break;
 
+			case Object::TRUCK:
+				// Offset truck by one square (diff between graphics and logic)
+				if ( obj.dir == Dir::UP )
+				{
+					gdn::Vector2f pos( obj.pos.x, obj.pos.y + 1.0f );
+					screenPos = TransformMapToScreen( pos );
+				}
+				obj.sprite.SetPosition( screenPos );
+				break;
+
 			// Conveyors are special. They need to draw the correct branching sprite
 			case Object::CONVEYOR:
 				if ( ((Conveyor&)obj).isSwitch )
 				{
 					std::stringstream name;
 					name << "conveyor " << (((Conveyor&)obj).isSwitchLeft ? obj.dir : ((obj.dir + 1) % 4)) << " turn";
+
+					// Help for first players
+					if ( not ( curLevel == 1 and level.curTime < App.GetFPS() * 5 and (level.curTime / 20) % 2 == 0 ) )
+					{
+						name << " high";
+					}
 					obj.sprite.SetImage( ResMgr.GetImage( name.str() ) );
 				}
 
@@ -571,13 +556,20 @@ void SceneGame::Draw()
 			case Object::GATE:
 			case Object::GATE_BACKGROUND:
 			case Object::INCINERATOR:
-			case Object::TRUCK:
 			default:
 				obj.sprite.SetPosition( screenPos );
 				break;
 		}
 		App.GetWindow().Draw( obj.sprite );
 	} // End loop through all objects
+
+	// Draw the stars
+	for ( std::list<Star*>::iterator it = stars.begin(); it != stars.end(); ++it )
+	{
+		Star& star = (**it);
+		star.sprite.SetPosition( star.pos.x, star.pos.y );
+		App.GetWindow().Draw( star.sprite );
+	}
 
 	App.GetWindow().Draw( pbuttonPause );
 	if ( isPaused )
@@ -596,14 +588,6 @@ void SceneGame::Draw()
 	score << "SCORE   " << points;
 	str_score.SetText( score.str() );
 	str_score.Draw();
-
-	// Draw the stars
-	for ( std::list<Star*>::iterator it = stars.begin(); it != stars.end(); ++it )
-	{
-		Star& star = (**it);
-		star.sprite.SetPosition( star.pos.x, star.pos.y );
-		App.GetWindow().Draw( star.sprite );
-	}
 }
 
 
@@ -735,7 +719,7 @@ bool SceneGame::DoCrate( Crate& crate )
 							stars.back()->pos = TransformMapToScreen( crate.pos );
 							stars.back()->vel.x = (float)((rand() % 10) - 5) / 2.0f;
 							stars.back()->vel.y = (float)((rand() % 10) - 5) / 2.0f;
-							stars.back()->delay = rand() % 30;
+							stars.back()->delay = rand() % 40;
 						}
                         sndPoint.Play();
 					}

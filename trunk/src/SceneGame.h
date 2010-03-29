@@ -13,7 +13,6 @@
 #include "Text.h"
 #include "Star.h"
 
-#include <sstream>
 #include <list>
 #include <vector>
 #include <string>
@@ -61,7 +60,7 @@ class SceneGame : public gdn::Scene
 		gdn::Sprite pbuttonPause;
 		gdn::Sprite pbuttonQuit;
 		gdn::Sprite* popup;
-		gdn::Sprite bg_tile;
+		gdn::Sprite background;
 
 		gdn::Sound sndSwitch;
 		gdn::Sound sndClick;

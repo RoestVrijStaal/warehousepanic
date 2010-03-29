@@ -8,6 +8,7 @@
 #include "Settings.h"
 #include "Functions.h"
 
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -29,6 +30,7 @@ public:
 
 	Level( std::string filename )
 	{
+		curTime = 0;
 		std::ifstream myfile (filename.c_str());
 		if (myfile.is_open())
 		{
@@ -54,15 +56,21 @@ public:
 				}*/
 				else if ( key == "cratespeed" )
 				{
-					StringToFloat(value, crateSpeed);
+					int tmp;
+					StringToInt(value, tmp);
+					crateSpeed = (float)tmp / 10000000.0f;
 				}
 				else if ( key == "crateinterval" )
 				{
-					StringToFloat(value, crateInterval);
+					int tmp;
+					StringToInt(value, tmp);
+					crateInterval = (float)tmp;
 				}
 				else if ( key == "cratespeedincrement" )
 				{
-					StringToFloat(value, crateSpeedIncrement);
+					int tmp;
+					StringToInt(value, tmp);
+					crateSpeedIncrement = (float)tmp / 100000000.0f;
 				}
 				else if ( key == "cratespertruck" )
 				{

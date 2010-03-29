@@ -38,6 +38,7 @@ namespace gdn
 		images["splash"].LoadFromFile( "media/bg_splash.png" );
 		images["title"].LoadFromFile( "media/bg_title.png" );
 		images["general"].LoadFromFile( "media/bg_general.png" );
+		images["level"].LoadFromFile( "media/bg_level.png" );
 		images["tutorial 1"].LoadFromFile( "media/bg_tutorial_1.png" );
 		images["tutorial 2"].LoadFromFile( "media/bg_tutorial_2.png" );
 		images["tutorial 3"].LoadFromFile( "media/bg_tutorial_3.png" );
@@ -57,6 +58,10 @@ namespace gdn
 		images["conveyor 1 turn"].LoadFromFile( "media/conveyor_dir_1_turn.png" );
 		images["conveyor 2 turn"].LoadFromFile( "media/conveyor_dir_2_turn.png" );
 		images["conveyor 3 turn"].LoadFromFile( "media/conveyor_dir_3_turn.png" );
+		images["conveyor 0 turn high"].LoadFromFile( "media/conveyor_dir_0_turn_high.png" );
+		images["conveyor 1 turn high"].LoadFromFile( "media/conveyor_dir_1_turn_high.png" );
+		images["conveyor 2 turn high"].LoadFromFile( "media/conveyor_dir_2_turn_high.png" );
+		images["conveyor 3 turn high"].LoadFromFile( "media/conveyor_dir_3_turn_high.png" );
 
 		images["crate blue"].LoadFromFile( "media/crate-blue.png" );
 		images["crate green"].LoadFromFile( "media/crate-green.png" );
@@ -109,7 +114,7 @@ namespace gdn
 
 		images["keyboard"].LoadFromFile( "media/keyboard.png" );
 
-		images["star"].LoadFromFile( "media/star-public-domain.png" );
+		images["star"].LoadFromFile( "media/star.png" );
 
 		// Font - small
 		images["0 small"].LoadFromFile( "media/font_0_small.png" );
@@ -148,11 +153,12 @@ namespace gdn
 		images["X small"].LoadFromFile( "media/font_X_small.png" );
 		images["Y small"].LoadFromFile( "media/font_Y_small.png" );
 		images["Z small"].LoadFromFile( "media/font_Z_small.png" );
-		images["  small"].LoadFromFile( "media/font_ _small.png" );
-		images["! small"].LoadFromFile( "media/font_!_small.png" );
-		images[". small"].LoadFromFile( "media/font_._small.png" );
-		images["_ small"].LoadFromFile( "media/font___small.png" );
-		images["- small"].LoadFromFile( "media/font_-_small.png" );
+		images["  small"].LoadFromFile( "media/font_space_small.png" );
+		images["/ small"].LoadFromFile( "media/font_slash_small.png" );
+		images[". small"].LoadFromFile( "media/font_dot_small.png" );
+		images[": small"].LoadFromFile( "media/font_colon_small.png" );
+		images["- small"].LoadFromFile( "media/font_dash_small.png" );
+
 		// Font - medium
 		images["0 medium"].LoadFromFile( "media/font_0_medium.png" );
 		images["1 medium"].LoadFromFile( "media/font_1_medium.png" );
@@ -190,11 +196,12 @@ namespace gdn
 		images["X medium"].LoadFromFile( "media/font_X_medium.png" );
 		images["Y medium"].LoadFromFile( "media/font_Y_medium.png" );
 		images["Z medium"].LoadFromFile( "media/font_Z_medium.png" );
-		images["  medium"].LoadFromFile( "media/font_ _medium.png" );
-		images["! medium"].LoadFromFile( "media/font_!_medium.png" );
-		images[". medium"].LoadFromFile( "media/font_._medium.png" );
-		images["_ medium"].LoadFromFile( "media/font___medium.png" );
-		images["- medium"].LoadFromFile( "media/font_-_medium.png" );
+		images["  medium"].LoadFromFile( "media/font_space_medium.png" );
+		images["/ medium"].LoadFromFile( "media/font_slash_medium.png" );
+		images[". medium"].LoadFromFile( "media/font_dot_medium.png" );
+		images[": medium"].LoadFromFile( "media/font_colon_medium.png" );
+		images["- medium"].LoadFromFile( "media/font_dash_medium.png" );
+
 		// Font - large
 		images["0 large"].LoadFromFile( "media/font_0_large.png" );
 		images["1 large"].LoadFromFile( "media/font_1_large.png" );
@@ -232,11 +239,11 @@ namespace gdn
 		images["X large"].LoadFromFile( "media/font_X_large.png" );
 		images["Y large"].LoadFromFile( "media/font_Y_large.png" );
 		images["Z large"].LoadFromFile( "media/font_Z_large.png" );
-		images["  large"].LoadFromFile( "media/font_ _large.png" );
-		images["! large"].LoadFromFile( "media/font_!_large.png" );
-		images[". large"].LoadFromFile( "media/font_._large.png" );
-		images["_ large"].LoadFromFile( "media/font___large.png" );
-		images["- large"].LoadFromFile( "media/font_-_large.png" );
+		images["  large"].LoadFromFile( "media/font_space_large.png" );
+		images["/ large"].LoadFromFile( "media/font_slash_large.png" );
+		images[". large"].LoadFromFile( "media/font_dot_large.png" );
+		images[": large"].LoadFromFile( "media/font_colon_large.png" );
+		images["- large"].LoadFromFile( "media/font_dash_large.png" );
 
 		// Sound buffers
 		sounds["switch"].LoadFromFile( "media/snd_button-25.wav" );
@@ -253,7 +260,7 @@ namespace gdn
 		music["game over"].SetLoop( true );
 		music["menu"].LoadFromFile( "media/music_Free Hip Hop 3-9480-Free-Loops.com.wav" );
 		music["menu"].SetLoop( true );
-		music["game"].LoadFromFile( "media/Free Trance Loops 1-9468-Free-Loops.com.wav" );
+		music["game"].LoadFromFile( "media/music_Free Trance Loops 1-9468-Free-Loops.com.wav" );
 		music["game"].SetLoop( true );
 	}
 

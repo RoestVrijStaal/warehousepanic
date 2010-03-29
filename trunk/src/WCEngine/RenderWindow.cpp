@@ -6,7 +6,7 @@
 
 namespace gdn
 {
-	RenderWindow::RenderWindow() : screen( NULL ), joystick( NULL )
+	RenderWindow::RenderWindow() : joystick( NULL ), screen( NULL )
 	{
 	}
 
@@ -37,7 +37,7 @@ namespace gdn
 		screen = SDL_SetVideoMode( width, height, bpp, SDL_SWSURFACE );
 		SDL_WM_SetCaption( title.c_str(), NULL );
 		joystick = SDL_JoystickOpen( 0 );
-		SDL_JoystickEventState( SDL_DISABLE );
+		SDL_JoystickEventState( SDL_ENABLE );
 
 		return screen != NULL;
 	}

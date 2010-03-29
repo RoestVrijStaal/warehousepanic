@@ -31,11 +31,11 @@ namespace gdn
 			float mouseX;
 			float mouseY;
 			bool mouseDown;
+			SDL_Joystick* joystick;
 
 		protected:
-		private:
 			SDL_Surface* screen;
-			SDL_Joystick* joystick;
+		private:
 	};
 }
 

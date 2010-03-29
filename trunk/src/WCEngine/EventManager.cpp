@@ -11,10 +11,13 @@ namespace gdn
 	{
 		return GameEvent( Highscore, newscore );
 	}
-	GameEvent GameEvent::ChangeLevelEvent( int nlevel, int cscore )
+	GameEvent GameEvent::ChangeLevelEvent( int nlevel )
 	{
-	    EventMgr.PushEvent( gdn::HIGHSCORE, gdn::GameEvent::HighscoreEvent( cscore ) );
-	    return GameEvent( ChangeLevel, nlevel/*, cscore*/ );
+	    return GameEvent( ChangeLevel, nlevel );
+	}
+	GameEvent GameEvent::ChangeScoreEvent( int newscore )
+	{
+	    return GameEvent( ChangeScore, newscore );
 	}
 	GameEvent GameEvent::QuitEvent()
 	{
