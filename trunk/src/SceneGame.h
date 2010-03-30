@@ -68,6 +68,7 @@ class SceneGame : public gdn::Scene
 		gdn::Sound sndBack;
 		gdn::Sound sndDrive;
 		gdn::Sound sndPoint;
+		gdn::Sound sndLife;
 		gdn::Sound sndWin;
 		gdn::Sound sndFail;
 

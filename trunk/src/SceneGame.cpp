@@ -95,6 +95,7 @@ void SceneGame::Initialize()
 	sndBack = gdn::Sound( ResMgr.GetSound( "back" ) );
 	sndDrive = gdn::Sound( ResMgr.GetSound( "drive" ) );
 	sndPoint = gdn::Sound( ResMgr.GetSound( "point" ) );
+	sndLife = gdn::Sound( ResMgr.GetSound( "life" ) );
 	sndWin = gdn::Sound( ResMgr.GetSound( "win" ) );
 	sndFail = gdn::Sound( ResMgr.GetSound( "fail" ) );
 
@@ -110,7 +111,7 @@ void SceneGame::Initialize()
 	cratesLost = 0;
 
 	str_score.SetSize( Text::MEDIUM );
-	str_score.SetPosition( 5, 217 );
+	str_score.SetPosition( 5, App.GetHeight() - 23 );
 	//str_time.SetSize( Text::MEDIUM );
 
 	ResMgr.GetMusic( "game" ).Play();
@@ -302,14 +303,12 @@ void SceneGame::Step()
 	}
 
 	// Move the stars
-	gdn::Vector2f target = str_score.GetPosition();
-	target.x += str_score.GetWidth();
 	for ( std::list<Star*>::iterator it = stars.begin(); it != stars.end(); ++it )
 	{
 		Star& star = (**it);
-		gdn::Vector2f diff( target.x - star.pos.x, target.y - star.pos.y );
+		gdn::Vector2f diff( star.target.x - star.pos.x, star.target.y - star.pos.y );
 
-		if ( diff.x * diff.x + diff.y * diff.y < 10 * 10 )
+		if ( star.willRemove and diff.x * diff.x + diff.y * diff.y < 10 * 10 )
 		{
 			delete *it;
 			it = stars.erase( it );
@@ -318,19 +317,32 @@ void SceneGame::Step()
 		{
 			if ( star.delay <= 0 )
 			{
-				star.vel.x += diff.x / 500;
-				star.vel.y += diff.y / 500;
+				float factor = 500;
+				if ( !star.willRemove )
+					factor = 100;
+				star.vel.x += diff.x / factor;
+				star.vel.y += diff.y / factor;
 			}
 			else
 			{
 				--star.delay;
 			}
 
-			star.vel.x *= 0.95f;
-			star.vel.y *= 0.95f;
+			float drag = 0.95f;
+			if ( !star.willRemove )
+				drag = 0.85f;
+
+			star.vel.x *= drag;
+			star.vel.y *= drag;
 
 			star.pos.x += star.vel.x;
 			star.pos.y += star.vel.y;
+
+			if ( fabs( star.pos.x - star.target.x ) < 0.5f and fabs( star.pos.y - star.target.y ) < 0.5f )
+			{
+				star.pos.x = star.target.x;
+				star.pos.y = star.target.y;
+			}
 		}
 	}
 
@@ -351,6 +363,7 @@ void SceneGame::Step()
 	}
 	else if ( isGameOver and justStopped and /*level.levelTime <= 0 and*/ !didQuit )
 	{
+		ResMgr.GetMusic( "game" ).Stop();
 	    if ( didWin )
 	    {
 	        if ( !sound )
@@ -711,11 +724,12 @@ bool SceneGame::DoCrate( Crate& crate )
 					if ( crate.color == crate.connected->color )
 					{
 						points += crate.value;
-						// Create the star(s), because we got points
+						// Create star(s), because we got points
 						int starAmount = crate.value / 12;
 						for ( int i = 0; i < starAmount; i++ )
 						{
-							stars.push_back( new Star() );
+							stars.push_back( new Star( ResMgr.GetImage( "star" ), ResMgr.GetImage( "star" ).GetWidth() / 2, ResMgr.GetImage( "star" ).GetHeight() / 2 ) );
+							stars.back()->target = gdn::Vector2f( str_score.GetPosition().x + str_score.GetWidth(), str_score.GetPosition().y );
 							stars.back()->pos = TransformMapToScreen( crate.pos );
 							stars.back()->vel.x = (float)((rand() % 10) - 5) / 2.0f;
 							stars.back()->vel.y = (float)((rand() % 10) - 5) / 2.0f;
@@ -726,6 +740,13 @@ bool SceneGame::DoCrate( Crate& crate )
 					else
 					{
 						++cratesLost;
+						stars.push_back( new Star( ResMgr.GetImage( "life" ), 20, ResMgr.GetImage( "life" ).GetHeight() - 10, false ) );
+						stars.back()->target = gdn::Vector2f( App.GetWidth() - 75 + (cratesLost-1) * 15, App.GetHeight() - 10 );
+						stars.back()->pos = TransformMapToScreen( crate.pos );
+						stars.back()->pos.y -= 5; // Crates are drawn 5 pixels above conveyor
+						stars.back()->vel.x = stars.back()->vel.y = 0.0f;
+						stars.back()->delay = 100;
+						sndLife.Play();
 					}
 					crate.connected->connected = NULL; // "Gate, I am not on you anymore"
 					crate.connected = NULL;

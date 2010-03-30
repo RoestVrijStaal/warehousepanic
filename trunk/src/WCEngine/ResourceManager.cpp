@@ -115,6 +115,7 @@ namespace gdn
 		images["keyboard"].LoadFromFile( "media/keyboard.png" );
 
 		images["star"].LoadFromFile( "media/star.png" );
+		images["life"].LoadFromFile( "media/life.png" );
 
 		// Font - small
 		images["0 small"].LoadFromFile( "media/font_0_small.png" );
@@ -252,6 +253,7 @@ namespace gdn
 		sounds["back"].LoadFromFile( "media/snd_Backing Up-SoundBible.com-788937884.wav" );
 		sounds["crate"].LoadFromFile( "media/snd_Closing Drawer-SoundBible.com-1853830442.wav" );
 		sounds["point"].LoadFromFile( "media/snd_Dropping A Wrench-SoundBible.com-1488523476.wav" );
+		sounds["life"].LoadFromFile( "media/snd_Door Buzzer-SoundBible.com-1567875395.wav" );
 		sounds["fail"].LoadFromFile( "media/snd_Not Even Phased-21219-Free-Loops.com.wav" );
 		sounds["win"].LoadFromFile( "media/snd_Synth Chorus Sounds-21216-Free-Loops.com.wav" );
 
