@@ -21,32 +21,40 @@ SceneHighscore::~SceneHighscore()
 // Methods
 void SceneHighscore::Initialize()
 {
+	cout << "Highscore::Initializing" << endl;
 	sndClick = gdn::Sound( ResMgr.GetSound( "click" ) );
 	isMouseDown = true;
 	keyboard = NULL;
 	newScore = NULL;
 	newTextName = NULL;
+	timer = 0;
 
 	bg_general = gdn::Sprite( ResMgr.GetImage( "general" ) );
 
 	std::list< Score* >::iterator it;
+	cout << "Highscore::Opening file" << endl;
 	std::ifstream myfile ("highscores.wph");
 	if (myfile.is_open())
 	{
+		cout << "Highscore::File opened" << endl;
 		while (!myfile.eof() )
 		{
 			std::string line;
 			getline(myfile, line);
+			cout << "Highscore::line: " << line << endl;
 			size_t equals = line.find("=");
 			int thescore;
 			StringToInt(line.substr(0, equals), thescore);
 			std::string thename = line.substr(equals + 1);
+			cout << "Highscore::inserting score " << thescore << " with name " << thename << endl;
 			InsertScore( new Score(thescore, thename) );
 		}
+		cout << "Highscore::closing file" << endl;
 		myfile.close();
 	}
 	else
 	{
+		cout << "Highscore::Inserting default highscore table" << endl;
 		InsertScore( new Score( 10 * 25, "Noob" ) );
 		InsertScore( new Score( 25 * 25, "Newbie" ) );
 		InsertScore( new Score( 50 * 25, "Average Joe" ) );
@@ -60,17 +68,24 @@ void SceneHighscore::Initialize()
 	}
 
 	// Any event for highscore scene?
+	cout << "Highscore::Loop through events" << endl;
 	while ( EventMgr.HasEvent( gdn::HIGHSCORE ) )
 	{
+		cout << "Highscore::Play gameover music" << endl;
 		ResMgr.GetMusic( "game over" ).Play();
+		cout << "Highscore::Peek event and switch on it" << endl;
 		gdn::GameEvent& event = EventMgr.PeekEvent( gdn::HIGHSCORE );
 		switch ( event.type )
 		{
 			case gdn::GameEvent::Highscore:
+				cout << "Highscore::Check score against poorest score" << scores.back()->score << endl;
 				if ( scores.back()->score < event.Highscore_new_score )
 				{
+					cout << "Highscore:: New highscore, creating keyboard" << endl;
 					keyboard = new Keyboard();
+					cout << "Highscore::show keyboard" << endl;
 					keyboard->Show();
+					cout << "Highscore::insert new score into list" << endl;
 					newScore = new Score( event.Highscore_new_score, "" );
 					InsertScore( newScore );
 				}
@@ -82,15 +97,21 @@ void SceneHighscore::Initialize()
 		EventMgr.PopEvent( gdn::HIGHSCORE );
 	}
 
+	cout << "Highscore::create title text" << endl;
 	highscore_title = Text( std::string( "HIGHSCORES" ), 0, 0, Text::LARGE );
 	highscore_title.SetPosition( App.GetWidth() / 2 - highscore_title.GetWidth() / 2.0f, 2.0f );
 
 	int str_sofar = 0;
+	cout << "Highscore::loop through scores making text" << endl;
 	for (std::list< Score* >::iterator it = scores.begin(); it != scores.end(); it++)
 	{
+		cout << "Highscore:: so far: " << str_sofar << endl;
 		if (str_sofar < 10)
 		{
-			highscores.push_back( new Text(std::string((*it)->name), 40, str_sofar * 20 + 35, Text::MEDIUM) );
+			std::stringstream number;
+			number << str_sofar + 1 << ".";
+			highscores.push_back( new Text(number.str(), 30, str_sofar * 20 + 35, Text::MEDIUM) );
+			highscores.push_back( new Text(std::string((*it)->name), 60, str_sofar * 20 + 35, Text::MEDIUM) );
 
 			// Get a handle where we can put name after typing (if applicable)
 			if ( *it == newScore )
@@ -99,10 +120,11 @@ void SceneHighscore::Initialize()
 			std::stringstream thescore;
 			thescore << (*it)->score;
 			highscores.push_back( new Text(thescore.str(), 0, 0, Text::MEDIUM) );
-			highscores.back()->SetPosition( App.GetWidth() - highscores.back()->GetWidth() - 40, str_sofar * 20 + 35 );
+			highscores.back()->SetPosition( App.GetWidth() - highscores.back()->GetWidth() - 30, str_sofar * 20 + 35 );
 		}
 		str_sofar += 1;
 	}
+	cout << "Highscore::initialize done" << endl;
 }
 
 void SceneHighscore::Terminate()
@@ -126,6 +148,9 @@ void SceneHighscore::Terminate()
 
 void SceneHighscore::Step()
 {
+	if ( timer > 0 )
+		--timer;
+
 	if ( keyboard )
 	{
 		keyboard->Step();
@@ -138,6 +163,7 @@ void SceneHighscore::Step()
 				newTextName->SetText( newScore->name );
 				keyboard->Hide();
 				isMouseDown = true;
+				timer = (int)(App.GetFPS() * 5);
 
 				std::ofstream file("highscores.wph", std::ios::out | std::ios::trunc);
 				int str_sofar = 0;
@@ -177,6 +203,9 @@ void SceneHighscore::Draw()
 
 	for (int i = 0; i < (int)highscores.size(); i++)
 	{
+		if ( newTextName == highscores[i] )
+			if ( timer / 60 % 2 )
+				continue;
 		highscores[i]->Draw();
 	}
 

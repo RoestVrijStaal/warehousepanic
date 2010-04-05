@@ -43,7 +43,6 @@ namespace gdn
 		images["tutorial 2"].LoadFromFile( "media/bg_tutorial_2.png" );
 		images["tutorial 3"].LoadFromFile( "media/bg_tutorial_3.png" );
 		images["tutorial 4"].LoadFromFile( "media/bg_tutorial_4.png" );
-		images["tile"].LoadFromFile( "media/tile.png" );
 
 		// Game graphics
 		images["conveyor 02"].LoadFromFile( "media/conveyor_dir_02.png" );

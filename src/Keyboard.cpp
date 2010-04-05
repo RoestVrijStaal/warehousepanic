@@ -2,8 +2,10 @@
 
 #include "WCEngine/GDN.h"
 
-Keyboard::Keyboard()
+Keyboard::Keyboard( int maxLength )
 {
+	maxStringLength = maxLength;
+	timer = 0;
 	isDone = false;
 	isShown = false;
 	yPos = App.GetHeight();
@@ -21,7 +23,7 @@ void Keyboard::SetText( std::string newtext )
 
 std::string Keyboard::GetText()
 {
-	return text;
+	return text.substr( 0, maxStringLength );
 }
 
 bool Keyboard::IsShown()
@@ -57,6 +59,12 @@ void Keyboard::Step()
 	// Don't add key presses if keyboard is not shown
 	if ( !isShown and yPos > 10.0f )
 		return;
+
+	if ( timer > 0 )
+		--timer;
+
+	if ( text.length() > maxStringLength and timer == 0 )
+		text.erase( text.end() - 1 );
 
 	if (curMouseDown and !isMouseDown)
 	{
@@ -209,6 +217,7 @@ void Keyboard::Step()
 			isDone = true;
 			sndClick.Play();
 		}
+		timer = 10;
 	}
 	isMouseDown = curMouseDown;
 }

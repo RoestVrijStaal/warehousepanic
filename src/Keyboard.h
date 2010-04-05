@@ -7,7 +7,7 @@
 class Keyboard
 {
 public:
-	Keyboard();
+	Keyboard( int maxLength = 20 );
 	virtual ~Keyboard();
 
 	void SetText( std::string newtext );
@@ -22,7 +22,10 @@ public:
 	void Draw();
 
 protected:
+	int timer; // Countdown to know when to delete the excess character (when typed too many)
 	std::string text;
+	int maxStringLength;
+	int lastKeyPress;
 	Text textRender;
 	bool isMouseDown;
 	bool isDone;

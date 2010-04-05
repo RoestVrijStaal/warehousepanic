@@ -34,6 +34,7 @@ class SceneHighscore : public gdn::Scene
 		Text highscore_title;
 		std::vector< Text* > highscores;
 		gdn::Sprite bg_general;
+		int timer;
 
 	private:
 };
