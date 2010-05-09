@@ -156,8 +156,11 @@ namespace gdn
 		images["  small"].LoadFromFile( "media/font_space_small.png" );
 		images["/ small"].LoadFromFile( "media/font_slash_small.png" );
 		images[". small"].LoadFromFile( "media/font_dot_small.png" );
+		images[", small"].LoadFromFile( "media/font_comma_small.png" );
 		images[": small"].LoadFromFile( "media/font_colon_small.png" );
+		images["; small"].LoadFromFile( "media/font_semicolon_small.png" );
 		images["- small"].LoadFromFile( "media/font_dash_small.png" );
+		images["\" small"].LoadFromFile( "media/font_quote_small.png" );
 
 		// Font - medium
 		images["0 medium"].LoadFromFile( "media/font_0_medium.png" );
@@ -199,8 +202,11 @@ namespace gdn
 		images["  medium"].LoadFromFile( "media/font_space_medium.png" );
 		images["/ medium"].LoadFromFile( "media/font_slash_medium.png" );
 		images[". medium"].LoadFromFile( "media/font_dot_medium.png" );
+		images[", medium"].LoadFromFile( "media/font_comma_medium.png" );
 		images[": medium"].LoadFromFile( "media/font_colon_medium.png" );
+		images["; medium"].LoadFromFile( "media/font_semicolon_medium.png" );
 		images["- medium"].LoadFromFile( "media/font_dash_medium.png" );
+		images["\" medium"].LoadFromFile( "media/font_quote_medium.png" );
 
 		// Font - large
 		images["0 large"].LoadFromFile( "media/font_0_large.png" );
@@ -242,8 +248,12 @@ namespace gdn
 		images["  large"].LoadFromFile( "media/font_space_large.png" );
 		images["/ large"].LoadFromFile( "media/font_slash_large.png" );
 		images[". large"].LoadFromFile( "media/font_dot_large.png" );
+		images[", large"].LoadFromFile( "media/font_comma_large.png" );
 		images[": large"].LoadFromFile( "media/font_colon_large.png" );
+		images["; large"].LoadFromFile( "media/font_semicolon_large.png" );
 		images["- large"].LoadFromFile( "media/font_dash_large.png" );
+		images["\" large"].LoadFromFile( "media/font_quote_large.png" );
+
 
 		// Sound buffers
 		sounds["switch"].LoadFromFile( "media/snd_button-25.wav" );

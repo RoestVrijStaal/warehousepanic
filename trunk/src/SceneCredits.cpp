@@ -1,5 +1,6 @@
 #include "SceneCredits.h"
-
+#include <iostream>
+using namespace std;
 
 
 SceneCredits::SceneCredits() : Scene( "credits" )
@@ -17,7 +18,8 @@ void SceneCredits::Initialize()
 
 	bg_general = gdn::Sprite( ResMgr.GetImage( "general" ) );
 
-	AddText( "CREDITS", Text::LARGE );
+	AddText( "CREDITS", Text::LARGE, true );
+	AddText( "", Text::MEDIUM );
 	AddText( "Producer", Text::MEDIUM );
 	AddText( "Uni Dahl", Text::SMALL );
 	AddText( "Game Design", Text::MEDIUM );
@@ -31,7 +33,8 @@ void SceneCredits::Initialize()
 	AddText( "Concept artist", Text::MEDIUM );
 	AddText( "Shawn Hartnell", Text::SMALL );
 	AddText( "Fonts", Text::MEDIUM );
-	AddText( "Yoinks by A.J. Palmer", Text::SMALL );
+	AddText( "WC Wunderbach Mix", Text::SMALL );
+	AddText( "http://www.wcfonts.com", Text::SMALL );
 	AddText( "Sound Effects", Text::MEDIUM );
 	AddText( "soundjay.com", Text::SMALL );
 	AddText( "soundbible.com", Text::SMALL );
@@ -43,13 +46,18 @@ void SceneCredits::Initialize()
 	AddText( "Game Music", Text::MEDIUM );
 	AddText( "Mike Koenig free-loops.com", Text::SMALL );
 	AddText( "", Text::MEDIUM );
-	AddText( "A big shout-out", Text::SMALL );
-	AddText( "to the GP32X community", Text::SMALL );
-	AddText( "and all the sponsors", Text::SMALL );
+	AddText( "Special thanks to", Text::MEDIUM, true );
+	AddText( "Iorgy77 for organizing PACC", Text::SMALL, true );
+	AddText( "Anyone who provided feedback", Text::SMALL, true );
+	AddText( "Everyone who participated", Text::SMALL, true );
+	AddText( "All the sponsors", Text::SMALL, true );
 	AddText( "", Text::MEDIUM );
-	AddText( "Thank you for playing", Text::MEDIUM );
-	AddText( "Visit us at", Text::CNTR_MEDIUM );
-	AddText( "http://cpp.wikicomplete.info", Text::CNTR_SMALL );
+	AddText( "And a big shout-out to", Text::SMALL, true );
+	AddText( "the GP32X community", Text::SMALL, true );
+	AddText( "", Text::MEDIUM );
+	AddText( "Thank you for playing", Text::MEDIUM, true );
+	AddText( "Visit us at", Text::MEDIUM, true );
+	AddText( "http://warehousepanic.googlecode.com", Text::SMALL, true );
 }
 
 void SceneCredits::Terminate()
@@ -96,25 +104,32 @@ void SceneCredits::Draw()
 	}
 }
 
-void SceneCredits::AddText( std::string text, Text::Size size )
+void SceneCredits::AddText( std::string text, Text::Size size, bool isCenter )
 {
 	// Calculate position
 	float curPos = ( credits.size() == 0 ? App.GetHeight() : credits.back()->GetPosition().y );
-	float xOffset = 0;
+
+	float xPos; // Used when not centering
 	switch ( size )
 	{
-		case Text::SMALL: curPos += 25.0f; break;
-		case Text::MEDIUM: curPos += 50.0f; xOffset = -60.0f; break;
-		case Text::LARGE: curPos += 10.0f; break;
-		case Text::CNTR_MEDIUM: curPos += 50.0f; break;
-		case Text::CNTR_SMALL: curPos += 25.0f; xOffset = -50.0f; break;
+		case Text::SMALL: curPos += 25.0f; xPos = 110; break;
+		case Text::MEDIUM: curPos += 50.0f; xPos = 70; break;
+		case Text::LARGE: curPos += 10.0f; xPos = 30; break;
 		default: break;
 	}
 
 	Text& t = *(new Text( text ));
 	credits.push_back( &t );
-	t.SetPosition( App.GetWidth() / 2.0f - (t.GetWidth() / 2.0f) - 35.0f + xOffset, curPos );
 	t.SetSize( size );
+
+	if ( isCenter )
+	{
+		t.SetPosition( App.GetWidth() / 2.0f - t.GetWidth() / 2.0f, curPos );
+	}
+	else
+	{
+		t.SetPosition( xPos, curPos );
+	}
 }
 
 

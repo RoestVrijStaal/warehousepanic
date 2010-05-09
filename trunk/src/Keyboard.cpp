@@ -230,7 +230,7 @@ void Keyboard::Draw()
 		gdn::Sprite theKeyboard( ResMgr.GetImage( "keyboard" ) );
 		theKeyboard.SetPosition( 0, yPos );
 		textRender.SetText( text );
-		textRender.SetPosition( 20, 90 + yPos );
+		textRender.SetPosition( 18, 87 + yPos );
 		textRender.SetSize( Text::MEDIUM );
 		App.GetWindow().Draw( theKeyboard );
 		textRender.Draw();

@@ -725,7 +725,7 @@ bool SceneGame::DoCrate( Crate& crate )
 					{
 						points += crate.value;
 						// Create star(s), because we got points
-						int starAmount = crate.value / 12;
+						int starAmount = crate.value / 8 + 4;
 						for ( int i = 0; i < starAmount; i++ )
 						{
 							stars.push_back( new Star( ResMgr.GetImage( "star" ), ResMgr.GetImage( "star" ).GetWidth() / 2, ResMgr.GetImage( "star" ).GetHeight() / 2 ) );

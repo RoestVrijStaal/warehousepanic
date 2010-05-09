@@ -46,7 +46,7 @@ int Text::GetWidth()
 {
 	int width = 0;
 
-	// Prepare string
+	// Prepare character name lookup in resource manager
 	std::string character = "A ";
 	switch ( size )
 	{
@@ -60,6 +60,9 @@ int Text::GetWidth()
 	{
 		// Replace first character and get image
 		character[0] = *it;
+		// Fix for lack of lower case chars (at the moment)
+		if ( character[0] >= 97 and character[0] <= 122 )
+			character[0] -= 32; // Make upper case
 		gdn::Image& img = ResMgr.GetImage( character );
 
 		switch ( size )

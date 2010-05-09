@@ -21,7 +21,7 @@ SceneHighscore::~SceneHighscore()
 // Methods
 void SceneHighscore::Initialize()
 {
-	cout << "Highscore::Initializing" << endl;
+	//cout << "Highscore::Initializing" << endl;
 	sndClick = gdn::Sound( ResMgr.GetSound( "click" ) );
 	isMouseDown = true;
 	keyboard = NULL;
@@ -32,29 +32,29 @@ void SceneHighscore::Initialize()
 	bg_general = gdn::Sprite( ResMgr.GetImage( "general" ) );
 
 	std::list< Score* >::iterator it;
-	cout << "Highscore::Opening file" << endl;
+	//cout << "Highscore::Opening file" << endl;
 	std::ifstream myfile ("highscores.wph");
 	if (myfile.is_open())
 	{
-		cout << "Highscore::File opened" << endl;
+		//cout << "Highscore::File opened" << endl;
 		while (!myfile.eof() )
 		{
 			std::string line;
 			getline(myfile, line);
-			cout << "Highscore::line: " << line << endl;
+			//cout << "Highscore::line: " << line << endl;
 			size_t equals = line.find("=");
 			int thescore;
 			StringToInt(line.substr(0, equals), thescore);
 			std::string thename = line.substr(equals + 1);
-			cout << "Highscore::inserting score " << thescore << " with name " << thename << endl;
+			//cout << "Highscore::inserting score " << thescore << " with name " << thename << endl;
 			InsertScore( new Score(thescore, thename) );
 		}
-		cout << "Highscore::closing file" << endl;
+		//cout << "Highscore::closing file" << endl;
 		myfile.close();
 	}
 	else
 	{
-		cout << "Highscore::Inserting default highscore table" << endl;
+		//cout << "Highscore::Inserting default highscore table" << endl;
 		InsertScore( new Score( 10 * 25, "Noob" ) );
 		InsertScore( new Score( 25 * 25, "Newbie" ) );
 		InsertScore( new Score( 50 * 25, "Average Joe" ) );
@@ -68,24 +68,24 @@ void SceneHighscore::Initialize()
 	}
 
 	// Any event for highscore scene?
-	cout << "Highscore::Loop through events" << endl;
+	//cout << "Highscore::Loop through events" << endl;
 	while ( EventMgr.HasEvent( gdn::HIGHSCORE ) )
 	{
-		cout << "Highscore::Play gameover music" << endl;
+		//cout << "Highscore::Play gameover music" << endl;
 		ResMgr.GetMusic( "game over" ).Play();
-		cout << "Highscore::Peek event and switch on it" << endl;
+		//cout << "Highscore::Peek event and switch on it" << endl;
 		gdn::GameEvent& event = EventMgr.PeekEvent( gdn::HIGHSCORE );
 		switch ( event.type )
 		{
 			case gdn::GameEvent::Highscore:
-				cout << "Highscore::Check score against poorest score" << scores.back()->score << endl;
+				//cout << "Highscore::Check score against poorest score" << scores.back()->score << endl;
 				if ( scores.back()->score < event.Highscore_new_score )
 				{
-					cout << "Highscore:: New highscore, creating keyboard" << endl;
+					//cout << "Highscore:: New highscore, creating keyboard" << endl;
 					keyboard = new Keyboard();
-					cout << "Highscore::show keyboard" << endl;
+					//cout << "Highscore::show keyboard" << endl;
 					keyboard->Show();
-					cout << "Highscore::insert new score into list" << endl;
+					//cout << "Highscore::insert new score into list" << endl;
 					newScore = new Score( event.Highscore_new_score, "" );
 					InsertScore( newScore );
 				}
@@ -97,15 +97,15 @@ void SceneHighscore::Initialize()
 		EventMgr.PopEvent( gdn::HIGHSCORE );
 	}
 
-	cout << "Highscore::create title text" << endl;
+	//cout << "Highscore::create title text" << endl;
 	highscore_title = Text( std::string( "HIGHSCORES" ), 0, 0, Text::LARGE );
 	highscore_title.SetPosition( App.GetWidth() / 2 - highscore_title.GetWidth() / 2.0f, 2.0f );
 
 	int str_sofar = 0;
-	cout << "Highscore::loop through scores making text" << endl;
+	//cout << "Highscore::loop through scores making text" << endl;
 	for (std::list< Score* >::iterator it = scores.begin(); it != scores.end(); it++)
 	{
-		cout << "Highscore:: so far: " << str_sofar << endl;
+		//cout << "Highscore:: so far: " << str_sofar << endl;
 		if (str_sofar < 10)
 		{
 			std::stringstream number;
@@ -124,7 +124,7 @@ void SceneHighscore::Initialize()
 		}
 		str_sofar += 1;
 	}
-	cout << "Highscore::initialize done" << endl;
+	//cout << "Highscore::initialize done" << endl;
 }
 
 void SceneHighscore::Terminate()
