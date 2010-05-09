@@ -8,7 +8,7 @@
 class Text
 {
 	public:
-		enum Size { SMALL = 0, MEDIUM, LARGE, CNTR_SMALL, CNTR_MEDIUM, count };
+		enum Size { SMALL = 0, MEDIUM, LARGE, count };
 
 		Text( std::string newtext = " ", float x = 0, float y = 0, Size newsize = SMALL );
 		virtual ~Text();

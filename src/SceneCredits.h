@@ -19,7 +19,7 @@ class SceneCredits : public gdn::Scene
 		virtual void Draw();
 
 	protected:
-		void AddText( std::string text, Text::Size size );
+		void AddText( std::string text, Text::Size size, bool isCenter = false );
 		std::vector< Text* > credits;
 		bool isMouseDown;
 		float curOffset;
