@@ -68,7 +68,11 @@ void SceneGame::Initialize()
 			// We keep a list of clickable objects also. Faster to search through when player clicks screen
 			else if ( (**it).type == Object::CONVEYOR )
 			{
-				clickables.push_back( *it );
+				Conveyor& c = *(Conveyor*)(*it);
+				if ( c.isSwitch )
+				{
+					clickables.push_back( *it );
+				}
 			}
 		}
 	}
@@ -202,8 +206,7 @@ void SceneGame::Step()
 		// Mouse down event, running game
 		else
 		{
-			gdn::Vector2f mappos = TransformScreenToMap( mousepos );
-			Object* obj = FindClickedObject( mappos );
+			Object* obj = FindClickedObject( mousepos );
 			if ( obj )
 			{
 				switch ( obj->type )
@@ -606,64 +609,24 @@ void SceneGame::Draw()
 
 
 // Helper functions
+#define TILE_SIZE 40
 gdn::Vector2f SceneGame::TransformScreenToMap( gdn::Vector2f& pos )
 {
-	static float cosval = cos( -M_PI / 4.0 );
-	static float sinval = sin( -M_PI / 4.0 );
+	gdn::Vector2f center(
+		pos.x + 10 * TILE_SIZE / 2,
+		pos.y - 10 * TILE_SIZE / 4);
 
-	// Translate to center of screen
-	gdn::Vector2f descreen(
-		pos.x - 160,
-		pos.y - 120 );
-
-	// Scale to fit screen resolution
-	gdn::Vector2f descaled(
-		descreen.x / 28.4f,
-		descreen.y / 28.4f );
-
-	// scale up y axis
-	descaled.y *= 2.0f;
-
-	// Rotate 45 degrees
-	gdn::Vector2f derotated(
-		descaled.x * cosval + descaled.y * sinval,
-		descaled.y * cosval - descaled.x * sinval );
-
-	gdn::Vector2f decentered(
-		derotated.x + 0.5f + (float)level.width / 2.0f,
-		derotated.y + 0.5f + (float)level.height / 2.0f );
-
-	return decentered;
+	gdn::Vector2f map(
+		center.x * 1 / TILE_SIZE + center.y * 2 / -TILE_SIZE,
+		center.x * 1 / TILE_SIZE + center.y * 2 / TILE_SIZE );
+	return map;
 }
 
 gdn::Vector2f SceneGame::TransformMapToScreen( gdn::Vector2f& pos )
 {
-	static float cosval = cos( M_PI / 4.0 );
-	static float sinval = sin( M_PI / 4.0 );
-
-	gdn::Vector2f centered(
-		pos.x - (float)level.width / 2.0f,
-		pos.y - (float)level.height / 2.0f );
-
-	// Rotate 45 degrees
-	gdn::Vector2f rotated(
-		centered.x * cosval + centered.y * sinval,
-		centered.y * cosval - centered.x * sinval );
-
-	// scale down y axis
-	rotated.y /= 2.0f;
-
-	// Scale to fit screen resolution
-	gdn::Vector2f scaled(
-		rotated.x * 28.4f,
-		rotated.y * 28.4f );
-		//rotated.x * 28.4864f,
-		//rotated.y * 28.55f );
-
-	// Translate to center of screen
 	gdn::Vector2f screen(
-		(scaled.x) + 160,
-		(scaled.y) + 120 );
+		pos.x * TILE_SIZE / 2 + pos.y * TILE_SIZE / 2 - 10 * TILE_SIZE / 2,
+		pos.x * -TILE_SIZE / 4 + pos.y * TILE_SIZE / 4 + 10 * TILE_SIZE / 4 );
 	return screen;
 }
 
@@ -673,10 +636,23 @@ float SceneGame::GetDistanceSQ( gdn::Vector2f& pos1, gdn::Vector2f& pos2 )
 	return diff.x * diff.x + diff.y * diff.y;
 }
 
-Object* SceneGame::FindClickedObject( gdn::Vector2f& mappos )
+Object* SceneGame::FindClickedObject( gdn::Vector2f& screenpos )
 {
 	// Offset mouse coordinate by half, as tiles are placed center, while coords start upper left
-	gdn::Vector2f pos( mappos.x - .5f, mappos.y - .5f );
+	Object* res = NULL;
+	float bestDistSQ = 50 * 50;
+	for (std::list<Object*>::iterator it = clickables.begin(); it != clickables.end(); ++it )
+	{
+		gdn::Vector2f curPos = TransformMapToScreen( (**it).pos );
+		float dist = GetDistanceSQ( curPos, screenpos );
+		if ( dist < bestDistSQ )
+		{
+			res = (*it);
+			bestDistSQ = dist;
+		}
+	}
+
+/*	gdn::Vector2f pos( mappos.x - .5f, mappos.y - .5f );
 	float bestDistSQ = 3.5f * 3.5f;
 	Object* res = NULL;
 	for (std::list<Object*>::iterator it = clickables.begin(); it != clickables.end(); ++it )
@@ -687,7 +663,7 @@ Object* SceneGame::FindClickedObject( gdn::Vector2f& mappos )
 			bestDistSQ = dist;
 			res = (*it);
 		}
-	}
+	}*/
 	return res;
 }
 
