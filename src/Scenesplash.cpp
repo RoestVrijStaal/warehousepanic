@@ -16,7 +16,9 @@ void SceneSplash::Initialize()
 	background = gdn::Sprite( ResMgr.GetImage( "splash" ) );
 	presenters.push_back( new Text( "Game Design Novice", 58, 100, Text::MEDIUM ) );
 	presenters.push_back( new Text( "presents", 124, 130, Text::SMALL ) );
-	presenters.push_back( new Text( "a P.A.C.C. February 2010 entry", 6, 224, Text::SMALL ) );
+	presenters.push_back( new Text( "a P.A.C.C. February 2010 entry", 6, App.GetHeight() - 16, Text::SMALL ) );
+	presenters.push_back( new Text( "v1.0", 0, 0, Text::SMALL ) );
+	presenters.back()->SetPosition( App.GetWidth() - presenters.back()->GetWidth() - 6, App.GetHeight() - 16 );
 }
 
 void SceneSplash::Terminate()
