@@ -218,9 +218,14 @@ public:
 		objects.clear();
 	}
 
+	int GetIndex( int x, int y )
+	{
+		return x + y * width;
+	}
+
 	Object* GetObjectAt( int x, int y )
 	{
-		int index = x + y * width;
+		int index = GetIndex( x, y );
 
 		// Out side level then return NULL
 		if ( x >= 0 and x < width and y >= 0 and y < height )
@@ -228,7 +233,6 @@ public:
 		else
 		{
 			return NULL;
-			printf("Nothing at %d \n",index);
 		}
 	}
 

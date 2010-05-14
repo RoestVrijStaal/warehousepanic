@@ -692,7 +692,10 @@ bool SceneGame::DoCrate( Crate& crate )
 			switch ( crate.connected->type )
 			{
 				case Object::CONVEYOR:
-					crate.dir = ((Conveyor*)crate.connected)->GetCurDirection();
+					{
+						Conveyor& c = *(Conveyor*)(crate.connected);
+						crate.dir = c.GetCurDirection();
+					}
 					break;
 
 				// We landed on gate, so break link between gate and crate
@@ -759,10 +762,18 @@ bool SceneGame::DoCrate( Crate& crate )
 				nextDest->connected = &crate; // Take the next one
 				crate.connected = nextDest;
 				distLeft -= curDist;
-				if ( crate.connected->type == Object::CONVEYOR and ((Conveyor*)(crate.connected))->isSwitch == true )
-                {
-                    crate.value += 25;
-                }
+
+				// Only add points first time switch is visited
+				if ( crate.connected->type == Object::CONVEYOR
+					and ((Conveyor*)(crate.connected))->isSwitch == true
+					and crate.visited.find( level.GetIndex( crate.connected->pos.x, crate.connected->pos.y ) ) == crate.visited.end() )
+				{
+					crate.value += 25;
+
+					// Mark this switch so it doesn't get counted again
+					crate.visited.insert( level.GetIndex( crate.connected->pos.x, crate.connected->pos.y ) );
+					std::cout << "points" << std::endl;
+				}
 			}
 
 			// Else next square occupied, so stop moving

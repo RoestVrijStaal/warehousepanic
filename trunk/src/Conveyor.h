@@ -5,7 +5,6 @@
 #include "Object.h"
 #include "Crate.h"
 
-
 class Conveyor : public Object
 {
 public:

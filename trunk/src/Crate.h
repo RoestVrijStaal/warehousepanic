@@ -4,6 +4,7 @@
 #include "Conveyor.h"
 #include "Object.h"
 #include "Settings.h"
+#include <set>
 
 
 
@@ -26,6 +27,7 @@ public:
 		SetSprite();
 	}
 	unsigned int value;
+	std::set<int> visited; // map index of tiles visited (used for counting points)
 
 protected:
 private:
