@@ -614,7 +614,7 @@ gdn::Vector2f SceneGame::TransformScreenToMap( gdn::Vector2f& pos )
 {
 	gdn::Vector2f center(
 		pos.x + 10 * TILE_SIZE / 2,
-		pos.y - 10 * TILE_SIZE / 4);
+		pos.y - 12 * TILE_SIZE / 4);
 
 	gdn::Vector2f map(
 		center.x * 1 / TILE_SIZE + center.y * 2 / -TILE_SIZE,
@@ -626,7 +626,7 @@ gdn::Vector2f SceneGame::TransformMapToScreen( gdn::Vector2f& pos )
 {
 	gdn::Vector2f screen(
 		pos.x * TILE_SIZE / 2 + pos.y * TILE_SIZE / 2 - 10 * TILE_SIZE / 2,
-		pos.x * -TILE_SIZE / 4 + pos.y * TILE_SIZE / 4 + 10 * TILE_SIZE / 4 );
+		pos.x * -TILE_SIZE / 4 + pos.y * TILE_SIZE / 4 + 12 * TILE_SIZE / 4 );
 	return screen;
 }
 
@@ -772,7 +772,6 @@ bool SceneGame::DoCrate( Crate& crate )
 
 					// Mark this switch so it doesn't get counted again
 					crate.visited.insert( level.GetIndex( crate.connected->pos.x, crate.connected->pos.y ) );
-					std::cout << "points" << std::endl;
 				}
 			}
 
