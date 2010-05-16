@@ -2,11 +2,10 @@
 
 #include "Functions.h"
 
+#include <algorithm>
 #include <fstream>
 #include <sstream>
 #include <list>
-#include <iostream>
-using namespace std;
 
 
 // Constructors
@@ -56,15 +55,15 @@ void SceneHighscore::Initialize()
 	{
 		//cout << "Highscore::Inserting default highscore table" << endl;
 		InsertScore( new Score( 10 * 25, "Noob" ) );
-		InsertScore( new Score( 25 * 25, "Newbie" ) );
-		InsertScore( new Score( 50 * 25, "Average Joe" ) );
-		InsertScore( new Score( 75 * 25, "L337" ) );
-		InsertScore( new Score( 95 * 25, "u9" ) );
-		InsertScore( new Score( 100 * 25, "wannabe" ) );
-		InsertScore( new Score( 150 * 25, "mr glasses" ) );
-		InsertScore( new Score( 200 * 25, "Spacechase0" ) );
-		InsertScore( new Score( 250 * 25, "Your mom" ) );
-		InsertScore( new Score( 300 * 25, "Hartnell" ) );
+		InsertScore( new Score( 50 * 25, "Newbie" ) );
+		InsertScore( new Score( 100 * 25, "Novice" ) );
+		InsertScore( new Score( 200 * 25, "mr L337" ) );
+		InsertScore( new Score( 300 * 25, "Average Joe" ) );
+		InsertScore( new Score( 400 * 25, "Uni" ) );
+		InsertScore( new Score( 500 * 25, "mr glasses" ) );
+		InsertScore( new Score( 650 * 25, "Spacechase0" ) );
+		InsertScore( new Score( 800 * 25, "Hartnell" ) );
+		InsertScore( new Score( 1000 * 25, "Your mom" ) );
 	}
 
 	// Any event for highscore scene?
@@ -117,9 +116,7 @@ void SceneHighscore::Initialize()
 			if ( *it == newScore )
 				newTextName = highscores.back();
 
-			std::stringstream thescore;
-			thescore << (*it)->score;
-			highscores.push_back( new Text(thescore.str(), 0, 0, Text::MEDIUM) );
+			highscores.push_back( new Text(FormatNumber((*it)->score), 0, 0, Text::MEDIUM) );
 			highscores.back()->SetPosition( App.GetWidth() - highscores.back()->GetWidth() - 30, str_sofar * 20 + 35 );
 		}
 		str_sofar += 1;
@@ -219,7 +216,23 @@ void SceneHighscore::InsertScore( Score* score )
 	scores.sort( ScoreSort );
 }
 
+std::string SceneHighscore::FormatNumber( int num )
+{
+	std::stringstream res;
+	int idx = 0;
+	while ( num > 0 )
+	{
+		if ( idx % 3 == 0 )
+			res << ".";
 
+		res << num % 10;
+		num /= 10;
+		++idx;
+	}
+	std::string toReverse = res.str().substr(1);
+	reverse( toReverse.begin(), toReverse.end() );
+	return toReverse;
+}
 
 // This makes sure the scene is added to the engine!
 SceneHighscore* highscore = new SceneHighscore();
