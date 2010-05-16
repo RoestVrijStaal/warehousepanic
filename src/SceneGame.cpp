@@ -104,6 +104,16 @@ void SceneGame::Initialize()
 	}
 	click.SetCenter( click.GetImage()->GetWidth() / 2, click.GetImage()->GetHeight() / 2 );
 
+	// Lost crates placeholders
+	for ( int i = 0; i < NUM_CRATES; ++i )
+	{
+		stars.push_back( new Star( ResMgr.GetImage( "life shadow" ), ResMgr.GetImage( "life shadow" ).GetWidth() / 2, ResMgr.GetImage( "life shadow" ).GetHeight(), false ) );
+		stars.back()->target = gdn::Vector2f( App.GetWidth() - 100 + i * 18, App.GetHeight() );
+		stars.back()->pos = stars.back()->target;
+		stars.back()->vel.x = stars.back()->vel.y = 0.0f;
+		stars.back()->delay = 0;
+	}
+
 	// Sounds
 	sndSwitch = gdn::Sound( ResMgr.GetSound( "switch" ) );
 	sndClick = gdn::Sound( ResMgr.GetSound( "click" ) );
@@ -158,7 +168,7 @@ void SceneGame::Terminate()
 
 void SceneGame::Step()
 {
-    if ( cratesLost >= 5 and !isGameOver )
+    if ( cratesLost >= NUM_CRATES and !isGameOver )
     {
         isGameOver = true;
         //level.levelTime = 0;
@@ -737,7 +747,7 @@ bool SceneGame::DoCrate( Crate& crate )
 					{
 						++cratesLost;
 						stars.push_back( new Star( ResMgr.GetImage( "life" ), 20, ResMgr.GetImage( "life" ).GetHeight() - 10, false ) );
-						stars.back()->target = gdn::Vector2f( App.GetWidth() - 75 + (cratesLost-1) * 15, App.GetHeight() - 10 );
+						stars.back()->target = gdn::Vector2f( App.GetWidth() - 100 + (cratesLost-1) * 18, App.GetHeight() - 12 );
 						stars.back()->pos = TransformMapToScreen( crate.pos );
 						stars.back()->pos.y -= 5; // Crates are drawn 5 pixels above conveyor
 						stars.back()->vel.x = stars.back()->vel.y = 0.0f;

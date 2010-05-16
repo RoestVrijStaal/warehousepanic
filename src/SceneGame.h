@@ -21,6 +21,9 @@
 
 // Define some settings here
 
+// Number of crates allowed to miss per level
+#define NUM_CRATES 5
+
 
 
 class SceneGame : public gdn::Scene

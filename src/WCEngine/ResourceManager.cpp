@@ -126,6 +126,7 @@ namespace gdn
 
 		images["star"].LoadFromFile( "media/star.png" );
 		images["life"].LoadFromFile( "media/life.png" );
+		images["life shadow"].LoadFromFile( "media/life_shadow.png", true );
 
 		// Font - small
 		images["0 small"].LoadFromFile( "media/font_0_small.png" );
