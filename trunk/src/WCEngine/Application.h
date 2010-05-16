@@ -1,9 +1,11 @@
 #ifndef APP_H
 #define APP_H
 
+#include "RenderWindow.h"
+
 #include <string>
 #include <map>
-#include "RenderWindow.h"
+#include <list>
 
 
 
@@ -20,6 +22,7 @@ namespace gdn
 	// Forward decl.
 	class Scene;
 	class Timer;
+	class Animation;
 
 	class Application
 	{
@@ -32,6 +35,9 @@ namespace gdn
 
 		void AddScene( Scene* scene );
 		gdn::RenderWindow& GetWindow();
+
+		void AddAnimation( Animation* anim );
+		void RemoveAnimation( Animation* anim );
 
 		int GetWidth();
 		int GetHeight();
@@ -61,6 +67,8 @@ namespace gdn
 		// Current scene (game, menu, highscore etc.)
 		Scene* curScene;
 		std::map< std::string, Scene* > scenes;
+
+		std::list< Animation* > animations;
 
 	private:
 		static Application* instance;

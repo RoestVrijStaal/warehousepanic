@@ -44,6 +44,17 @@ namespace gdn
 		images["tutorial 3"].LoadFromFile( "media/bg_tutorial_3.png" );
 		images["tutorial 4"].LoadFromFile( "media/bg_tutorial_4.png" );
 
+		images["click 1"].LoadFromFile( "media/click_01.png", true );
+		images["click 2"].LoadFromFile( "media/click_02.png", true );
+		images["click 3"].LoadFromFile( "media/click_03.png", true );
+		images["click 4"].LoadFromFile( "media/click_04.png", true );
+		images["click 5"].LoadFromFile( "media/click_05.png", true );
+		images["click 6"].LoadFromFile( "media/click_06.png", true );
+		images["click 7"].LoadFromFile( "media/click_07.png", true );
+		images["click 8"].LoadFromFile( "media/click_08.png", true );
+		images["click 9"].LoadFromFile( "media/click_09.png", true );
+		images["click 10"].LoadFromFile( "media/click_10.png", true );
+
 		// Game graphics
 		images["conveyor 02"].LoadFromFile( "media/conveyor_dir_02.png" );
 		images["conveyor 13"].LoadFromFile( "media/conveyor_dir_13.png" );
@@ -102,14 +113,14 @@ namespace gdn
 		images["truck 0"].LoadFromFile( "media/truck_dir0.png" );
 		images["truck 1"].LoadFromFile( "media/truck_dir1.png" );
 
-		images["button pause"].LoadFromFile( "media/button_pause.png" );
-		images["button pause active"].LoadFromFile( "media/button_pause_on.png" );
-		images["button quit"].LoadFromFile( "media/button_quit.png" );
-		images["button quit active"].LoadFromFile( "media/button_quit_on.png" );
+		images["button pause"].LoadFromFile( "media/button_pause.png", true );
+		images["button pause active"].LoadFromFile( "media/button_pause_on.png", true );
+		images["button quit"].LoadFromFile( "media/button_quit.png", true );
+		images["button quit active"].LoadFromFile( "media/button_quit_on.png", true );
 
-		images["text paused"].LoadFromFile( "media/text_paused.png" );
-		images["text fail"].LoadFromFile( "media/text_fail.png" );
-		images["text win"].LoadFromFile( "media/text_win.png" );
+		images["text paused"].LoadFromFile( "media/text_paused.png", true );
+		images["text fail"].LoadFromFile( "media/text_fail.png", true );
+		images["text win"].LoadFromFile( "media/text_win.png", true );
 
 		images["keyboard"].LoadFromFile( "media/keyboard.png" );
 

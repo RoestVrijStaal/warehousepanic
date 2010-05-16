@@ -63,7 +63,7 @@ void Keyboard::Step()
 	if ( timer > 0 )
 		--timer;
 
-	if ( text.length() > maxStringLength and timer == 0 )
+	if ( (int)text.length() > maxStringLength and timer == 0 )
 		text.erase( text.end() - 1 );
 
 	if (curMouseDown and !isMouseDown)

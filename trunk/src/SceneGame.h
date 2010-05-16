@@ -61,6 +61,7 @@ class SceneGame : public gdn::Scene
 		gdn::Sprite pbuttonQuit;
 		gdn::Sprite* popup;
 		gdn::Sprite background;
+		gdn::Animation click;
 
 		gdn::Sound sndSwitch;
 		gdn::Sound sndClick;
