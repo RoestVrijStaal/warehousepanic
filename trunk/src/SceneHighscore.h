@@ -25,6 +25,7 @@ class SceneHighscore : public gdn::Scene
 
 	protected:
 		void InsertScore( Score* score );
+		std::string FormatNumber( int num );
 		bool isMouseDown;
 		Keyboard* keyboard;
 		Score* newScore;
