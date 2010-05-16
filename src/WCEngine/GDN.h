@@ -7,6 +7,7 @@
 #include "EventManager.h"
 #include "Scene.h"
 #include "Sprite.h"
+#include "Animation.h"
 #include "SoundBuffer.h"
 #include "Sound.h"
 #include "Music.h"

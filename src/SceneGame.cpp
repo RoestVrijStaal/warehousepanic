@@ -92,6 +92,18 @@ void SceneGame::Initialize()
 	popup = NULL;
 	background = gdn::Sprite( ResMgr.GetImage( "level" ) );
 
+	// Click animation
+	click = gdn::Animation();
+	click.SetLoop( false );
+	click.SetSpeed( 0.5f );
+	for ( int frameidx = 1; frameidx <= 10; ++frameidx )
+	{
+		std::stringstream name;
+		name << "click " << frameidx;
+		click.AddFrame( ResMgr.GetImage( name.str() ) );
+	}
+	click.SetCenter( click.GetImage()->GetWidth() / 2, click.GetImage()->GetHeight() / 2 );
+
 	// Sounds
 	sndSwitch = gdn::Sound( ResMgr.GetSound( "switch" ) );
 	sndClick = gdn::Sound( ResMgr.GetSound( "click" ) );
@@ -217,6 +229,8 @@ void SceneGame::Step()
 							if ( c.isSwitch )
 							{
 								c.Switch();
+								click.SetPosition( TransformMapToScreen( c.pos ) );
+								click.Play();
 								sndSwitch.Play();
 							}
 						}
@@ -595,6 +609,9 @@ void SceneGame::Draw()
 	if ( popup )
 		App.GetWindow().Draw( *popup );
 
+	if ( click.IsPlaying() )
+		App.GetWindow().Draw( click );
+
 	/*stringstream time;
 	time << "TIME   " << (level.levelTime / App.GetFPS());
 	str_time.SetText( time.str() );
@@ -640,7 +657,7 @@ Object* SceneGame::FindClickedObject( gdn::Vector2f& screenpos )
 {
 	// Offset mouse coordinate by half, as tiles are placed center, while coords start upper left
 	Object* res = NULL;
-	float bestDistSQ = 50 * 50;
+	float bestDistSQ = 30 * 30; // Max click distance
 	for (std::list<Object*>::iterator it = clickables.begin(); it != clickables.end(); ++it )
 	{
 		gdn::Vector2f curPos = TransformMapToScreen( (**it).pos );

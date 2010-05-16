@@ -12,7 +12,7 @@ namespace gdn
 		public:
 			Image();
 			virtual ~Image();
-			bool LoadFromFile( std::string filename );
+			bool LoadFromFile( std::string filename, bool useAlpha = false );
 
 			int GetWidth();
 			int GetHeight();

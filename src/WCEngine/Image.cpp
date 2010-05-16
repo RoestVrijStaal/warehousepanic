@@ -18,7 +18,7 @@ namespace gdn
 		}
 	}
 
-	bool Image::LoadFromFile( std::string filename )
+	bool Image::LoadFromFile( std::string filename, bool useAlpha )
 	{
 		if ( texture )
 		{
@@ -27,7 +27,11 @@ namespace gdn
 		}
 
 		SDL_Surface* loadedImage = IMG_Load( filename.c_str() );
-		if ( loadedImage )
+		if ( useAlpha )
+		{
+			texture = loadedImage;
+		}
+		else if ( loadedImage )
 		{
 			// Optimize image for display surface
 			texture = SDL_DisplayFormat( loadedImage );

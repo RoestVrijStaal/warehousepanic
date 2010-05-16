@@ -4,6 +4,7 @@
 #include "SDL/SDL_mixer.h"
 #include "EventManager.h"
 #include "Scene.h"
+#include "Animation.h"
 #include "Timer.h"
 #include <ctime>
 #include <cstdlib>
@@ -63,6 +64,24 @@ namespace gdn
 		scenes[ scene->GetName() ] = scene;
 	}
 
+	void Application::AddAnimation( Animation* anim )
+	{
+		if ( anim )
+			animations.push_back( anim );
+	}
+
+	void Application::RemoveAnimation( Animation* anim )
+	{
+		for ( std::list<Animation*>::iterator it = animations.begin(); it != animations.end(); ++it )
+		{
+			if ( *it == anim )
+			{
+				animations.erase( it );
+				break;
+			}
+		}
+	}
+
 	void Application::Run()
 	{
 		// Small safety incase we call run before calling Init()
@@ -88,6 +107,13 @@ namespace gdn
 				ProcessGameEvents();
 
 				Step();
+
+				// Step all animations
+				for ( std::list<Animation*>::iterator it = animations.begin(); it != animations.end(); ++it )
+				{
+					(**it).Step();
+				}
+
 				nextStepFrame += 1.0f / physicsFps;
 
 				// Check volume control

@@ -88,6 +88,8 @@
 		<Unit filename="Text.cpp" />
 		<Unit filename="Text.h" />
 		<Unit filename="Truck.h" />
+		<Unit filename="WCEngine/Animation.cpp" />
+		<Unit filename="WCEngine/Animation.h" />
 		<Unit filename="WCEngine/Application.cpp" />
 		<Unit filename="WCEngine/Application.h" />
 		<Unit filename="WCEngine/EventManager.cpp" />
