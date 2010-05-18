@@ -109,7 +109,7 @@ void SceneCredits::AddText( std::string text, Text::Size size, bool isCenter )
 	// Calculate position
 	float curPos = ( credits.size() == 0 ? App.GetHeight() : credits.back()->GetPosition().y );
 
-	float xPos; // Used when not centering
+	float xPos = 0; // Used when not centering
 	switch ( size )
 	{
 		case Text::SMALL: curPos += 25.0f; xPos = 110; break;

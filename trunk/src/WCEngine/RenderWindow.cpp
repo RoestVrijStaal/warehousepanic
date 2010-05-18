@@ -66,8 +66,8 @@ namespace gdn
 			return;
 
 		SDL_Rect rect;
-		rect.x = sprite.GetPosition().x - sprite.GetCenter().x;
-		rect.y = sprite.GetPosition().y - sprite.GetCenter().y;
+		rect.x = (int)(sprite.GetPosition().x - sprite.GetCenter().x);
+		rect.y = (int)(sprite.GetPosition().y - sprite.GetCenter().y);
 		rect.w = img->GetWidth();
 		rect.h = img->GetHeight();
 		SDL_BlitSurface( img->GetTexture(), NULL, screen, &rect );
