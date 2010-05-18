@@ -29,7 +29,7 @@ namespace gdn
 
 	void Animation::SetImage( Image& newimage )
 	{
-		frames[curFrame] = &newimage;
+		frames[(int)curFrame] = &newimage;
 		Sprite::SetImage( newimage );
 	}
 
