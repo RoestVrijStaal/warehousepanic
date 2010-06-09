@@ -1,8 +1,12 @@
 #include "Image.h"
 
 #include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 
+#if defined(__APPLE__) || defined(MACOSX) || defined(macintosh) || defined(Macintosh)
+#include <SDL_image/SDL_image.h>
+#else
+#include <SDL/SDL_image.h>
+#endif
 
 namespace gdn
 {

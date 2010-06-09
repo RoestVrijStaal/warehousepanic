@@ -9,6 +9,12 @@
 
 #define ResMgr (*(gdn::ResourceManager::GetInstance()))
 
+#if defined(__APPLE__) || defined(MACOSX) || defined(macintosh) || defined(Macintosh)
+#define RESOURCE_BASE_DIR "Warehouse Panic - Mac Build.app/Contents/Resources/"
+#else
+#include RESOURCE_BASE_DIR std::string( RESOURCE_BASE_DIR ) + ""
+#endif
+
 namespace gdn
 {
 	class ResourceManager

@@ -3,7 +3,12 @@
 
 #include <string>
 #include <SDL/SDL.h>
+
+#if defined(__APPLE__) || defined(MACOSX) || defined(macintosh) || defined(Macintosh)
+#include <SDL_mixer/SDL_mixer.h>
+#else
 #include <SDL/SDL_mixer.h>
+#endif
 
 
 namespace gdn
