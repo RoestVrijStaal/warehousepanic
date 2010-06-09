@@ -32,7 +32,11 @@ void SceneGame::Initialize()
 
 			case gdn::GameEvent::ChangeLevel:
 				curLevel = event.ChangeLevel_next_level;
+				#if defined(__APPLE__) || defined(MACOSX) || defined(macintosh) || defined(Macintosh)
+				levelname << RESOURCE_BASE_DIR << curLevel << ".lvl";
+				#else
 				levelname << "levels/" << curLevel << ".lvl";
+				#endif
 				break;
 
 			default:
